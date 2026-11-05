@@ -182,11 +182,9 @@ auxiliary periodic analysis in this development in the following ways:
   from [DeGiorgi/SobolevPoincare.lean](https://github.com/scottnarmstrong/DeGiorgi/blob/4c1b3077d3782b24065184df4ba59501b2e56fc7/DeGiorgi/SobolevPoincare.lean#L123).
   These estimates are used in the periodic Poincaré/Sobolev infrastructure.
 
-The separate [LpSpaces project](https://github.com/dlcvag/LpSpaces) supplied
-models and source-level adaptations for Lp inclusion, mollification, duality,
-and reflexivity. Neither project is imported as a Lean dependency; the adapted
-proofs are included here and retain their source attributions. The stationary
-MFG existence arguments are developed in this repository.
+DeGiorgi is not imported as a Lean dependency; the adapted proofs are included
+here and retain their source attributions. The stationary MFG existence
+arguments are developed in this repository.
 
 Internal task labels and source line numbers are retained from the development
 history; use Challenge and Solution for the current theorem interfaces.

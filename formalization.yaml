@@ -69,12 +69,6 @@ related_formalizations:
       periodic analysis. The referenced source snapshot is
       4c1b3077d3782b24065184df4ba59501b2e56fc7. Adapted proofs are included here
       with their attribution; DeGiorgi is not a Lean dependency.
-  - id: "https://github.com/dlcvag/LpSpaces"
-    relationship: "builds-on"
-    note: >-
-      This separate project supplied models and source-level adaptations
-      for Lp inclusion, mollification, duality, and reflexivity. Adapted
-      proofs retain their source attribution. LpSpaces is not a Lean dependency.
 
 status:
   scope: >-
