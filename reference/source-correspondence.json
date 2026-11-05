@@ -1,0 +1,92 @@
+{
+  "checked_on": "2026-11-05",
+  "public_source_url": "https://arxiv.org/src/2506.21212v3",
+  "public_source_member": "FGU-monotone_revised_arXiv.tex",
+  "public_tex_sha256": "d271bcc127e641dc11a3ac045caea0a2f62dc75a746a4519492bfdae967177ef",
+  "predecessor_repository": "https://github.com/dlcvag/StationaryMFG",
+  "predecessor_revision": "9cdc7dad5e84da878959fc382b2a0c852a93b874",
+  "predecessor_source": "Source/FGU-monotone_revised.tex",
+  "predecessor_tex_sha256": "681a30839b410a8c270d2bc9432d93d8818253fc52ab70bdb92657c58b133293",
+  "normalization": "Remove TeX line comments beginning with an unescaped percent; collapse whitespace runs to one space. Compare complete labelled theorem/definition/assumption/equation environments, and each labelled H-hypothesis item. Macros are not expanded.",
+  "scope": "Exact normalized TeX equality of the listed 13 statement blocks only. Full source files differ. This is a source correspondence check, not a Lean statement-fidelity proof or a new Comparator result.",
+  "blocks": [
+    {
+      "label": "thm:main-simple.power.growth",
+      "normalized_characters": 480,
+      "normalized_sha256": "72f633ab17c0d5dac51438e68b25cbcd405a77e533649e57132f26eba870461d",
+      "match": true
+    },
+    {
+      "label": "thm:main-congestion.growth",
+      "normalized_characters": 483,
+      "normalized_sha256": "19383a6fb9fbd718565e2e4d607e55993c49a838c276ecd06db31d30ff096453",
+      "match": true
+    },
+    {
+      "label": "thm:main-weak.power.growth",
+      "normalized_characters": 473,
+      "normalized_sha256": "a696f65aec1e85adeeb7b11ff8e6919644ca2c02000b63152f6112567133c6a1",
+      "match": true
+    },
+    {
+      "label": "def:strong",
+      "normalized_characters": 1128,
+      "normalized_sha256": "4de09d975a8c0d978fecce4e972ca77a21306029eb8304cd7a1ea3a21527b171",
+      "match": true
+    },
+    {
+      "label": "def:weak",
+      "normalized_characters": 649,
+      "normalized_sha256": "546c2b306095b499fe013b3b7a3c5c8803be8372e14357c9325cac00d8d3bfdd",
+      "match": true
+    },
+    {
+      "label": "onH.monotone",
+      "normalized_characters": 437,
+      "normalized_sha256": "a003c932286e1789a1f275f877bccad5a5fe9730b5908071f6f9e848d2a0e219",
+      "match": true
+    },
+    {
+      "label": "onH.powergrowth",
+      "normalized_characters": 550,
+      "normalized_sha256": "cc018c7913f3952ae50bdcdc2c3b7df648fa3e15e71295cfd79f08345edaf24a",
+      "match": true
+    },
+    {
+      "label": "onH.congestiongrowth",
+      "normalized_characters": 739,
+      "normalized_sha256": "b28ffb91de887aab179197279eda2570659cb7dd6109ac97a79859526d635252",
+      "match": true
+    },
+    {
+      "label": "onH.weakgrowth",
+      "normalized_characters": 551,
+      "normalized_sha256": "c4941f551c8dcb90eb16c7085aaf3b9415892bb067d3c9f61b84768adad111ab",
+      "match": true
+    },
+    {
+      "label": "a:regularityH",
+      "normalized_characters": 287,
+      "normalized_sha256": "22fb75d69500ef99927d2ebc52d8c19dbae63e53ae6b923a9cc325253a20c36d",
+      "match": true
+    },
+    {
+      "label": "a:Hat0",
+      "normalized_characters": 683,
+      "normalized_sha256": "2138433e75c634233418a39a818db38fb0b902b86616638d9d50d8e28866bbaf",
+      "match": true
+    },
+    {
+      "label": "a:mDpHat0",
+      "normalized_characters": 722,
+      "normalized_sha256": "40e7051a545d2b0e035b0320cddce1d0f90f5f496ea6e3e12024aa6893e45278",
+      "match": true
+    },
+    {
+      "label": "eq:gamma",
+      "normalized_characters": 133,
+      "normalized_sha256": "e6bd224b94816776924879a8845df2cfc799bd4075fdaa7aa027d0ce86fad273",
+      "match": true
+    }
+  ]
+}

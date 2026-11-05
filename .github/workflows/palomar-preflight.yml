@@ -1,0 +1,25 @@
+name: Palomar mechanical preflight
+
+# Runs Palomar's verifier without submitting or registering a result.
+# Dispatch after the final source commit has been pushed to this public repo.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    # The authorization statement below applies to the maintained repository,
+    # not automatically to a fork that happens to copy this workflow.
+    if: github.repository == 'dlcvag/StationaryMFG-Palomar'
+    uses: PalomarRegistry/PalomarSubmission/.github/workflows/submission.yml@14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+    with:
+      repository: ${{ github.repository }}
+      commit: ${{ github.sha }}
+      pipeline_commit: 14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+      request_id: mfgpreflight
+      mode: full
+      execution_profile: palomar-standard-v1
+      options: >-
+        {"comparator_config_path":"comparator.json","authorization_relationship":"I am a responsible author or maintainer"}

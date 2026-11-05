@@ -1,0 +1,14 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "StationaryMFGChallenge.Theorems.SimplePower.thm_main_simplePowerGrowth_paper",
+    "StationaryMFGChallenge.Theorems.Congestion.thm_main_congestion_growth_paper",
+    "StationaryMFGChallenge.Theorems.InfimalConvolution.thm_main_weak_power_growth_paper"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}

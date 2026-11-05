@@ -1,0 +1,178 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+project:
+  name: "Existence of stationary mean-field games by monotonicity methods"
+  description: >-
+    Lean formalization of three existence theorems for discounted stationary
+    first-order mean-field games in positive dimension. Under the paper's
+    monotonicity and respective growth hypotheses, the results give strong
+    solutions for standard power growth and singular congestion, and weak
+    solutions for weak growth. Each result includes density integrability,
+    Sobolev regularity, nonnegativity, identification of the returned weak
+    gradient, and its integrability. The congestion result permits infinite
+    Hamiltonian limits at zero mass and a general continuous limiting flux;
+    the weak-growth result imposes no boundary condition on the original
+    Hamiltonian. The independent Challenge contains the definitions and
+    statements; Solution connects them to the included proof development.
+  authors:
+    - "Diogo Gomes"
+  responsible_maintainers:
+    - "Diogo Gomes"
+  license: "Apache-2.0"
+
+# The complete proof source is included here: this is not a thin wrapper.
+classification:
+  arxiv: ["math.AP", "math.OC"]
+  msc2020: ["49N80", "35A01", "91A16"]
+
+sources:
+  - title: "Solving Mean-Field Games with Monotonicity Methods in Banach Spaces"
+    authors:
+      - "Rita Ferreira"
+      - "Diogo Gomes"
+      - "Melih Üçer"
+    id: "https://arxiv.org/abs/2506.21212v3"
+    type: "paper"
+    relationship: "formalizes"
+    location: >-
+      The three main existence theorems, labelled
+      thm:main-simple.power.growth, thm:main-congestion.growth, and
+      thm:main-weak.power.growth in the arXiv v3 TeX source;
+      solution definitions def:strong and def:weak and their hypotheses.
+    note: >-
+      The formalization was developed against a revised local manuscript.
+      Its three main theorem statements, two solution definitions, four
+      monotonicity/growth assumptions, three standing H hypotheses, and
+      exponent equation match the corresponding arXiv v3 TeX blocks after
+      removing comments and normalizing whitespace. Exact source hashes and
+      all 13 block hashes are recorded in reference/source-correspondence.json.
+      The complete source files differ; this limited textual check is not a
+      claim of complete editorial equivalence or a Lean fidelity proof.
+
+related_formalizations:
+  - id: "https://github.com/dlcvag/StationaryMFG"
+    relationship: "builds-on"
+    note: >-
+      This repository extracts the proof dependency closure of the three
+      corrected existence theorems from the larger development and ports it
+      to the selected Lean toolchain. The original source checkpoint is
+      9cdc7dad5e84da878959fc382b2a0c852a93b874. The proof source is included here;
+      access to that development repository is not needed to build this one.
+  - id: "https://github.com/scottnarmstrong/DeGiorgi"
+    relationship: "adapts"
+    note: >-
+      The bare-function Lp/Sobolev design and selected auxiliary estimates
+      informed the original periodic infrastructure. Adapted lemmas retain
+      their source attribution. DeGiorgi is not a Lean dependency.
+  - id: "https://github.com/dlcvag/LpSpaces"
+    relationship: "builds-on"
+    note: >-
+      Earlier bare-function Lp experiments informed the original design.
+      LpSpaces is not a Lean dependency.
+
+status:
+  scope: >-
+    The three main existence statements and the source required for their
+    proofs, rather than every claim of the manuscript. The Lean 4.35.0 port
+    builds successfully, including Solution and the integrability audits.
+    Intentional Challenge proof holes are separate from the proved Solution
+    declarations. The three Solution theorems and audited integrability
+    results use only propext, Classical.choice, and Quot.sound.
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["Claude"]
+      framework: "Claude Code"
+      tool_setup: >-
+        The original proof development used a file-based planner, formalizer,
+        reviewer, and librarian workflow with Lean feedback and human
+        mathematical and architectural guidance. Exact model versions and
+        complete cost accounting are not reconstructed here.
+    - method: "agent"
+      models: ["ChatGPT"]
+      framework: "Codex"
+      tool_setup: >-
+        Subsequent work supplied mathematical proofs of boundary continuity
+        and their Lean formalization, corrected theorem interfaces and proofs,
+        prepared and checked the independent challenge, audited integrability
+        of the transport and variational integrands, and prepared this
+        minimal submission repository and toolchain port.
+    - method: "manual"
+      tool_setup: >-
+        Diogo Gomes selected the mathematical targets, guided the development,
+        questioned assumptions and statement fidelity, and requested the
+        corrections and audits. This records human supervision without
+        claiming a separate external human review.
+  notes: >-
+    AI contributions are credited here rather than as human authorship.
+    Historical workflow gates were strengthened after defects were found;
+    this metadata does not claim every intermediate iteration was complete
+    or independently audited. Resource costs are not fully recorded.
+
+fidelity:
+  divergences: >-
+    Statements are for d > 0. The torus is represented using bare functions
+    on real coordinate space restricted to the half-open unit cube, with
+    periodic weak tests; the API does not use a quotient torus or quotient
+    function spaces. The momentum norm is the finite-dimensional sup norm;
+    equivalence with the Euclidean norm changes growth constants, not the
+    growth regime. Positive-mass measurability uses the Borel measurable
+    structure. Weak test densities have an everywhere-positive lower bound
+    on a representative, corresponding to positive essential infimum after
+    a null-set modification. A returned Du is separately identified as the
+    weak derivative, and its Lp membership is stated explicitly: the bare
+    MemSobolevPer predicate alone does not encode all that information.
+    Integral identities must be read together with the theorem regularity:
+    integrability follows from those hypotheses and conclusions, not from
+    the totalized Bochner integral equality alone. All three Challenge
+    statements require a periodic representative V; the congestion proof
+    uses this condition explicitly. Total real-valued H and
+    DpH inputs are constrained at positive mass; the strong-solution
+    Hamiltonian at vacuum is its extended-real right limit, and the supplied
+    congestion flux agrees with the positive-mass flux and has the required
+    continuous extension. Finite boundary continuity needed internally is
+    derived, not supplied as an additional theorem hypothesis. No claim of
+    complete byte-for-byte equivalence with the public arXiv source is made;
+    the selected 13 statement blocks have the recorded normalized-text match.
+
+review:
+  status: "agent-reviewed"
+  reviewers: ["ChatGPT through Codex"]
+  notes: >-
+    The predecessor development underwent statement, boundary-condition,
+    weak-gradient, and integrability audits with corrections. Its earlier
+    independent Challenge/Solution comparison used Lean v4.30.0-rc2. That
+    evidence is historical and is not a verification report for this
+    module-system/toolchain port. The new repository has passed its own
+    full build and axiom checks. On 2026-11-05 a fresh lake comparator run
+    accepted all three comparisons and Lean's kernel accepted the solution.
+    This local macOS run used --inadvisably-no-sandbox; the official Linux
+    preflight is a separate check. No Palomar review or registration, and
+    no independent human peer review, is claimed.
+
+alignment:
+  statements:
+    - source: "thm:main-simple.power.growth"
+      lean: "StationaryMFGChallenge.Theorems.SimplePower.thm_main_simplePowerGrowth_paper"
+      module: "Challenge"
+      note: >-
+        Solution uses
+        StationaryMFG.Theorems.SimplePower.thm_main_simplePowerGrowth_faithful.
+    - source: "thm:main-congestion.growth"
+      lean: "StationaryMFGChallenge.Theorems.Congestion.thm_main_congestion_growth_paper"
+      module: "Challenge"
+      note: >-
+        Solution uses
+        StationaryMFG.Theorems.Congestion.thm_main_congestion_growth_faithful.
+    - source: "thm:main-weak.power.growth"
+      lean: "StationaryMFGChallenge.Theorems.InfimalConvolution.thm_main_weak_power_growth_paper"
+      module: "Challenge"
+      note: >-
+        Solution uses
+        StationaryMFG.Theorems.InfimalConvolution.thm_main_weak_power_growth_faithful.
+
+acknowledgements: >-
+  Lean and Mathlib provide the proof checker and mathematical foundation.
+  Comparator connects the independently stated challenge to the proof.
+  Source attributions retained in the proof files identify adapted material.
