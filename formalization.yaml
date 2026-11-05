@@ -61,14 +61,20 @@ related_formalizations:
   - id: "https://github.com/scottnarmstrong/DeGiorgi"
     relationship: "adapts"
     note: >-
-      The bare-function Lp/Sobolev design and selected auxiliary estimates
-      informed the original periodic infrastructure. Adapted lemmas retain
-      their source attribution. DeGiorgi is not a Lean dependency.
+      Scott Armstrong and Julia Kempe's formalization of De Giorgi–Nash–Moser
+      theory (companion paper https://arxiv.org/abs/2604.05984) informed the
+      bare-function Lp/Sobolev design and smooth-estimate-to-density strategy.
+      We adapted weighted_power_mean_setIntegral from DeGiorgi/Poincare.lean
+      and eLpNorm_const_average_le from DeGiorgi/SobolevPoincare.lean for the
+      periodic analysis. The referenced source snapshot is
+      4c1b3077d3782b24065184df4ba59501b2e56fc7. Adapted proofs are included here
+      with their attribution; DeGiorgi is not a Lean dependency.
   - id: "https://github.com/dlcvag/LpSpaces"
     relationship: "builds-on"
     note: >-
-      Earlier bare-function Lp experiments informed the original design.
-      LpSpaces is not a Lean dependency.
+      This separate project supplied models and source-level adaptations
+      for Lp inclusion, mollification, duality, and reflexivity. Adapted
+      proofs retain their source attribution. LpSpaces is not a Lean dependency.
 
 status:
   scope: >-

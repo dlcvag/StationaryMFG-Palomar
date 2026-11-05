@@ -722,9 +722,9 @@ structure, and the Mathlib product instances on `× ` and `Π` lift it to the
 tuple. The bare-function predicate `MemSobolevPer` continues to be the public
 API everywhere else; this file is the only place the quotient type appears.
 
-Adapted from `DeGiorgi/LpFunctionToolkit.lean`, which advocates routing
-completeness through Mathlib's `Lp` locally rather than re-deriving it on
-bare functions.
+The ordinary-function interface in `DeGiorgi/LpFunctionToolkit.lean`
+informed the public bare-function design. The local completeness construction
+in this section uses Mathlib's quotient `Lp` space.
 -/
 
 /-- Local abbreviation for the cube-restricted Lebesgue measure that all of

@@ -16,8 +16,10 @@ statement specification, not unfinished proofs in Solution.
 audited integrability results use only `propext`, `Classical.choice`, and
 `Quot.sound`. On 2026-11-05, a fresh `lake comparator` accepted all three
 comparisons and Lean's kernel accepted the solution. That local macOS run used
-`--inadvisably-no-sandbox`; the official Linux preflight is a separate check.
-No Palomar review or registration is claimed.
+`--inadvisably-no-sandbox`. The [official Linux preflight](https://github.com/dlcvag/StationaryMFG-Palomar/actions/runs/41992045149)
+also passed for commit `bae4d08`, including Comparator and the NanoDa and
+con-ron proof checks. Each submission must use a snapshot with its own passing
+preflight. No Palomar editorial review or registration is claimed.
 
 ## Mathematical content
 
@@ -26,7 +28,7 @@ system is
 
 $$
 -u-H(x,Du,m)+V(x)=0,\qquad
-m-\operatorname{div}(mD_pH(x,Du,m))-1=0.
+m-\mathrm{div}(mD_pH(x,Du,m))-1=0.
 $$
 
 The results assume the paper's positive-mass regularity and monotonicity,
@@ -161,10 +163,31 @@ independent human peer review or endorsement by every paper author.
 The original project is [StationaryMFG](https://github.com/dlcvag/StationaryMFG),
 with source checkpoint `9cdc7dad5e84da878959fc382b2a0c852a93b874`. This distribution
 includes the proof source itself; access to that development repository is
-not required. The bare-function infrastructure was informed by
-[DeGiorgi](https://github.com/scottnarmstrong/DeGiorgi) and
-[LpSpaces](https://github.com/dlcvag/LpSpaces), neither of which is imported
-as a Lean dependency. Attributions to adapted material remain in the source.
+not required.
+
+We acknowledge **Scott Armstrong and Julia Kempe's
+[DeGiorgi project](https://github.com/scottnarmstrong/DeGiorgi)**, a Lean
+formalization of elliptic De Giorgi–Nash–Moser theory, described in their
+[companion paper](https://arxiv.org/abs/2604.05984). It contributed to the
+auxiliary periodic analysis in this development in the following ways:
+
+- Its organization of Lp and Sobolev spaces using ordinary functions, together
+  with the strategy of proving smooth estimates and extending them by density,
+  informed our periodic function-space design.
+- We adapted its weighted power-mean/Hölder estimate as
+  [weighted_power_mean_setIntegral](StationaryMFG/Periodic/Poincare.lean#L1474),
+  from [DeGiorgi/Poincare.lean](https://github.com/scottnarmstrong/DeGiorgi/blob/4c1b3077d3782b24065184df4ba59501b2e56fc7/DeGiorgi/Poincare.lean#L1224).
+- We adapted its Jensen estimate for the Lp norm of an average as
+  [eLpNorm_const_average_le](StationaryMFG/Periodic/SobolevPoincare.lean#L73),
+  from [DeGiorgi/SobolevPoincare.lean](https://github.com/scottnarmstrong/DeGiorgi/blob/4c1b3077d3782b24065184df4ba59501b2e56fc7/DeGiorgi/SobolevPoincare.lean#L123).
+  These estimates are used in the periodic Poincaré/Sobolev infrastructure.
+
+The separate [LpSpaces project](https://github.com/dlcvag/LpSpaces) supplied
+models and source-level adaptations for Lp inclusion, mollification, duality,
+and reflexivity. Neither project is imported as a Lean dependency; the adapted
+proofs are included here and retain their source attributions. The stationary
+MFG existence arguments are developed in this repository.
+
 Internal task labels and source line numbers are retained from the development
 history; use Challenge and Solution for the current theorem interfaces.
 
