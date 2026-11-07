@@ -14,12 +14,14 @@ statement specification, not unfinished proofs in Solution.
 **Verification status:** the full build passes on Lean 4.35.0, including
 `Solution` and the integrability audits. All three Solution theorems and the
 audited integrability results use only `propext`, `Classical.choice`, and
-`Quot.sound`. On 2026-11-05, a fresh `lake comparator` accepted all three
-comparisons and Lean's kernel accepted the solution. That local macOS run used
+`Quot.sound`. On 2026-11-07, a fresh `lake comparator` accepted all three
+comparisons for the compact challenge and Lean's kernel accepted the solution.
+That local macOS run used
 `--inadvisably-no-sandbox`. The [official Linux preflight](https://github.com/dlcvag/StationaryMFG-Palomar/actions/runs/41992045149)
-also passed for commit `bae4d08`, including Comparator and the NanoDa and
-con-ron proof checks. Each submission must use a snapshot with its own passing
-preflight. No Palomar editorial review or registration is claimed.
+also passed for the earlier commit `bae4d08`, including Comparator and the
+NanoDa and con-ron proof checks. That preflight predates the compact challenge;
+each submission must use a snapshot with its own passing preflight.
+No Palomar editorial review or registration is claimed.
 
 ## Mathematical content
 
@@ -41,10 +43,13 @@ potential. They address three cases:
 | `thm:main-congestion.growth` | Existence of strong solutions under singular congestion growth | [Congestion/PaperMain.lean](StationaryMFG/Theorems/Congestion/PaperMain.lean) |
 | `thm:main-weak.power.growth` | Existence of weak solutions under weak growth | [InfimalConvolution/PaperMain.lean](StationaryMFG/Theorems/InfimalConvolution/PaperMain.lean) |
 
-Each conclusion includes the solution predicate, density integrability,
-Sobolev membership, nonnegativity almost everywhere, identification of the
-returned `Du` as the weak derivative of `u`, and the claimed integrability of
-each component of `Du`. The exponents are
+Each conclusion includes the solution predicate and the named conditions in
+`SolutionRegularity α β m u Du`: density integrability, nonnegativity of `m`
+almost everywhere, and `HasSobolevGradient` for `u` and the returned `Du`.
+The latter explicitly requires integrability of `u`, integration by parts
+identifying `Du` as its weak gradient, and integrability of each gradient
+component. The explicit `Du` supplies the Sobolev derivative witness; there is
+no additional existential witness. The exponents are
 $\bar\beta=\beta+1$ and
 $\bar\gamma=\alpha(\beta+1)/\beta$, with $\alpha>1$, $\beta>0$.
 
@@ -70,26 +75,72 @@ convergence.
 Read the full Challenge statements and their definitions when assessing
 correspondence with the paper.
 
+The file has five sections: periodic calculus and function spaces; standing
+assumptions and the three growth alternatives; boundary conventions; solution
+regularity and solution concepts; and the three existence theorems. Each
+theorem's comment gives its paper label. `HypothesisMonotone` contains the
+shared regularity (H1) and monotonicity (A1), while the growth structures state
+the respective bounds (A2), (A3), and (A4), including the congestion flux
+extension. Regularity appears once in each theorem's assumptions: removing
+its duplicate copy from the growth structures changes only the packaging,
+not the mathematical hypotheses. The bridge reconstructs the proof library's
+growth bundles using the shared regularity.
+
 - The spatial dimension satisfies `0 < d`. Integrals use the half-open unit
   cube in `Fin d → ℝ`. Periodic weak tests encode the torus formulation;
   the public interface uses bare functions rather than quotient spaces.
+  Restricting the returned functions to this cube and periodizing them gives
+  torus functions. `MemLpPer` abbreviates Mathlib's `MemLp` on the cube; it
+  supplies almost-everywhere strong measurability and the finite Lp norm, but
+  does not itself assert periodicity.
 - Momentum uses the finite-dimensional sup norm. Equivalence with the
-  Euclidean norm changes the constants in growth estimates. Positive-mass
-  measurability is expressed using the Borel measurable structure.
+  Euclidean norm changes the available growth constants, preserving the
+  exponents and the class of Hamiltonians. Positive-mass measurability is
+  expressed using the Borel measurable structure.
 - `H` and `DpH` are total Lean functions, but their input conditions concern
   positive mass. `DpH` is certified to be the actual momentum derivative.
+  No independent convexity, fundamental-theorem-of-calculus,
+  `DpH`-measurability, or derived-estimate premise is imposed. The supplied
+  values of `H` at nonpositive mass need not be measurable or periodic.
   Strong solutions evaluate the Hamiltonian at vacuum by its extended-real
-  right limit, rather than by an arbitrary supplied value of `H` at zero.
+  right limit `Hext`, which may be positive infinity. Monotonicity gives this
+  limit for almost every `x` and every `p`; proving this is part of the
+  challenge. Equality to the supplied real value `H x p 0` is never assumed.
 - The congestion theorem takes an extended flux `J` agreeing with `m DpH`
-  at positive mass and satisfying the paper's continuity condition. It also
-  uses the explicit periodicity of the representative `V` in its proof.
+  at positive mass and satisfying the paper's continuity condition, without
+  a separate measurability premise. Its limiting value at zero need not
+  vanish. Simple growth uses the canonical zero flux at zero; weak growth
+  needs no boundary-flux assumption because its test densities are positive.
+  The congestion proof also uses the periodicity of the representative `V`.
   All three Challenge statements require a periodic representative of `V`.
+- Smooth periodic tests are `C∞`, not analytic. Their classical gradient
+  `φ.gradient x` is explicitly defined using `fderiv` in the standard basis;
+  `φ.gradient x i` is the partial derivative in coordinate `i`. The challenge
+  only needs these derivative values; the proof development establishes that
+  the partial derivatives are themselves smooth periodic functions when that
+  property is used.
+- Weak derivatives are specified by integration by parts against every smooth
+  periodic test. `HasSobolevGradient` collects these identities and the Lp
+  bounds on the function and its specified gradient. It is used both in
+  `SolutionRegularity` and, at exponent `∞`, in the admissible weak-test
+  predicate. There is no additional existential Sobolev witness in the
+  challenge.
+- Gradients have type `Point d → Point d`: `Du x` is the gradient vector at
+  `x`, and `Du x i` is its `i`th component. Coordinatewise weak-derivative
+  and integrability conditions use `fun x => Du x i`. `Solution.lean`
+  transposes the arguments to connect this convention to the proof library's
+  coordinate-first derivative families.
 - Weak test densities use an everywhere-positive lower bound on a chosen
   representative. An essentially positive density has such a representative
   after a null-set modification. The relevant integrals are unchanged.
-- The separate weak-gradient and gradient-integrability conclusions matter:
-  `MemSobolevPer` alone does not supply the complete claimed gradient
-  regularity.
+
+The challenge keeps the derivative formulas, growth inequalities, boundary
+extension, and solution conditions explicit. Mathlib supplies the elementary
+continuous linear map for the dot product. Only the three main existence
+theorems have proof holes; the simplifications introduce no additional
+unproved definitions or assumptions. `Solution.lean` proves equivalence of the
+compact function-space, solution, and regularity conditions with their
+counterparts in the included proof development.
 
 Mathlib's Bochner integral is totalized: a nonintegrable integrand evaluates
 to zero. Consequently, an isolated integral equality is not a sufficient
