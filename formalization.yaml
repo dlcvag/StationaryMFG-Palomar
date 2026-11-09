@@ -15,7 +15,9 @@ project:
     Hamiltonian. The independent Challenge contains the definitions and
     statements; Solution connects them to the included proof development.
   authors:
+    - "Rita Ferreira"
     - "Diogo Gomes"
+    - "Melih Üçer"
   responsible_maintainers:
     - "Diogo Gomes"
   license: "Apache-2.0"
