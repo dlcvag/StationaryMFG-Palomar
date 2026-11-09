@@ -739,7 +739,7 @@ conclusion is absorbed since `hcong.C, hcong.β > 0`.
 Pointwise lemmas (`abs_sub_rpow_le_two_rpow_mul`,
 `euclideanDot_sub_rpow_le_two_rpow_mul`) are re-derived locally here for the
 congestion torus layer (the SimplePower-side versions are `private`). -/
-open StationaryMFG.Hamiltonian (euclideanDot) in
+ in
 open scoped StationaryMFG.Hamiltonian in
 noncomputable def congestionGateauxUniformBound_of_apriori
     {H : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → ℝ}
@@ -832,7 +832,7 @@ noncomputable def congestionGateauxUniformBound_of_apriori
   -- Local helper: `0 ≤ v ⬝ v`.
   have hdot_nn : ∀ v : Fin d → ℝ, 0 ≤ v ⬝ v := by
     intro v
-    unfold euclideanDot
+    unfold dotProduct
     exact Finset.sum_nonneg (fun i _ => mul_self_nonneg (v i))
   -- Local helper: `(a-b)⬝(a-b)^{γ̄/2} ≤ 2^γ̄((a⬝a)^{γ̄/2} + (b⬝b)^{γ̄/2})`.
   have hdot_sub : ∀ a b : Fin d → ℝ,
@@ -850,9 +850,9 @@ noncomputable def congestionGateauxUniformBound_of_apriori
         have h := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ a b
         have he1 : (a ⬝ b) = ∑ i, a i * b i := rfl
         have he2 : (a ⬝ a) = ∑ i, a i ^ 2 := by
-          unfold euclideanDot; exact Finset.sum_congr rfl (fun i _ => by ring)
+          unfold dotProduct; exact Finset.sum_congr rfl (fun i _ => by ring)
         have he3 : (b ⬝ b) = ∑ i, b i ^ 2 := by
-          unfold euclideanDot; exact Finset.sum_congr rfl (fun i _ => by ring)
+          unfold dotProduct; exact Finset.sum_congr rfl (fun i _ => by ring)
         rw [he1, he2, he3]; exact h
       have habs : |a ⬝ b| = Real.sqrt ((a ⬝ b) ^ 2) := by
         rw [Real.sqrt_sq_eq_abs]
@@ -860,7 +860,7 @@ noncomputable def congestionGateauxUniformBound_of_apriori
       exact Real.sqrt_le_sqrt hsq
     have hexpand : (fun i => a i - b i) ⬝ (fun i => a i - b i)
         = a ⬝ a - 2 * (a ⬝ b) + b ⬝ b := by
-      simp only [euclideanDot]
+      simp only [dotProduct]
       have hpoint : ∀ i, (a i - b i) * (a i - b i)
           = a i * a i - 2 * (a i * b i) + b i * b i := by
         intro i; ring
@@ -1067,7 +1067,7 @@ noncomputable def congestionGateauxUniformBound_of_apriori
       have hDot_aesm : AEStronglyMeasurable
           (fun x : Fin d → ℝ => ((fun i => g i x) ⬝ (fun i => g i x)))
           (volume.restrict (UnitCube d)) := by
-        unfold euclideanDot
+        unfold dotProduct
         refine Finset.aestronglyMeasurable_fun_sum _ ?_
         intro i _
         exact (hg i).aestronglyMeasurable.mul (hg i).aestronglyMeasurable

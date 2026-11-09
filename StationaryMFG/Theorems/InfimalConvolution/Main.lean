@@ -363,7 +363,7 @@ theorem hIBC_of_T3RegularizedStrongFamily
                 ⬝ (fun i => Dυ i x - fam.Du e i x))
       = ∑ i, (μ x * DpH x (fun j => Dυ j x) (μ x) i)
               * (Dυ i x - fam.Du e i x) := by
-    simp only [euclideanDot, Finset.mul_sum]
+    simp only [dotProduct, Finset.mul_sum]
     exact Finset.sum_congr rfl (fun i _ => by ring)
   rw [hdot]
 
@@ -1915,7 +1915,7 @@ theorem thm_main_weak_power_growth_no_boundary
     SimplePower.Banach.paperSection8_hScalarMono_of_gamma hγ_gt1
   have hVecMono :
       ∀ v w : Fin d → ℝ,
-        0 ≤ StationaryMFG.Hamiltonian.euclideanDot
+        0 ≤ dotProduct
               (StationaryMFG.Solutions.MFG.vecAbsPowMinusTwo
                 (hweak.α * (hweak.β + 1) / hweak.β) v • v
               - StationaryMFG.Solutions.MFG.vecAbsPowMinusTwo
@@ -2201,7 +2201,7 @@ private lemma nvMonotone : HypothesisMonotone (d := 1) palomar_Main_nvH palomar_
             * (m₁ - m₂)
           + (m₁ • ((2:ℝ) • p₁) - m₂ • ((2:ℝ) • p₂)) ⬝ (p₁ - p₂)
     rw [norm_sq_fin_one, norm_sq_fin_one, Real.rpow_one, Real.rpow_one]
-    unfold euclideanDot
+    unfold dotProduct
     rw [Fin.sum_univ_one]
     simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
     nlinarith [sq_nonneg (m₁ - m₂), sq_nonneg (p₁ 0 - p₂ 0), mul_pos h1 h2,
@@ -2216,7 +2216,7 @@ private lemma nvMonotone : HypothesisMonotone (d := 1) palomar_Main_nvH palomar_
     have hintegrand : ∀ t : ℝ,
         (((2:ℝ) • p) - ((2:ℝ) • (t • p))) ⬝ p = (2 - 2*t) * (p 0) ^ 2 := by
       intro t
-      unfold euclideanDot
+      unfold dotProduct
       rw [Fin.sum_univ_one]
       simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
       ring
@@ -2225,7 +2225,7 @@ private lemma nvMonotone : HypothesisMonotone (d := 1) palomar_Main_nvH palomar_
     rw [norm_sq_fin_one]
     simp only [norm_zero, Real.zero_rpow (by norm_num : (2:ℝ) ≠ 0)]
     have hlhs : ((2:ℝ) • p) ⬝ p = 2 * (p 0) ^ 2 := by
-      unfold euclideanDot; rw [Fin.sum_univ_one]
+      unfold dotProduct; rw [Fin.sum_univ_one]
       simp only [Pi.smul_apply, smul_eq_mul]; ring
     rw [hlhs, intervalIntegral.integral_mul_const]
     have hint : (∫ t in (0:ℝ)..1, (2 - 2*t)) = 1 := by
@@ -2301,7 +2301,7 @@ private lemma nvDifferentiable : HypothesisHpDifferentiable (d := 1) palomar_Mai
       ext w
       simp only [ContinuousLinearMap.coe_sub', Pi.sub_apply, ContinuousLinearMap.zero_apply,
         sub_zero, ContinuousLinearMap.coe_smul', Pi.smul_apply,
-        ContinuousLinearMap.proj_apply, smul_eq_mul, dotCLMHam_apply, euclideanDot,
+        ContinuousLinearMap.proj_apply, smul_eq_mul, dotCLMHam_apply, dotProduct,
         Fin.sum_univ_one]
     rw [hclm] at hsub
     exact hsub

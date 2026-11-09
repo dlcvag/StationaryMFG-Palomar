@@ -186,7 +186,7 @@ lemma from_factors
   have hsum := (hA.add hB).add hC
   refine hsum.congr ?_
   filter_upwards with x
-  simp only [Pi.add_apply, Pi.sub_apply, euclideanDot, Finset.mul_sum]
+  simp only [Pi.add_apply, Pi.sub_apply, dotProduct, Finset.mul_sum]
   congr 2
   exact Finset.sum_congr rfl (fun i _ => by ring)
 

@@ -18,7 +18,7 @@ open MeasureTheory Filter Topology
 open StationaryMFG.Periodic
   (IsPeriodic UnitCube MemLpPer MemSobolevPer SmoothPeriodic)
 open StationaryMFG.Hamiltonian
-  (HypothesisMonotone CongestionGrowthCore euclideanDot)
+  (HypothesisMonotone CongestionGrowthCore)
 open StationaryMFG.Solutions.Strong (mDpH_Integrable)
 open StationaryMFG.Solutions.MFG
   (hasWeakDerivPer_add mfgOperatorPair vecAbsPowMinusTwo absPowMinusTwo vecSignedRpow signedRpow
@@ -982,7 +982,7 @@ theorem transport_hdir_of_abstractPeriodicVI
                 (Fin d → ℝ) → ℝ) x) = (fun _ => (0 : ℝ)) := by
           funext i; ring
         rw [hz]
-        unfold euclideanDot
+        unfold dotProduct
         simp
       rw [hint, MeasureTheory.integral_zero]
     have h2 : (∫ x in UnitCube d,
@@ -1209,7 +1209,7 @@ theorem h_transport_iota_of_abstractPeriodicVI
       have heq : (fun x => vecSignedRpow γBar (fun i => Du i x + t * Dφf i x)
             ⬝ (fun i => Dφf i x))
           = (∑ i, g i) := by
-        funext x; rw [Finset.sum_apply]; unfold euclideanDot; rfl
+        funext x; rw [Finset.sum_apply]; unfold dotProduct; rfl
       rw [heq]; exact hsum
     have hscRpow_aem : AEMeasurable (fun x => signedRpow γBar (u x + t * φf x))
         (volume.restrict (UnitCube d)) :=
@@ -1231,7 +1231,7 @@ theorem h_transport_iota_of_abstractPeriodicVI
           ⬝ (fun i => Dφf i x)
         = vecAbsPowMinusTwo γBar (fun i => Du i x + t * Dφf i x)
             * ((fun i => Du i x + t * Dφf i x) ⬝ (fun i => Dφf i x)) := by
-      unfold euclideanDot vecSignedRpow
+      unfold dotProduct vecSignedRpow
       rw [Finset.mul_sum]
       exact Finset.sum_congr rfl (fun i _ => by ring)
     have hsc : signedRpow γBar (u x + t * φf x) * φf x

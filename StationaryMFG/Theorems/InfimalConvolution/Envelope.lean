@@ -51,7 +51,7 @@ variable {d : ℕ}
 agrees with the Euclidean dot product `v ⬝ (y - p)`. -/
 private lemma subgrad_sum_eq_dot (v y p : Fin d → ℝ) :
     ∑ i, v i * (y i - p i) = v ⬝ (y - p) := by
-  unfold euclideanDot
+  unfold dotProduct
   refine Finset.sum_congr rfl ?_
   intro i _
   simp [Pi.sub_apply]
@@ -111,7 +111,7 @@ theorem hasFDerivAt_of_continuous_subgradient_field
     rw [subgrad_sum_eq_dot] at this
     -- `g y ⬝ (p - y) = -(g y ⬝ (y - p))`
     have hpy : g y ⬝ (p - y) = -(g y ⬝ (y - p)) := by
-      unfold euclideanDot
+      unfold dotProduct
       rw [← Finset.sum_neg_distrib]
       refine Finset.sum_congr rfl ?_
       intro i _
@@ -120,7 +120,7 @@ theorem hasFDerivAt_of_continuous_subgradient_field
     -- `this : f y - g y ⬝ (y - p) ≤ f p`, i.e. `f y - f p ≤ g y ⬝ (y - p)`.
     have hdot : Hamiltonian.dotCLMHam (g p) (y - p) = g p ⬝ (y - p) := rfl
     have hsub_dot : (g y - g p) ⬝ (y - p) = g y ⬝ (y - p) - g p ⬝ (y - p) := by
-      unfold euclideanDot
+      unfold dotProduct
       rw [← Finset.sum_sub_distrib]
       refine Finset.sum_congr rfl ?_
       intro i _
@@ -199,7 +199,7 @@ theorem ftc_slice_of_hasFDerivAt_continuous_gradient
       funext t
       simp only [hφ', Hamiltonian.dotCLMHam_apply]
       -- `p ⬝ G (t•p) = G (t•p) ⬝ p`
-      unfold euclideanDot
+      unfold dotProduct
       refine Finset.sum_congr rfl ?_
       intro i _
       ring
@@ -220,7 +220,7 @@ theorem ftc_slice_of_hasFDerivAt_continuous_gradient
     intro t _
     simp only [hφ']
     -- `(G p - G (t•p)) ⬝ p = G p ⬝ p - G (t•p) ⬝ p`
-    unfold euclideanDot
+    unfold dotProduct
     rw [← Finset.sum_sub_distrib]
     refine Finset.sum_congr rfl ?_
     intro i _

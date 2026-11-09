@@ -308,8 +308,8 @@ convergence of `(Du_n, u_n) ⇀ (Du, u)` (coordinate gradients ⇀ in
 `L^{γBar}_per`, values ⇀ in `L^{γBar}_per`) against the fixed
 `L^{γBar'}_per` factors `μ·D_pH_i` and `(μ-1)`.
 
-The gradient `euclideanDot` is expanded coordinatewise
-(`euclideanDot = ∑ i, …`, distributing `μ x`) into `d` copies of the
+The gradient `dotProduct` is expanded coordinatewise
+(`dotProduct = ∑ i, …`, distributing `μ x`) into `d` copies of the
 per-coordinate closure `limit_passage_existweaksol_grad_coord`, summed
 via `tendsto_finset_sum`; the value summand uses
 `limit_passage_existweaksol_value`; the integral of the sum is split by
@@ -405,7 +405,7 @@ theorem limit_passage_existweaksol_term23
                 ⬝ (fun i => Dυ i x - Du_n k i x))
           = ∑ i : Fin d, gGrad i x * (Dυ i x - Du_n k i x) := by
       intro x
-      simp only [hgGrad_def, euclideanDot, Finset.mul_sum]
+      simp only [hgGrad_def, dotProduct, Finset.mul_sum]
       refine Finset.sum_congr rfl ?_
       intro i _; ring
     -- integrate the sum over coordinates and add the value integral.
@@ -435,7 +435,7 @@ theorem limit_passage_existweaksol_term23
                 ⬝ (fun i => Dυ i x - Du i x))
           = ∑ i : Fin d, gGrad i x * (Dυ i x - Du i x) := by
       intro x
-      simp only [hgGrad_def, euclideanDot, Finset.mul_sum]
+      simp only [hgGrad_def, dotProduct, Finset.mul_sum]
       refine Finset.sum_congr rfl ?_
       intro i _; ring
     rw [MeasureTheory.integral_add ?_ hIVal]
@@ -825,7 +825,7 @@ theorem limit_passage_existweaksol_htend_combined
         MeasureTheory.integrable_finset_sum _ (fun i _ => hIcoord i)
       refine hsum.congr ?_
       filter_upwards with x
-      simp only [euclideanDot, Finset.mul_sum]
+      simp only [dotProduct, Finset.mul_sum]
       refine Finset.sum_congr rfl ?_
       intro i _; ring
     exact hIgrad.add hIVal
@@ -1439,7 +1439,7 @@ theorem keystone_hg1_of_weakGrowth
   have habs_dot : ∀ v w : Fin d → ℝ, |v ⬝ w| ≤ (d : ℝ) * ‖v‖ * ‖w‖ := by
     intro v w
     have hexpand : |v ⬝ w| ≤ ∑ i : Fin d, |v i * w i| := by
-      unfold euclideanDot
+      unfold dotProduct
       exact Finset.abs_sum_le_sum_abs _ _
     refine hexpand.trans ?_
     have hterm : ∀ i : Fin d, |v i * w i| ≤ ‖v‖ * ‖w‖ := by
@@ -1758,7 +1758,7 @@ private lemma c2_euclideanDot_sub_rpow_le_two_rpow_mul
     StationaryMFG.Theorems.SimplePower.Banach.abs_euclideanDot_le_sqrt a b
   have hexpand : (fun i => a i - b i) ⬝ (fun i => a i - b i)
       = a ⬝ a - 2 * (a ⬝ b) + b ⬝ b := by
-    simp only [euclideanDot]
+    simp only [dotProduct]
     have hpoint : ∀ i, (a i - b i) * (a i - b i)
         = a i * a i - 2 * (a i * b i) + b i * b i := by
       intro i; ring
@@ -1847,7 +1847,7 @@ private lemma c2_euclideanDot_self_rpow_le_sum_rpow
   have hStep1 : a ⬝ a ≤ (∑ i, |a i|) ^ 2 := by
     have hsq : (∑ i, |a i|) ^ 2 = (∑ i, |a i|) * (∑ i, |a i|) := sq _
     have hself : a ⬝ a = ∑ i, |a i| ^ 2 := by
-      simp only [euclideanDot, sq_abs]
+      simp only [dotProduct, sq_abs]
       exact Finset.sum_congr rfl (fun i _ => by ring)
     rw [hself, hsq, Finset.sum_mul_sum]
     refine Finset.sum_le_sum ?_
@@ -1922,7 +1922,7 @@ private lemma c2_integrable_dot_rpow
   have hDot_aesm : AEStronglyMeasurable
       (fun x : Fin d → ℝ => ((fun i => g i x) ⬝ (fun i => g i x)))
       (volume.restrict (UnitCube d)) := by
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.aestronglyMeasurable_fun_sum _ ?_
     intro i _
     exact (hg i).aestronglyMeasurable.mul (hg i).aestronglyMeasurable

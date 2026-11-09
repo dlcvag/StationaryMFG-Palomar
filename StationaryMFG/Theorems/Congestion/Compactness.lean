@@ -3186,7 +3186,7 @@ theorem congestionPairConv_combine
       have hpt : (fun x => μ x * (fluxV x ⬝ (fun i => Dυ i x - Du_n k i x)))
           = (fun x => ∑ i : Fin d, (μ x * fluxV x i) * (Dυ i x - Du_n k i x)) := by
         funext x
-        unfold StationaryMFG.Hamiltonian.euclideanDot
+        unfold dotProduct
         rw [Finset.mul_sum]
         refine Finset.sum_congr rfl ?_; intro i _; ring
       rw [hpt, MeasureTheory.integral_finset_sum _ (fun i _ => hIcoord_n k i)]
@@ -3197,7 +3197,7 @@ theorem congestionPairConv_combine
       have hpt : (fun x => μ x * (fluxV x ⬝ (fun i => Dυ i x - Du i x)))
           = (fun x => ∑ i : Fin d, (μ x * fluxV x i) * (Dυ i x - Du i x)) := by
         funext x
-        unfold StationaryMFG.Hamiltonian.euclideanDot
+        unfold dotProduct
         rw [Finset.mul_sum]
         refine Finset.sum_congr rfl ?_; intro i _; ring
       rw [hpt, MeasureTheory.integral_finset_sum _ (fun i _ => hIcoord_lim i)]
@@ -3252,7 +3252,7 @@ theorem congestionPairConv_combine
           (DpH x (fun i => Dυ i x) (μ x) ⬝ (fun i => Dυ i x - Du_n k i x)))
         = (fun x => ∑ i : Fin d, (μ x * fluxV x i) * (Dυ i x - Du_n k i x)) := by
       funext x
-      unfold StationaryMFG.Hamiltonian.euclideanDot
+      unfold dotProduct
       rw [Finset.mul_sum]
       refine Finset.sum_congr rfl ?_; intro i _; rw [hfluxVdef]; ring
     rw [hpt]
@@ -3272,7 +3272,7 @@ theorem congestionPairConv_combine
           (DpH x (fun i => Dυ i x) (μ x) ⬝ (fun i => Dυ i x - Du i x)))
         = (fun x => ∑ i : Fin d, (μ x * fluxV x i) * (Dυ i x - Du i x)) := by
       funext x
-      unfold StationaryMFG.Hamiltonian.euclideanDot
+      unfold dotProduct
       rw [Finset.mul_sum]
       refine Finset.sum_congr rfl ?_; intro i _; rw [hfluxVdef]; ring
     rw [hpt]

@@ -477,19 +477,19 @@ theorem rpow_signed_mono_scalar
 /-- Auxiliary: dot-product of self is nonneg. -/
 private lemma euclideanDot_self_nonneg (v : Fin d → ℝ) :
     0 ≤ v ⬝ v := by
-  unfold euclideanDot
+  unfold dotProduct
   exact Finset.sum_nonneg (fun i _ => mul_self_nonneg _)
 
 /-- Auxiliary: `v ⬝ w = w ⬝ v`. -/
 private lemma euclideanDot_comm (v w : Fin d → ℝ) :
     v ⬝ w = w ⬝ v := by
-  unfold euclideanDot
+  unfold dotProduct
   exact Finset.sum_congr rfl (fun i _ => mul_comm _ _)
 
 /-- Auxiliary: `v ⬝ (w₁ - w₂) = v ⬝ w₁ - v ⬝ w₂`. -/
 private lemma euclideanDot_sub_right (v w₁ w₂ : Fin d → ℝ) :
     v ⬝ (w₁ - w₂) = v ⬝ w₁ - v ⬝ w₂ := by
-  unfold euclideanDot
+  unfold dotProduct
   simp [Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /-- Auxiliary: `(v₁ - v₂) ⬝ w = v₁ ⬝ w - v₂ ⬝ w`. -/
@@ -502,10 +502,10 @@ private lemma euclideanDot_sub_left (v₁ v₂ w : Fin d → ℝ) :
 private lemma euclideanDot_smul_fun_left
     (c : ℝ) (v w : Fin d → ℝ) :
     (fun i => c * v i) ⬝ w = c * (v ⬝ w) := by
-  unfold euclideanDot
+  unfold dotProduct
   simp [mul_assoc, Finset.mul_sum]
 
-/-- **Cauchy-Schwarz** for `euclideanDot`: `(v ⬝ w)² ≤ (v ⬝ v) (w ⬝ w)`. -/
+/-- **Cauchy-Schwarz** for `dotProduct`: `(v ⬝ w)² ≤ (v ⬝ v) (w ⬝ w)`. -/
 private lemma euclideanDot_sq_le_self_mul_self (v w : Fin d → ℝ) :
     (v ⬝ w) ^ 2 ≤ (v ⬝ v) * (w ⬝ w) := by
   -- Via `Finset.sum_mul_sq_le_sq_mul_sq`.
@@ -513,11 +513,11 @@ private lemma euclideanDot_sq_le_self_mul_self (v w : Fin d → ℝ) :
     (Finset.univ : Finset (Fin d)) v w
   -- h : (∑ i, v i * w i)^2 ≤ (∑ i, v i ^ 2) * (∑ i, w i ^ 2)
   have hvv : v ⬝ v = ∑ i, v i ^ 2 := by
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.sum_congr rfl (fun i _ => ?_)
     rw [sq]
   have hww : w ⬝ w = ∑ i, w i ^ 2 := by
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.sum_congr rfl (fun i _ => ?_)
     rw [sq]
   have hvw : v ⬝ w = ∑ i, v i * w i := rfl
@@ -616,7 +616,7 @@ theorem rpow_signed_mono_vec
       (vecSignedRpow γBar v - vecSignedRpow γBar w) ⬝ (v - w)
         = vecAbsPowMinusTwo γBar v * (v ⬝ (v - w))
             - vecAbsPowMinusTwo γBar w * (w ⬝ (v - w)) := by
-    unfold euclideanDot
+    unfold dotProduct
     simp only [Pi.sub_apply, vecSignedRpow]
     rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]
     refine Finset.sum_congr rfl (fun i _ => ?_)
@@ -836,7 +836,7 @@ lemma continuous_vecSignedRpow {γBar : ℝ} (hγ : 1 < γBar) :
     have hww_nn : 0 ≤ w ⬝ w :=
       Finset.sum_nonneg (fun _ _ => mul_self_nonneg _)
     have hcoord_sq : (w i) ^ 2 ≤ w ⬝ w := by
-      unfold euclideanDot
+      unfold dotProduct
       have hi : (w i) ^ 2 = (w i) * (w i) := sq (w i)
       rw [hi]
       exact Finset.single_le_sum
@@ -876,7 +876,7 @@ lemma continuous_vecSignedRpow {γBar : ℝ} (hγ : 1 < γBar) :
   have h_ww_le_card : ∀ w : Fin d → ℝ,
       w ⬝ w ≤ (Fintype.card (Fin d) : ℝ) * ‖w‖ ^ 2 := by
     intro w
-    unfold euclideanDot
+    unfold dotProduct
     have hcoord_le : ∀ j : Fin d, w j * w j ≤ ‖w‖ ^ 2 := by
       intro j
       have habsj : |w j| ≤ ‖w‖ := by
@@ -986,7 +986,7 @@ lemma continuous_vecSignedRpow {γBar : ℝ} (hγ : 1 < γBar) :
           rw [this]
           exact mul_pos (neg_pos.mpr hjneg) (neg_pos.mpr hjneg)
         · exact mul_pos hjpos hjpos
-      unfold euclideanDot
+      unfold dotProduct
       have hsum_nn : ∀ k : Fin d, 0 ≤ v k * v k := fun k => mul_self_nonneg _
       calc (0 : ℝ) < v j * v j := hjsq
         _ = ∑ k ∈ ({j} : Finset (Fin d)), v k * v k := by simp
@@ -1003,7 +1003,7 @@ lemma continuous_vecSignedRpow {γBar : ℝ} (hγ : 1 < γBar) :
     -- `w ↦ w ⬝ w` is continuous.
     have hdot_at : ContinuousAt (fun w : Fin d → ℝ => w ⬝ w) v := by
       have hdot_cont : Continuous (fun w : Fin d → ℝ => w ⬝ w) := by
-        unfold euclideanDot
+        unfold dotProduct
         refine continuous_finset_sum _ (fun j _ => ?_)
         exact (continuous_apply j).mul (continuous_apply j)
       exact hdot_cont.continuousAt

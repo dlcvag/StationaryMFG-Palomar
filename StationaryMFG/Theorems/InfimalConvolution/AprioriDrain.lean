@@ -1481,7 +1481,7 @@ noncomputable def gatCoeffB
 
 /-- **Flux integrand = Hölder pairing.** Pointwise, `transportFluxIntegrand`
 equals the pairing integrand `aFlux·f + ∑ᵢ bFluxᵢ·gᵢ` for a smooth test pair
-`(φ, ∂φ)`. The proof expands the `euclideanDot` sum and distributes. -/
+`(φ, ∂φ)`. The proof expands the `dotProduct` sum and distributes. -/
 theorem fluxIntegrand_eq_pairing
     (DpH : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → (Fin d → ℝ))
     (m : (Fin d → ℝ) → ℝ) (Du : Fin d → (Fin d → ℝ) → ℝ)
@@ -1493,7 +1493,7 @@ theorem fluxIntegrand_eq_pairing
               (Fin d → ℝ) → ℝ) x := by
   classical
   unfold transportFluxIntegrand fluxCoeffA fluxCoeffB
-  simp only [euclideanDot, Finset.mul_sum]
+  simp only [dotProduct, Finset.mul_sum]
   ring
 
 /-- **Gateaux integrand = Hölder pairing.** Pointwise, `transportGateauxIntegrand`
@@ -1508,7 +1508,7 @@ theorem gatIntegrand_eq_pairing
               (Fin d → ℝ) → ℝ) x := by
   classical
   unfold transportGateauxIntegrand gatCoeffA gatCoeffB
-  simp only [euclideanDot, Finset.mul_sum]
+  simp only [dotProduct, Finset.mul_sum]
   ring
 
 /-- **Flux integral = `transportFunctional`.** Under Hölder membership of the
@@ -2224,7 +2224,7 @@ noncomputable def weakEpsTermsEucl (γBar ε : ℝ) (u : (Fin d → ℝ) → ℝ
 
 /-- **Non-negativity of the canonical Euclidean ε-perturbation remainder.**
 For `0 ≤ ε` the remainder `weakEpsTermsEucl` is pointwise non-negative:
-`(Du⬝Du)^{γ̄/2}` is `Real.rpow` of the non-negative `euclideanDot`-self, and
+`(Du⬝Du)^{γ̄/2}` is `Real.rpow` of the non-negative `dotProduct`-self, and
 `|u|^γ̄` is `Real.rpow` of `|u| ≥ 0`; their sum scaled by `0 ≤ ε` stays
 non-negative. Discharges the `hEpsNN`-style slot. -/
 theorem weakEpsTermsEucl_nonneg (γBar ε : ℝ) (hε : 0 ≤ ε) (u : (Fin d → ℝ) → ℝ)
@@ -2232,7 +2232,7 @@ theorem weakEpsTermsEucl_nonneg (γBar ε : ℝ) (hε : 0 ≤ ε) (u : (Fin d �
     0 ≤ weakEpsTermsEucl γBar ε u Du x := by
   unfold weakEpsTermsEucl
   have hdot_nn : 0 ≤ (fun i => Du i x) ⬝ (fun i => Du i x) := by
-    unfold euclideanDot
+    unfold dotProduct
     exact Finset.sum_nonneg (fun i _ => mul_self_nonneg _)
   exact mul_nonneg hε
     (add_nonneg
@@ -2480,7 +2480,7 @@ theorem hIdentityRaw_of_T3RegularizedStrongFamily
             + ε * (vecAbsPowMinusTwo γBarReal (fun i => Du i x)
                     * ((fun i => Du i x) ⬝ (fun i => Du i x))) := by
       rw [hbCoeff_def]
-      simp only [fluxCoeffB, gatCoeffB, euclideanDot]
+      simp only [fluxCoeffB, gatCoeffB, dotProduct]
       have hrhs :
           (m x * ∑ i, DpHε x (fun j => Du j x) (m x) i * Du i x
             + ε * ((vecAbsPowMinusTwo γBarReal fun j => Du j x)
@@ -4413,7 +4413,7 @@ theorem T3.setSegmentDominator_of_T3RegularizedStrongFamily
       have hμtx : cxComb (fun x => fam.m ε x +
             S.indicator (fun _ : Fin d → ℝ => (1 : ℝ)) x) (fam.m ε) t x = μt x := by
         simp only [hμt_def]
-      simp only [aepsiIntegrandAt_unreg_K0, euclideanDot,
+      simp only [aepsiIntegrandAt_unreg_K0, dotProduct,
         mul_zero, Finset.sum_const_zero, hgrad, hμtx, add_zero]
     rw [hcollapse]
     -- `cxComb u u t = u`.
@@ -4473,7 +4473,7 @@ theorem T3.setSegmentDominator_of_T3RegularizedStrongFamily
         simp only [cxComb, hμt_def, hind_def]; ring
       have hυt : cxComb (fam.u ε) (fam.u ε) t x = fam.u ε x := by
         simp only [cxComb]; ring
-      simp only [aepsiIntegrandAt_unreg_K0, euclideanDot,
+      simp only [aepsiIntegrandAt_unreg_K0, dotProduct,
         mul_zero, Finset.sum_const_zero, hgrad, hμtx, hυt, add_zero]
       ring
     rw [hval, Real.norm_eq_abs, abs_mul]
@@ -4518,7 +4518,7 @@ theorem T3.setSegmentDominator_of_T3RegularizedStrongFamily
           (fun _ _ => (0 : ℝ)) (fun _ => (0 : ℝ)) x t)
           = (fun _ => (0 : ℝ)) := by
       funext x
-      simp only [aepsiIntegrandAt_gateaux, euclideanDot]
+      simp only [aepsiIntegrandAt_gateaux, dotProduct]
       simp
     rw [heq]
     exact aestronglyMeasurable_const
@@ -4529,7 +4529,7 @@ theorem T3.setSegmentDominator_of_T3RegularizedStrongFamily
     have heq : aepsiIntegrandAt_gateaux (d := d) γBarReal
           (fam.Du ε) (fam.Du ε) (fam.u ε) (fam.u ε)
           (fun _ _ => (0 : ℝ)) (fun _ => (0 : ℝ)) x t = 0 := by
-      simp only [aepsiIntegrandAt_gateaux, euclideanDot]
+      simp only [aepsiIntegrandAt_gateaux, dotProduct]
       simp
     rw [heq, norm_zero]
 
@@ -5121,7 +5121,7 @@ theorem T3.hContSigned_of_T3RegularizedStrongFamily
               (fam.m ε) t x = μt x := by simp only [hμt_def]
           have hυt : cxComb (fam.u ε) (fam.u ε) t x = fam.u ε x := by
             simp only [cxComb]; ring
-          simp only [aepsiIntegrandAt_unreg_K0, euclideanDot,
+          simp only [aepsiIntegrandAt_unreg_K0, dotProduct,
             mul_zero, Finset.sum_const_zero, hgrad, hμtx, hυt, add_zero]
         rw [hcollapse]
         have hσm_ind_aesm : AEStronglyMeasurable
@@ -5181,7 +5181,7 @@ theorem T3.hContSigned_of_T3RegularizedStrongFamily
               (fam.m ε) t x = μt := by rw [hμt_def]
           have hυt : cxComb (fam.u ε) (fam.u ε) t x = fam.u ε x := by
             simp only [cxComb]; ring
-          simp only [aepsiIntegrandAt_unreg_K0, euclideanDot,
+          simp only [aepsiIntegrandAt_unreg_K0, dotProduct,
             mul_zero, Finset.sum_const_zero, hgrad, hμtx, hυt, add_zero]
         rw [hval, Real.norm_eq_abs, abs_mul]
         -- `|(-u - H + V)| ≤ |u| + |H| + |V| ≤ envF`, `|σ·m·1_S| = m·1_S`.
@@ -5222,7 +5222,7 @@ theorem T3.hContSigned_of_T3RegularizedStrongFamily
               (fam.Du ε) (fam.Du ε) (fam.u ε) (fam.u ε)
               (fun _ _ => (0 : ℝ)) (fun _ => (0 : ℝ)) x t)
               = (fun _ => (0 : ℝ)) := by
-          funext x; simp only [aepsiIntegrandAt_gateaux, euclideanDot]; simp
+          funext x; simp only [aepsiIntegrandAt_gateaux, dotProduct]; simp
         rw [heq]; exact aestronglyMeasurable_const)
       -- `hF_gat_bound`: `‖0‖ ≤ 0`.
       (by
@@ -5232,7 +5232,7 @@ theorem T3.hContSigned_of_T3RegularizedStrongFamily
         have heq : aepsiIntegrandAt_gateaux (d := d) γBarReal
               (fam.Du ε) (fam.Du ε) (fam.u ε) (fam.u ε)
               (fun _ _ => (0 : ℝ)) (fun _ => (0 : ℝ)) x t = 0 := by
-          simp only [aepsiIntegrandAt_gateaux, euclideanDot]; simp
+          simp only [aepsiIntegrandAt_gateaux, dotProduct]; simp
         rw [heq, norm_zero])
   -- ===== Convert the `[0,1]`-continuity to the `n → ∞` Tendsto. =====
   set F : ℝ → ℝ := fun t =>
@@ -6067,7 +6067,7 @@ theorem T3.transportSegmentDominator_of_T3RegularizedStrongFamily
               (fun i => cxCombGrad (Dυ σ φ) (fam.Du ε) t i x) (fam.m ε x)
             ⬝ (fun i => Dν σ φ i x))
         (volume.restrict (UnitCube d)) := by
-      unfold JsimpleExt euclideanDot
+      unfold JsimpleExt dotProduct
       refine AEMeasurable.aestronglyMeasurable ?_
       refine Finset.aemeasurable_fun_sum (s := Finset.univ) (fun i _ => ?_)
       have hJi : AEMeasurable
@@ -6170,7 +6170,7 @@ theorem T3.transportSegmentDominator_of_T3RegularizedStrongFamily
         -- `|DpHv ⬝ Dν| ≤ ‖DpHv‖ · sν`  (coordinate-wise `L^∞ × L^1`).
         have hdot : |DpHv ⬝ (fun i => Dν σ φ i x)| ≤ ‖DpHv‖ * sν := by
           rw [hsν_def]
-          unfold euclideanDot
+          unfold dotProduct
           calc |∑ i, DpHv i * Dν σ φ i x|
               ≤ ∑ i, |DpHv i * Dν σ φ i x| := Finset.abs_sum_le_sum_abs _ _
             _ ≤ ∑ i, ‖DpHv‖ * |Dν σ φ i x| := by
@@ -6592,7 +6592,7 @@ theorem T3.fluxGatCoeffMemberships_of_family
       have hdot_aem : AEMeasurable
           (fun x : (Fin d → ℝ) => (fun j => fam.Du ε j x) ⬝ (fun j => fam.Du ε j x))
           (volume.restrict (UnitCube d)) := by
-        unfold euclideanDot
+        unfold dotProduct
         exact Finset.aemeasurable_fun_sum (s := Finset.univ)
           (fun j _ => (hDu_aem.eval j).mul (hDu_aem.eval j))
       exact ((hdot_aem.pow_const _).mul (hDu_aem.eval i)).aestronglyMeasurable
@@ -6612,7 +6612,7 @@ theorem T3.fluxGatCoeffMemberships_of_family
       -- `v⬝v ≤ S^2` (the `c2`-style bound).
       have hvv_le : v ⬝ v ≤ S ^ 2 := by
         have hself : v ⬝ v = ∑ j, |v j| ^ 2 := by
-          simp only [euclideanDot, sq_abs]
+          simp only [dotProduct, sq_abs]
           exact Finset.sum_congr rfl (fun j _ => by ring)
         rw [hself, hS_def, sq, Finset.sum_mul_sum]
         refine Finset.sum_le_sum (fun j _ => ?_)
@@ -6781,7 +6781,7 @@ theorem T3.hRHSbelow_int_of_family_genuine
       (volume.restrict (UnitCube d)) := by
     refine hbsum_int.congr ?_
     filter_upwards with x
-    simp only [fluxCoeffB, euclideanDot]
+    simp only [fluxCoeffB, dotProduct]
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _; ring

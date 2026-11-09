@@ -3512,7 +3512,7 @@ noncomputable def PaperCBundleForK.of_paperHypotheses
         (fun x : (Fin d → ℝ) =>
           (fun i => sol.Du i x) ⬝ (fun i => sol.Du i x))
         (MeasureTheory.volume.restrict (Periodic.UnitCube d)) := by
-      unfold StationaryMFG.Hamiltonian.euclideanDot
+      unfold dotProduct
       exact Finset.aemeasurable_fun_sum (Finset.univ)
         (fun i _ => (hDu_aemeas i).mul (hDu_aemeas i))
     have hgrad_aemeas : AEMeasurable
@@ -4200,7 +4200,7 @@ lemma paperSolFor_hRHS_int_of_paperHypotheses
           ((DpH x (fun i => sol.Du i x)
               (sol.m x)) ⬝
             (fun i => sol.Du i x))
-    unfold Hamiltonian.mDpH Hamiltonian.euclideanDot
+    unfold Hamiltonian.mDpH dotProduct
     simp only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
     refine Finset.sum_congr rfl (fun i _ => ?_)
     ring

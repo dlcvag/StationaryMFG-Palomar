@@ -3474,7 +3474,7 @@ theorem signed_perturbation_hGh_bd
 private lemma set_perturbation_abs_dot_le_norm_mul_sum_abs
     (v w : Fin d → ℝ) :
     |v ⬝ w| ≤ ‖v‖ * ∑ i, |w i| := by
-  unfold euclideanDot
+  unfold dotProduct
   have hsum : |∑ i, v i * w i| ≤ ∑ i, |v i * w i| :=
     Finset.abs_sum_le_sum_abs _ _
   have hcoord : ∀ i ∈ (Finset.univ : Finset (Fin d)),
@@ -4341,7 +4341,7 @@ theorem set_perturbation_pointwise_tendsto_DpH_of_fields
         hx_DpH_bd p (μN n) hμN_pos_n
       -- Coordinate Cauchy-Schwarz: `|w ⬝ v| ≤ ‖w‖ * ∑ i, |v i|`.
       have h_CS : |DpH x p (μN n) ⬝ v| ≤ ‖DpH x p (μN n)‖ * Vsum := by
-        unfold euclideanDot
+        unfold dotProduct
         have hsum : |∑ i, DpH x p (μN n) i * v i|
             ≤ ∑ i, |DpH x p (μN n) i * v i| :=
           Finset.abs_sum_le_sum_abs _ _
@@ -4439,7 +4439,7 @@ theorem set_perturbation_pointwise_tendsto_DpH_of_fields
     -- Compose with continuity of `(· ⬝ v)` at `DpH x p μInf`.
     have h_dot_cont :
         Continuous (fun w : Fin d → ℝ => w ⬝ v) := by
-      unfold euclideanDot
+      unfold dotProduct
       exact continuous_finset_sum _ (fun i _ =>
         (continuous_apply i).mul continuous_const)
     have h_dot_tendsto :

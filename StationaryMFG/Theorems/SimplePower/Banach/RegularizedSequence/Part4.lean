@@ -8160,7 +8160,7 @@ theorem mfgOperatorEpsPair_tendsto_set_additive_perturbation
       DpH x (fun i => Dυ i x) μx ⬝ (fun _ : Fin d => (0 : ℝ)) = 0 := by
     intro x μx
     -- `v ⬝ 0 = 0`.
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     simp
   have h_int2_eq_n : ∀ n : ℕ,
       (fun x =>

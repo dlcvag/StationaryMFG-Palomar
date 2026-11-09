@@ -688,7 +688,7 @@ theorem congestion_transport_at_witness
       have heq : (fun x => vecSignedRpow γBar (fun i => Du i x + t * Dφf i x)
             ⬝ (fun i => Dφf i x))
           = (∑ i, g i) := by
-        funext x; rw [Finset.sum_apply]; unfold euclideanDot; rfl
+        funext x; rw [Finset.sum_apply]; unfold dotProduct; rfl
       rw [heq]; exact hsum
     -- Scalar summand (signed-power form).
     have hscRpow_aem : AEMeasurable (fun x => signedRpow γBar (u x + t * φf x))
@@ -713,7 +713,7 @@ theorem congestion_transport_at_witness
           ⬝ (fun i => Dφf i x)
         = vecAbsPowMinusTwo γBar (fun i => Du i x + t * Dφf i x)
             * ((fun i => Du i x + t * Dφf i x) ⬝ (fun i => Dφf i x)) := by
-      unfold euclideanDot vecSignedRpow
+      unfold dotProduct vecSignedRpow
       rw [Finset.mul_sum]
       exact Finset.sum_congr rfl (fun i _ => by ring)
     have hsc : signedRpow γBar (u x + t * φf x) * φf x
@@ -961,7 +961,7 @@ theorem congestion_VIid_mFlux_int
   refine Filter.Eventually.of_forall (fun x => ?_)
   change (∑ i, m x * DpH x (fun j => Du j x) (m x) i * Du i x)
     = m x * ((DpH x (fun i => Du i x) (m x)) ⬝ (fun i => Du i x))
-  unfold euclideanDot
+  unfold dotProduct
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl (fun i _ => by ring)
 
@@ -1590,7 +1590,7 @@ theorem congestion_transport_at_u_witness_AEPeriodicRep
     set a : Fin d → ℝ := fun i => |Du i x| with ha
     have ha_nn : ∀ i, 0 ≤ a i := fun i => abs_nonneg _
     have hdot_eq : (fun j => Du j x) ⬝ (fun j => Du j x) = ∑ i, a i ^ (2 : ℕ) := by
-      unfold euclideanDot
+      unfold dotProduct
       exact Finset.sum_congr rfl (fun i _ => by rw [ha]; rw [sq_abs]; ring)
     have hsumsq_le : (∑ i, a i ^ (2 : ℕ)) ≤ (∑ i, a i) ^ (2 : ℕ) :=
       Finset.sum_sq_le_sq_sum_of_nonneg (fun i _ => ha_nn i)
@@ -1892,7 +1892,7 @@ theorem congestion_transport_at_u_witness_AEPeriodicRep
           ∀ i ∈ (Finset.univ : Finset (Fin d)),
             J x (fun j => Du j x) (m x) i * Du i x
               = m x * DpH x (fun j => Du j x) (m x) i * Du i x)]
-      unfold euclideanDot
+      unfold dotProduct
       rw [Finset.mul_sum]
       exact Finset.sum_congr rfl (fun i _ => by ring)
   -- `Σᵢ ∫ ε·vecAbsPow·Duᵢ·Duᵢ = ∫ ε·vecAbsPow·(Du⬝Du)`.
@@ -1908,7 +1908,7 @@ theorem congestion_transport_at_u_witness_AEPeriodicRep
     change (∑ i, ε * vecAbsPowMinusTwo γBar (fun j => Du j x) * Du i x * Du i x)
       = ε * vecAbsPowMinusTwo γBar (fun i => Du i x)
         * ((fun i => Du i x) ⬝ (fun i => Du i x))
-    unfold euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     exact Finset.sum_congr rfl (fun i _ => by ring)
   rw [hJsum_eq, hVsum_eq] at htransU
@@ -1940,7 +1940,7 @@ theorem congestion_transport_at_u_witness_AEPeriodicRep
               ∀ i ∈ (Finset.univ : Finset (Fin d)),
                 J x (fun j => Du j x) (m x) i * Du i x
                   = m x * DpH x (fun j => Du j x) (m x) i * Du i x)]
-          unfold euclideanDot
+          unfold dotProduct
           rw [Finset.mul_sum]
           exact Finset.sum_congr rfl (fun i _ => by ring)
       exact h.congr heq
@@ -1976,7 +1976,7 @@ theorem congestion_transport_at_u_witness_AEPeriodicRep
         change (∑ i, ε * vecAbsPowMinusTwo γBar (fun j => Du j x) * Du i x * Du i x)
           = ε * vecAbsPowMinusTwo γBar (fun i => Du i x)
             * ((fun i => Du i x) ⬝ (fun i => Du i x))
-        unfold euclideanDot
+        unfold dotProduct
         rw [Finset.mul_sum]
         exact Finset.sum_congr rfl (fun i _ => by ring)
       exact h.congr heq

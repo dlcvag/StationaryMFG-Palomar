@@ -1469,7 +1469,7 @@ theorem mfgOperatorEpsPair_tendsto_set_signed_perturbation_of_paperHypotheses
   have h_dot_zero : ∀ (x : Fin d → ℝ) (μx : ℝ),
       DpH x (fun i => Dυ i x) μx ⬝ (fun _ : Fin d => (0 : ℝ)) = 0 := by
     intro x μx
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     simp
   -- Summand 2 (flux) integrand pointwise zero.
   have h_int2_eq_n : ∀ n : ℕ,
@@ -3953,7 +3953,7 @@ private lemma memLpPer_one_dot_self_rpow_half_of_memLpPer
       (fun x : Fin d → ℝ =>
         ((fun i => g i x) ⬝ (fun i => g i x)))
       (volume.restrict (UnitCube d)) := by
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.aestronglyMeasurable_fun_sum _ ?_
     intro i _
     exact (hg i).aestronglyMeasurable.mul (hg i).aestronglyMeasurable
@@ -4038,7 +4038,7 @@ theorem strongTransportDominator_G_vec_of_sol
   have hdot_smul_right : ∀ V W : Fin d → ℝ,
       V ⬝ (fun i => s * W i) = s * (V ⬝ W) := by
     intro V W
-    unfold euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl (fun i _ => ?_)
     ring
@@ -4073,7 +4073,7 @@ theorem strongTransportDominator_G_vec_of_sol
   -- Step 6: bound `(V⬝V)^(γ̄/2) ≤ 2^γ̄ · (Du⬝Du)^(γ̄/2)`.
   -- `V ⬝ V = (1+s)² · (Du ⬝ Du)`.
   have hVV_eq : V ⬝ V = (1 + s) ^ 2 * (Du ⬝ Du) := by
-    unfold euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl (fun i _ => ?_)
     rw [hV_def]; ring
@@ -4326,7 +4326,7 @@ theorem strongTransportDominator_G_mDpH_of_sol
   have hdot_smul_right :
       (DpH x Vp m₀) ⬝ (fun i => s * Du₀ i)
         = s * ((DpH x Vp m₀) ⬝ Du₀) := by
-    unfold euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl (fun i _ => ?_)
     ring
@@ -4345,7 +4345,7 @@ theorem strongTransportDominator_G_mDpH_of_sol
   have hCS : ∀ v w : Fin d → ℝ,
       |v ⬝ w| ≤ ‖v‖ * ∑ i, |w i| := by
     intro v w
-    unfold euclideanDot
+    unfold dotProduct
     have hsum : |∑ i, v i * w i| ≤ ∑ i, |v i * w i| :=
       Finset.abs_sum_le_sum_abs _ _
     have hcoord : ∀ i ∈ (Finset.univ : Finset (Fin d)),
@@ -5205,7 +5205,7 @@ theorem strongTransportPerturbedIntegrand_pointwise_tendsto
   set Du₀ : Fin d → ℝ := fun i => sol.Du i x with hDu₀_def
   -- Nonnegativity of `Du₀ ⬝ Du₀`.
   have hDuDu_nn : 0 ≤ Du₀ ⬝ Du₀ := by
-    unfold euclideanDot
+    unfold dotProduct
     exact Finset.sum_nonneg (fun _ _ => mul_self_nonneg _)
   -- Exponents are nonnegative.
   have hγ_half_nn : (0 : ℝ) ≤ γBarReal / 2 := by linarith
@@ -5243,7 +5243,7 @@ theorem strongTransportPerturbedIntegrand_pointwise_tendsto
     have hdotR : ∀ (V₁ : Fin d → ℝ),
         V₁ ⬝ (fun i => s * Du₀ i) = s * (V₁ ⬝ Du₀) := by
       intro V₁
-      simp only [euclideanDot, Finset.mul_sum]
+      simp only [dotProduct, Finset.mul_sum]
       refine Finset.sum_congr rfl ?_
       intro i _
       ring
@@ -5351,7 +5351,7 @@ theorem strongTransportPerturbedIntegrand_pointwise_tendsto
     -- s ↦ (DpH ⬝ Du₀) continuous.
     have h_dot : Continuous
         (fun s : ℝ => DpH x (fun i => Du₀ i + s * Du₀ i) m₀ ⬝ Du₀) := by
-      unfold euclideanDot
+      unfold dotProduct
       refine continuous_finset_sum _ ?_
       intro i _
       exact ((continuous_apply i).comp h_DpH).mul continuous_const
@@ -5402,7 +5402,7 @@ theorem strongTransportPerturbedIntegrand_pointwise_tendsto
         (fun i => Du₀ i + s * Du₀ i) ⬝ (fun i => Du₀ i + s * Du₀ i)
           = (1 + s) ^ 2 * (Du₀ ⬝ Du₀) := by
       intro s
-      simp only [euclideanDot, Finset.mul_sum]
+      simp only [dotProduct, Finset.mul_sum]
       refine Finset.sum_congr rfl ?_
       intro i _
       ring
@@ -5410,7 +5410,7 @@ theorem strongTransportPerturbedIntegrand_pointwise_tendsto
         (fun i => Du₀ i + s * Du₀ i) ⬝ Du₀
           = (1 + s) * (Du₀ ⬝ Du₀) := by
       intro s
-      simp only [euclideanDot, Finset.mul_sum]
+      simp only [dotProduct, Finset.mul_sum]
       refine Finset.sum_congr rfl ?_
       intro i _
       ring
@@ -5697,7 +5697,7 @@ theorem strongTransportPerturbedIntegrand_pointwise_tendsto_at_m_zero
   set u₀ : ℝ := sol.u x with hu₀_def
   set Du₀ : Fin d → ℝ := fun i => sol.Du i x with hDu₀_def
   have hDuDu_nn : 0 ≤ Du₀ ⬝ Du₀ := by
-    unfold euclideanDot
+    unfold dotProduct
     exact Finset.sum_nonneg (fun _ _ => mul_self_nonneg _)
   have hγ_half_nn : (0 : ℝ) ≤ γBarReal / 2 := by linarith
   have hγ_nn : (0 : ℝ) ≤ γBarReal := by linarith
@@ -5716,7 +5716,7 @@ theorem strongTransportPerturbedIntegrand_pointwise_tendsto_at_m_zero
   have hdotR : ∀ (V₁ : Fin d → ℝ) (s : ℝ),
       V₁ ⬝ (fun i => s * Du₀ i) = s * (V₁ ⬝ Du₀) := by
     intro V₁ s
-    simp only [euclideanDot, Finset.mul_sum]
+    simp only [dotProduct, Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
     ring
@@ -5826,7 +5826,7 @@ theorem strongTransportPerturbedIntegrand_pointwise_tendsto_at_m_zero
         (fun i => Du₀ i + s * Du₀ i) ⬝ (fun i => Du₀ i + s * Du₀ i)
           = (1 + s) ^ 2 * (Du₀ ⬝ Du₀) := by
       intro s
-      simp only [euclideanDot, Finset.mul_sum]
+      simp only [dotProduct, Finset.mul_sum]
       refine Finset.sum_congr rfl ?_
       intro i _
       ring
@@ -5834,7 +5834,7 @@ theorem strongTransportPerturbedIntegrand_pointwise_tendsto_at_m_zero
         (fun i => Du₀ i + s * Du₀ i) ⬝ Du₀
           = (1 + s) * (Du₀ ⬝ Du₀) := by
       intro s
-      simp only [euclideanDot, Finset.mul_sum]
+      simp only [dotProduct, Finset.mul_sum]
       refine Finset.sum_congr rfl ?_
       intro i _
       ring

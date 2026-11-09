@@ -72,8 +72,7 @@ open Periodic
 
 namespace Hamiltonian
 
-def euclideanDot (v w : Point d) : ℝ := ∑ i, v i * w i
-scoped infixl:72 " ⬝ " => euclideanDot
+scoped infixl:72 " ⬝ " => dotProduct
 
 /-- The linear functional w ↦ q ⬝ w, used to specify the momentum derivative. -/
 def dotFunctional (q : Point d) : Point d →L[ℝ] ℝ :=

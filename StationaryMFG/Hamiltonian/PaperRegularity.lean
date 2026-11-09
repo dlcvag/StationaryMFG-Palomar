@@ -157,6 +157,7 @@ lemma supporting_hyperplane_of_monotone_gradient
     (Set.mem_univ (0 : ℝ)) (Set.mem_univ (1 : ℝ)) (by norm_num)
     (hasDerivAt_momentum_line hderiv q (p - q) 0)
   simp [slope] at h
+  simp only [dotProduct_sub]
   linarith
 
 end Pointwise

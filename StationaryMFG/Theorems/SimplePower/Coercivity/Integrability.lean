@@ -2147,7 +2147,7 @@ theorem coercivity_scaled_min_gauge_le_operator_diff_of_paperHypotheses
     intro x
     refine Real.rpow_nonneg ?_ _
     -- Nonneg of `v ⬝ v`.
-    unfold euclideanDot
+    unfold dotProduct
     exact Finset.sum_nonneg (fun i _ => mul_self_nonneg _)
   have hIpAlpha_nn : 0 ≤ IpAlpha := by
     refine MeasureTheory.integral_nonneg ?_

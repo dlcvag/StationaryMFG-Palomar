@@ -141,7 +141,7 @@ admissible test pair `(μ, υ)` with associated test gradient `Dυ` (i.e.
 where:
 
 * `Dυ ⬝ Du` denotes the standard Euclidean dot product on `ℝ^d`
-  (`euclideanDot` from `Hamiltonian.Assumptions`), evaluated coordinate
+  (`dotProduct` from `Hamiltonian.Assumptions`), evaluated coordinate
   by coordinate via `(fun i => Dυ i x - Du i x)`;
 * `H` and `D_pH` are evaluated at the *test* arguments
   `(x, fun i => Dυ i x, μ x)`, not at the solution `(Du, m)`;

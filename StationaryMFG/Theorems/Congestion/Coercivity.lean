@@ -173,7 +173,7 @@ lemma congestionCoerciveGauge_nonneg
     · -- `(Du⬝Du)^{(γ̄-2)/2} · (Du⬝Du) ≥ 0`.
       have hdot_nn : 0 ≤ (fun i => (⇑(v.2.2 i) : (Fin d → ℝ) → ℝ) x)
           ⬝ (fun i => (⇑(v.2.2 i) : (Fin d → ℝ) → ℝ) x) := by
-        unfold euclideanDot
+        unfold dotProduct
         exact Finset.sum_nonneg (fun i _ => mul_self_nonneg _)
       refine mul_nonneg ?_ hdot_nn
       unfold vecAbsPowMinusTwo
@@ -1431,7 +1431,7 @@ theorem congestion_coercivity_norm_bridge
     intro i x
     -- `(Du i x)^2 ≤ Du⬝Du`, then raise to `γ̄/2`.
     have hsq : Du i x * Du i x ≤ (fun j => Du j x) ⬝ (fun j => Du j x) := by
-      unfold euclideanDot
+      unfold dotProduct
       refine Finset.single_le_sum (f := fun j => Du j x * Du j x)
         (fun j _ => mul_self_nonneg _) (Finset.mem_univ i)
     -- `|Du i x|^γ̄ = (|Du i x|^2)^(γ̄/2) = ((Du i x)^2)^(γ̄/2)`.

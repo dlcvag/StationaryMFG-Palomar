@@ -68,7 +68,7 @@ private lemma dot_tendsto_right
     {ι : Type*} {l : Filter ι} {f : ι → (Fin d → ℝ)}
     {v : Fin d → ℝ} (hf : Tendsto f l (𝓝 v)) (w : Fin d → ℝ) :
     Tendsto (fun i => f i ⬝ w) l (𝓝 (v ⬝ w)) := by
-  simp only [euclideanDot]
+  simp only [dotProduct]
   exact tendsto_finset_sum _ fun j _ =>
     ((continuous_apply j).tendsto _ |>.comp hf).mul_const (w j)
 

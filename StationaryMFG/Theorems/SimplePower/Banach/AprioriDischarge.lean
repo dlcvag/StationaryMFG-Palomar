@@ -1073,7 +1073,7 @@ the apriori estimate `apriori_at_eps`.
 The deliverables:
 
 * `crude_pow_mul_le` — the elementary inequality `a^{γ-1}·b ≤ a^γ + b^γ`.
-* `abs_euclideanDot_le_sqrt` — Cauchy–Schwarz on `euclideanDot`:
+* `abs_euclideanDot_le_sqrt` — Cauchy–Schwarz on `dotProduct`:
   `|v ⬝ w| ≤ √(v⬝v) · √(w⬝w)`.
 * `gateauxWpVecIntegrand_abs_le` — pointwise bound on the vector piece
   of the Gateaux integrand by `2(V⬝V)^{γ̄/2} + (W⬝W)^{γ̄/2}` (plus a
@@ -1130,10 +1130,10 @@ lemma crude_pow_mul_le {γ a b : ℝ} (hγ : 1 ≤ γ) (ha : 0 ≤ a) (hb : 0 �
 
 /-- **`(v ⬝ v) ≥ 0`.** Auxiliary for `Real.rpow` manipulations. -/
 lemma euclideanDot_self_nonneg {d : ℕ} (v : Fin d → ℝ) : 0 ≤ v ⬝ v := by
-  unfold euclideanDot
+  unfold dotProduct
   exact Finset.sum_nonneg (fun i _ => mul_self_nonneg _)
 
-/-- **Coordinate Cauchy–Schwarz (squared) on `euclideanDot`.** -/
+/-- **Coordinate Cauchy–Schwarz (squared) on `dotProduct`.** -/
 lemma sq_euclideanDot_le {d : ℕ} (v w : Fin d → ℝ) :
     (v ⬝ w) ^ 2 ≤ (v ⬝ v) * (w ⬝ w) := by
   -- `(∑ vᵢwᵢ)² ≤ (∑ vᵢ²)(∑ wᵢ²)` — the squared Cauchy–Schwarz
@@ -1141,7 +1141,7 @@ lemma sq_euclideanDot_le {d : ℕ} (v w : Fin d → ℝ) :
   have hCS :
       (∑ i, v i * w i) ^ 2 ≤ (∑ i : Fin d, (v i) ^ 2) * ∑ i : Fin d, (w i) ^ 2 :=
     Finset.sum_mul_sq_le_sq_mul_sq Finset.univ v w
-  unfold euclideanDot
+  unfold dotProduct
   -- Convert `v i * v i` to `(v i)^2` to match the form returned by Mathlib.
   have hVV : (∑ i, v i * v i) = ∑ i : Fin d, (v i) ^ 2 := by
     refine Finset.sum_congr rfl (fun i _ => ?_)
@@ -1152,7 +1152,7 @@ lemma sq_euclideanDot_le {d : ℕ} (v w : Fin d → ℝ) :
   rw [hVV, hWW]
   exact hCS
 
-/-- **Cauchy–Schwarz absolute-value form for `euclideanDot`.** -/
+/-- **Cauchy–Schwarz absolute-value form for `dotProduct`.** -/
 lemma abs_euclideanDot_le_sqrt {d : ℕ} (v w : Fin d → ℝ) :
     |v ⬝ w| ≤ Real.sqrt (v ⬝ v) * Real.sqrt (w ⬝ w) := by
   have hsq := sq_euclideanDot_le (d := d) v w
@@ -1195,7 +1195,7 @@ lemma vecAbsPowMinusTwo_mul_dot_abs_le {d : ℕ}
       -- `0 = V⬝V = ∑ V_i² = 0` implies each `V_i² = 0` hence `V_i = 0`.
       have hsum : (∑ i : Fin d, V i * V i) = 0 := by
         have : V ⬝ V = 0 := hVV_zero.symm
-        unfold euclideanDot at this
+        unfold dotProduct at this
         exact this
       funext i
       have hnonneg : ∀ i ∈ (Finset.univ : Finset (Fin d)), 0 ≤ V i * V i :=
@@ -1213,7 +1213,7 @@ lemma vecAbsPowMinusTwo_mul_dot_abs_le {d : ℕ}
         |(V ⬝ V) ^ ((γBar - 2) / 2) * (V ⬝ Y)| = 0 := by
       have : V ⬝ Y = 0 := by
         rw [hVzero]
-        simp [euclideanDot]
+        simp [dotProduct]
       rw [this, mul_zero, abs_zero]
     rw [hLHS_zero]
     -- Goal: `0 ≤ (V⬝V)^(γ/2) + (Y⬝Y)^(γ/2)`. Both summands are ≥ 0.
@@ -1569,7 +1569,7 @@ example (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
     a ^ ((2 : ℝ) - 1) * b ≤ a ^ (2 : ℝ) + b ^ (2 : ℝ) :=
   crude_pow_mul_le (by norm_num) ha hb
 
-/-- **Cauchy–Schwarz on `euclideanDot` at `d = 0`.** Trivially `0 ≤ 0`. -/
+/-- **Cauchy–Schwarz on `dotProduct` at `d = 0`.** Trivially `0 ≤ 0`. -/
 example {d : ℕ} (v w : Fin d → ℝ) :
     |v ⬝ w| ≤ Real.sqrt (v ⬝ v) * Real.sqrt (w ⬝ w) :=
   abs_euclideanDot_le_sqrt v w

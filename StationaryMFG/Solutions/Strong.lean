@@ -158,7 +158,7 @@ The test-function space is `SmoothPeriodic d` from
 gradient of a test function `φ` is the family
 `fun i => SmoothPeriodic.partialDeriv i φ x` of partial derivatives in the
 standard basis directions. The dot product against `J(x, Du(x), m(x))` uses
-the project-local `euclideanDot` (`⬝`) from `Hamiltonian.Assumptions`.
+the project-local `dotProduct` (`⬝`) from `Hamiltonian.Assumptions`.
 
 The integrability assumption `J(·, Du(·), m(·)) ∈ L^1` is part of the
 solution definition (paper line 261), not a derived consequence; the
@@ -195,7 +195,7 @@ def mDpH_Integrable
   `φ : SmoothPeriodic d`,
   `∫_{𝕋^d} [(m(x) - 1) · φ(x) + J(x, Du(x), m(x)) ⬝ Dφ(x)] dx = 0`,
   where `Dφ(x) := fun i => SmoothPeriodic.partialDeriv i φ x` and `⬝` is
-  the standard Euclidean dot product `euclideanDot`.
+  the standard Euclidean dot product `dotProduct`.
 
 The potential `V` does not appear in the transport equation, but is
 threaded through the signature for symmetry with `IsStrongSolution_HJB`

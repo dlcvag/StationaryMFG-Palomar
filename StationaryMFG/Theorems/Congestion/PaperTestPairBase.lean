@@ -136,7 +136,7 @@ theorem congestionLimitVI_integral_le_of_abstract_at_periodicDensity
     -- summand `μ·(DpH ⬝ 0)` and the mass-defect summand `(μ-1)·0` vanish.
     have hDν : (fun i => T.Dυ i x - T.Dυ i x) = (0 : Fin d → ℝ) := by
       funext i; simp
-    have hdot : StationaryMFG.Hamiltonian.euclideanDot
+    have hdot : dotProduct
         (DpH x (fun i => T.Dυ i x) (T.μ x)) (fun _ : Fin d => (0 : ℝ)) = 0 := by
       have : (fun _ : Fin d => (0 : ℝ)) = (0 : Fin d → ℝ) := rfl
       rw [this, StationaryMFG.Hamiltonian.euclideanDot_zero_right]

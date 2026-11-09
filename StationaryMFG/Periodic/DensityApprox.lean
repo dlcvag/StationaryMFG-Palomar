@@ -238,7 +238,7 @@ single combined integral of the pointwise sum
 `a·f + ∑ᵢ bᵢ·gᵢ` over the torus, provided each pairing is integrable (which holds
 under the Hölder coefficient/test membership facts).
 
-This is the **key euclideanDot ↔ transportFunctional bridge**: in the congestion
+This is the **key dotProduct ↔ transportFunctional bridge**: in the congestion
 transport identity the dot product `(m•DpH)⬝Dφ = ∑ᵢ (m·DpH_i)·Dφ_i` is exactly
 the finite sum `∑ᵢ bᵢ·gᵢ`, so the combined integrand
 `(m−1)·φ + (m•DpH)⬝Dφ` integrates to `transportFunctional (m−1) (m•DpH) φ Dφ`.

@@ -532,10 +532,10 @@ def transportGateauxIntegrand
         + absPowMinusTwo γBar (u x) * (u x * (φ : (Fin d → ℝ) → ℝ) x)
 
 /-- Auxiliary algebraic identity: scalar multiplication distributes through
-`euclideanDot` in the right slot. -/
+`dotProduct` in the right slot. -/
 private lemma euclideanDot_const_smul_right {d : ℕ} (σ : ℝ) (v w : Fin d → ℝ) :
     v ⬝ (fun i => σ * w i) = σ * (v ⬝ w) := by
-  unfold euclideanDot
+  unfold dotProduct
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl ?_
   intro i _

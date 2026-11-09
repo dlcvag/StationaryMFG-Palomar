@@ -408,7 +408,7 @@ lemma mfgOperatorEpsPair_test_congr_ae
       rw [MeasureTheory.ae_all_iff]; exact hDν
     refine hDν_all.mono ?_
     intro x hx
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     refine Finset.sum_congr rfl ?_
     intro i _
     change DpH x (fun j => Dυ j x) (μ x) i * Dν₁ i x
@@ -422,7 +422,7 @@ lemma mfgOperatorEpsPair_test_congr_ae
       rw [MeasureTheory.ae_all_iff]; exact hDν
     refine hDν_all.mono ?_
     intro x hx
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     refine Finset.sum_congr rfl ?_
     intro i _
     change Dυ i x * Dν₁ i x = Dυ i x * Dν₂ i x

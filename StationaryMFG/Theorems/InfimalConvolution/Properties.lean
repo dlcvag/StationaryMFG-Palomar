@@ -102,12 +102,12 @@ theorem Khat_inversion_of_subdiff
     rw [h_sum_split] at hsub_y
     -- Identify `∑ i, v i * y i = y ⬝ v` and same for `qStarPt`.
     have h_y_dot : (∑ i, v i * y i) = y ⬝ v := by
-      unfold euclideanDot
+      unfold dotProduct
       apply Finset.sum_congr rfl
       intro i _
       ring
     have h_q_dot : (∑ i, v i * qStarPt i) = qStarPt ⬝ v := by
-      unfold euclideanDot
+      unfold dotProduct
       apply Finset.sum_congr rfl
       intro i _
       ring
@@ -282,10 +282,10 @@ private lemma convexOn_subgradient_dotCLMHam
   intro y
   have h := convexOn_subgradient_of_hasFDerivAt hConv hFD y
   -- `Hamiltonian.dotCLMHam q (y - x) = q ⬝ (y - x) = ∑ i, q i * (y i - x i)`.
-  -- (`dotCLMHam_apply` and `euclideanDot` unfolding.)
+  -- (`dotCLMHam_apply` and `dotProduct` unfolding.)
   have hpair : Hamiltonian.dotCLMHam q (y - x) = ∑ i, q i * (y i - x i) := by
     rw [Hamiltonian.dotCLMHam_apply]
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.sum_congr rfl ?_
     intro i _
     simp [Pi.sub_apply]
@@ -401,7 +401,7 @@ theorem qEpsilon_subdiff_inclusion_K
   -- Compute `dotCLMHam v (-(y - qS)) = -S`.
   have h_dot_neg : Hamiltonian.dotCLMHam v (-(y - qS)) = -S := by
     rw [Hamiltonian.dotCLMHam_apply]
-    unfold euclideanDot
+    unfold dotProduct
     rw [← Finset.sum_neg_distrib]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -1916,7 +1916,7 @@ theorem Mepsilon_xm_injective
     have h_sum_split :
         ∑ i, (ε • DpH x s₁ m) i * (y i - q₁ i)
           = y ⬝ (ε • DpH x s₁ m) - q₁ ⬝ (ε • DpH x s₁ m) := by
-      unfold euclideanDot
+      unfold dotProduct
       rw [← Finset.sum_sub_distrib]
       refine Finset.sum_congr rfl ?_
       intro i _
@@ -1930,7 +1930,7 @@ theorem Mepsilon_xm_injective
     have h_sum_split :
         ∑ i, (ε • DpH x s₂ m) i * (y i - q₂ i)
           = y ⬝ (ε • DpH x s₂ m) - q₂ ⬝ (ε • DpH x s₂ m) := by
-      unfold euclideanDot
+      unfold dotProduct
       rw [← Finset.sum_sub_distrib]
       refine Finset.sum_congr rfl ?_
       intro i _
@@ -2529,7 +2529,7 @@ theorem hSub_qEofMinv
   have hsub_q := hsub q
   -- Rewrite `∑ i, (ε • v) i * (q i − qS i) = ε * (v ⬝ (q − qS))`.
   have hpair : ∑ i, (ε • v) i * (q i - qS i) = ε * (v ⬝ (q - qS)) := by
-    unfold euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -4795,7 +4795,7 @@ theorem qSelector_eq_zero_of_DpH_small
     have hpair :
         ∑ i, (ε • DpH x (p - qS) m) i * (y i - qS i)
           = ε * (DpH x (p - qS) m ⬝ (y - qS)) := by
-      unfold euclideanDot
+      unfold dotProduct
       rw [Finset.mul_sum]
       refine Finset.sum_congr rfl ?_
       intro i _
@@ -5432,7 +5432,7 @@ theorem hSub_qMeasFam
       hweak hε hCont hLower hConvH hFDH
   have hsub_q := hsub q
   have hpair : ∑ i, (ε • v) i * (q i - qS i) = ε * (v ⬝ (q - qS)) := by
-    unfold euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -5702,7 +5702,7 @@ theorem hSubgradientHepsilon_of_selector
     have hKIneq' :
         ∑ i, v i * (q' i - qS i) ≤ (1 / ε) * (K hweak q' - K hweak qS) := by
       have hdot : v ⬝ (q' - qS) = ∑ i, v i * (q' i - qS i) := by
-        unfold euclideanDot
+        unfold dotProduct
         refine Finset.sum_congr rfl ?_
         intro i _; simp [Pi.sub_apply]
       rw [hdot] at hKIneq; exact hKIneq
@@ -5767,7 +5767,7 @@ theorem hCx_of_selector
   -- Rewrite `∑ i, vi * (0 - p) i = - (D_pH^ε ⬝ p)`.
   set v : Fin d → ℝ := DpHepsilonFam (H := H) (DpH := DpH) hweak qε ε x p m with hvdef
   have hpair : ∑ i, v i * ((0 : Fin d → ℝ) i - p i) = -(v ⬝ p) := by
-    unfold euclideanDot
+    unfold dotProduct
     rw [← Finset.sum_neg_distrib]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -5820,7 +5820,7 @@ theorem hGrad_of_selector
     -- `hsub : v ⬝ (q - qS) ≤ (1/ε) (K q - K qS)`.
     -- Convert pairing to sum and scale by ε.
     have hdot : v ⬝ (q - qS) = ∑ i, v i * (q i - qS i) := by
-      unfold euclideanDot
+      unfold dotProduct
       refine Finset.sum_congr rfl ?_
       intro i _; simp [Pi.sub_apply]
     rw [hdot] at hsub

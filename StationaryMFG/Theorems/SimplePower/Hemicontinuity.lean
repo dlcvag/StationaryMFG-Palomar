@@ -129,7 +129,7 @@ lemma continuous_euclideanDot_left
     (f : Fin d → ℝ → ℝ) (w : Fin d → ℝ)
     (hf : ∀ i, Continuous (fun t : ℝ => f i t)) :
     Continuous (fun t : ℝ => (fun i => f i t) ⬝ w) := by
-  unfold euclideanDot
+  unfold dotProduct
   refine continuous_finset_sum _ (fun i _ => ?_)
   exact (hf i).mul continuous_const
 
@@ -172,13 +172,13 @@ lemma continuous_vecAbsPowMinusTwo_dot_cxComb
     -- `vecAbsPowMinusTwo γBar v * (v ⬝ w) = (vecSignedRpow γBar v) ⬝ w`.
     show vecAbsPowMinusTwo γBar v * (v ⬝ w)
         = vecSignedRpow γBar v ⬝ w
-    unfold euclideanDot vecSignedRpow
+    unfold dotProduct vecSignedRpow
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl (fun i _ => ?_)
     ring
   rw [hrewrite]
   -- Continuity of `t ↦ vecSignedRpow γBar (Dυ_t x) ⬝ Dν x`.
-  unfold euclideanDot
+  unfold dotProduct
   refine continuous_finset_sum _ (fun i _ => ?_)
   -- `t ↦ vecSignedRpow γBar (Dυ_t x) i` is continuous (composition).
   have hcoord : Continuous (fun t : ℝ =>
@@ -286,9 +286,9 @@ theorem aepsiIntegrandAt_continuousOn
       (fun t : ℝ =>
         DpH x (fun i => cxCombGrad Dυ Dῡ t i x) (cxComb μ mBar t x)
           ⬝ (fun i => Dν i x)) (Set.Icc 0 1) := by
-    -- `euclideanDot` is `∑ i, _ i * (Dν i x)`, and each component of
+    -- `dotProduct` is `∑ i, _ i * (Dν i x)`, and each component of
     -- `DpH(...)` is continuous on `[0,1]` since the full vector is.
-    unfold euclideanDot
+    unfold dotProduct
     refine continuousOn_finset_sum _ (fun i _ => ?_)
     have hcoord : ContinuousOn
         (fun t : ℝ =>
@@ -482,7 +482,7 @@ lemma cxCombGrad_dot_self_le
     (fun i => cxCombGrad Dυ Dῡ t i x) ⬝
       (fun i => cxCombGrad Dυ Dῡ t i x)
       ≤ ∑ i, (|Dῡ i x| + |Dυ i x|) ^ (2 : ℕ) := by
-  unfold euclideanDot
+  unfold dotProduct
   refine Finset.sum_le_sum ?_
   intro i _
   have hbnd : |cxCombGrad Dυ Dῡ t i x| ≤ |Dῡ i x| + |Dυ i x| :=
@@ -833,7 +833,7 @@ theorem hemicont_vecAbsPowMinusTwo_dominator
   have hbase_nn :
       0 ≤ (fun i => cxCombGrad Dυ Dῡ t i x) ⬝
             (fun i => cxCombGrad Dυ Dῡ t i x) := by
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.sum_nonneg ?_
     intro i _
     have : 0 ≤ (cxCombGrad Dυ Dῡ t i x) ^ (2 : ℕ) := sq_nonneg _
@@ -907,7 +907,7 @@ private lemma abs_euclideanDot_le_norm_mul_sum_abs
     (v w : Fin d → ℝ) :
     |v ⬝ w| ≤ ‖v‖ * ∑ i, |w i| := by
   -- `|∑ v_i w_i| ≤ ∑ |v_i| |w_i| ≤ ∑ ‖v‖ |w_i| = ‖v‖ · ∑ |w_i|`.
-  unfold euclideanDot
+  unfold dotProduct
   have hsum : |∑ i, v i * w i| ≤ ∑ i, |v i * w i| :=
     Finset.abs_sum_le_sum_abs _ _
   have hcoord : ∀ i ∈ (Finset.univ : Finset (Fin d)),
@@ -1370,7 +1370,7 @@ integrand `aepsiIntegrandAt_unreg_K0` coincides with the strict-cone
 `aepsiIntegrandAt_unreg`. The proof unfolds both definitions and uses
 that `JsimpleExt DpH x p m = m • DpH x p m`, which gives
 `(m • DpH …) ⬝ Dν = m * (DpH … ⬝ Dν)` by linearity of
-`euclideanDot` in the left slot. The positivity hypothesis is not
+`dotProduct` in the left slot. The positivity hypothesis is not
 actually used in the algebraic manipulation — agreement is in fact
 unconditional in `m` — but we expose the lemma with the `0 < mt`
 hypothesis as required by step 6 of the v8 K0 plan, since downstream
@@ -1396,7 +1396,7 @@ theorem aepsiIntegrandAt_unreg_K0_eq_unreg_of_pos
   -- `w i := Dν i x`. We must show
   -- `(JsimpleExt DpH x Dυt μt) ⬝ w = μt * (DpH x Dυt μt ⬝ w)`.
   -- Since `JsimpleExt DpH x Dυt μt = μt • DpH x Dυt μt` definitionally,
-  -- this reduces by `euclideanDot` unfolding and `Finset.mul_sum`.
+  -- this reduces by `dotProduct` unfolding and `Finset.mul_sum`.
   set μt : ℝ := cxComb μ mBar t x with hμt
   set Dυt : Fin d → ℝ := fun i => cxCombGrad Dυ Dῡ t i x with hDυt
   set w : Fin d → ℝ := fun i => Dν i x with hw
@@ -1406,7 +1406,7 @@ theorem aepsiIntegrandAt_unreg_K0_eq_unreg_of_pos
         = μt * (DpH x Dυt μt ⬝ w) := by
     -- `JsimpleExt DpH x Dυt μt = μt • DpH x Dυt μt` by definition.
     show ((μt • DpH x Dυt μt) ⬝ w) = μt * (DpH x Dυt μt ⬝ w)
-    unfold euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -1441,7 +1441,7 @@ theorem aepsiIntegrandAt_unreg_K0_eq_unreg
       (JsimpleExt DpH x Dυt μt ⬝ w)
         = μt * (DpH x Dυt μt ⬝ w) := by
     show ((μt • DpH x Dυt μt) ⬝ w) = μt * (DpH x Dυt μt ⬝ w)
-    unfold euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -1775,7 +1775,7 @@ theorem aepsiIntegrandAt_gateaux_pointwise_bound
   have h_vecAbsPow_nn : 0 ≤ vecAbsPowMinusTwo γBar p_t := by
     unfold vecAbsPowMinusTwo
     have hdot_nn : 0 ≤ p_t ⬝ p_t := by
-      unfold euclideanDot
+      unfold dotProduct
       exact Finset.sum_nonneg (fun i _ => mul_self_nonneg _)
     exact Real.rpow_nonneg hdot_nn _
   have h_vec_endpoint :
@@ -1957,7 +1957,7 @@ theorem aepsiIntegrand_unreg_continuousOn
         (fun t : ℝ =>
           DpH x (fun i => cxCombGrad Dυ Dῡ t i x) (cxComb μ mBar t x)
             ⬝ (fun i => Dν i x)) (Set.Icc 0 1) := by
-      unfold euclideanDot
+      unfold dotProduct
       refine continuousOn_finset_sum _ (fun i _ => ?_)
       have hcoord : ContinuousOn
           (fun t : ℝ =>
@@ -2224,7 +2224,7 @@ example (d : ℕ) (V : (Fin d → ℝ) → ℝ) (ε : ℝ) :
         = fun _ : (Fin d → ℝ) => (0:ℝ) := by
       funext x
       unfold aepsiIntegrandAt_unreg cxComb cxCombGrad
-      simp [euclideanDot]
+      simp [dotProduct]
     rw [hzero]
     exact aestronglyMeasurable_const
   · -- The unregularized integrand is bounded by 0 (it equals 0 pointwise).
@@ -2233,7 +2233,7 @@ example (d : ℕ) (V : (Fin d → ℝ) → ℝ) (ε : ℝ) :
     intro x
     -- The integrand: (-(0) - 0 + V x)·0 + 1·(0 ⬝ 0) + (1-1)·0 = 0
     unfold aepsiIntegrandAt_unreg cxComb cxCombGrad
-    simp [euclideanDot]
+    simp [dotProduct]
   · intro t _
     have hzero : (fun x : (Fin d → ℝ) =>
         aepsiIntegrandAt_gateaux (2:ℝ) (fun _ _ => (0:ℝ)) (fun _ _ => (0:ℝ))
@@ -2241,14 +2241,14 @@ example (d : ℕ) (V : (Fin d → ℝ) → ℝ) (ε : ℝ) :
           (fun _ => (0:ℝ)) x t) = fun _ : (Fin d → ℝ) => (0:ℝ) := by
       funext x
       unfold aepsiIntegrandAt_gateaux cxComb cxCombGrad
-      simp [euclideanDot]
+      simp [dotProduct]
     rw [hzero]
     exact aestronglyMeasurable_const
   · intro t _
     refine Filter.Eventually.of_forall ?_
     intro x
     unfold aepsiIntegrandAt_gateaux cxComb cxCombGrad
-    simp [euclideanDot]
+    simp [dotProduct]
 
 /-- Check the type of the segment continuity matches the task's
 acceptance signature: continuity in `t` of the pairing
@@ -2778,14 +2778,14 @@ example (d : ℕ) (ε : ℝ) :
             = fun _ : (Fin d → ℝ) => (0:ℝ) := by
         funext x
         unfold aepsiIntegrandAt_unreg cxComb cxCombGrad
-        simp [euclideanDot]
+        simp [dotProduct]
       rw [hzero]
       exact aestronglyMeasurable_const
     · intro t _
       refine Filter.Eventually.of_forall ?_
       intro x
       unfold aepsiIntegrandAt_unreg cxComb cxCombGrad
-      simp [euclideanDot]
+      simp [dotProduct]
     · intro t _
       have hzero :
           (fun x : (Fin d → ℝ) =>
@@ -2796,14 +2796,14 @@ example (d : ℕ) (ε : ℝ) :
             = fun _ : (Fin d → ℝ) => (0:ℝ) := by
         funext x
         unfold aepsiIntegrandAt_gateaux cxComb cxCombGrad
-        simp [euclideanDot]
+        simp [dotProduct]
       rw [hzero]
       exact aestronglyMeasurable_const
     · intro t _
       refine Filter.Eventually.of_forall ?_
       intro x
       unfold aepsiIntegrandAt_gateaux cxComb cxCombGrad
-      simp [euclideanDot]
+      simp [dotProduct]
 
 /-! ## Hemicontinuity of `A_0` (paper line 1276, `infra:P4-A0-hemicontinuous`)
 
@@ -2950,14 +2950,14 @@ example (d : ℕ) :
             = fun _ : (Fin d → ℝ) => (0:ℝ) := by
         funext x
         unfold aepsiIntegrandAt_unreg cxComb cxCombGrad
-        simp [euclideanDot]
+        simp [dotProduct]
       rw [hzero]
       exact aestronglyMeasurable_const
     · intro t _
       refine Filter.Eventually.of_forall ?_
       intro x
       unfold aepsiIntegrandAt_unreg cxComb cxCombGrad
-      simp [euclideanDot]
+      simp [dotProduct]
     · intro t _
       have hzero :
           (fun x : (Fin d → ℝ) =>
@@ -2968,14 +2968,14 @@ example (d : ℕ) :
             = fun _ : (Fin d → ℝ) => (0:ℝ) := by
         funext x
         unfold aepsiIntegrandAt_gateaux cxComb cxCombGrad
-        simp [euclideanDot]
+        simp [dotProduct]
       rw [hzero]
       exact aestronglyMeasurable_const
     · intro t _
       refine Filter.Eventually.of_forall ?_
       intro x
       unfold aepsiIntegrandAt_gateaux cxComb cxCombGrad
-      simp [euclideanDot]
+      simp [dotProduct]
 
 /-! ### Sanity-check: the new a.e.-uniform `hPos` field is consumable -/
 
@@ -3049,7 +3049,7 @@ lemma abs_vecAbsPowMinusTwo_mul_coord_le
   rw [abs_mul, abs_of_nonneg h_nn]
   -- Bound |v i| ≤ (v ⬝ v)^(1/2) (each coordinate dominated by Euclidean norm).
   have h_coord_sq : (v i) ^ 2 ≤ v ⬝ v := by
-    unfold euclideanDot
+    unfold dotProduct
     have hi : (v i) ^ 2 = (v i) * (v i) := sq (v i)
     rw [hi]
     exact Finset.single_le_sum
@@ -3101,7 +3101,7 @@ lemma abs_vecAbsPowMinusTwo_mul_dot_le
   have hrewrite :
       vecAbsPowMinusTwo γBar v * (v ⬝ w)
         = ∑ i, (vecAbsPowMinusTwo γBar v * v i) * w i := by
-    unfold euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl (fun i _ => ?_)
     ring
@@ -4511,7 +4511,7 @@ theorem aepsiIntegrand_unreg_K0_continuousOn
           JsimpleExt DpH x
               (fun i => cxCombGrad Dυ Dῡ t i x) (cxComb μ mBar t x)
             ⬝ (fun i => Dν i x)) (Set.Icc 0 1) := by
-      unfold euclideanDot
+      unfold dotProduct
       refine continuousOn_finset_sum _ (fun i _ => ?_)
       have hcoord : ContinuousOn
           (fun t : ℝ =>
@@ -4880,14 +4880,14 @@ example (d : ℕ) :
               (fun _ => (0 : ℝ)) (fun _ => (0 : ℝ)) x t)
           = fun _ : Fin d → ℝ => (0 : ℝ) := by
       funext x
-      simp [aepsiIntegrandAt_unreg_K0, JsimpleExt, euclideanDot]
+      simp [aepsiIntegrandAt_unreg_K0, JsimpleExt, dotProduct]
     rw [hzero]
     exact aestronglyMeasurable_const
   · -- Pointwise bound by the zero dominator.
     intro t _
     refine Filter.Eventually.of_forall ?_
     intro x
-    simp [aepsiIntegrandAt_unreg_K0, JsimpleExt, euclideanDot]
+    simp [aepsiIntegrandAt_unreg_K0, JsimpleExt, dotProduct]
 
 /-! ## K0 sibling: `HemicontSegmentDataK0`
 
@@ -5025,14 +5025,14 @@ example (d : ℕ) :
                 (fun _ => (0 : ℝ)) (fun _ => (0 : ℝ)) x t)
             = fun _ : Fin d → ℝ => (0 : ℝ) := by
         funext x
-        simp [aepsiIntegrandAt_unreg_K0, JsimpleExt, euclideanDot]
+        simp [aepsiIntegrandAt_unreg_K0, JsimpleExt, dotProduct]
       rw [hzero]
       exact aestronglyMeasurable_const
     hF_unreg_bound := by
       intro t _
       refine Filter.Eventually.of_forall ?_
       intro x
-      simp [aepsiIntegrandAt_unreg_K0, JsimpleExt, euclideanDot]
+      simp [aepsiIntegrandAt_unreg_K0, JsimpleExt, dotProduct]
     hF_gat_meas := by
       intro t _
       have hzero :
@@ -5043,14 +5043,14 @@ example (d : ℕ) :
                 (fun _ _ => (0 : ℝ)) (fun _ => (0 : ℝ)) x t)
             = fun _ : Fin d → ℝ => (0 : ℝ) := by
         funext x
-        simp [aepsiIntegrandAt_gateaux, cxComb, cxCombGrad, euclideanDot]
+        simp [aepsiIntegrandAt_gateaux, cxComb, cxCombGrad, dotProduct]
       rw [hzero]
       exact aestronglyMeasurable_const
     hF_gat_bound := by
       intro t _
       refine Filter.Eventually.of_forall ?_
       intro x
-      simp [aepsiIntegrandAt_gateaux, cxComb, cxCombGrad, euclideanDot] }
+      simp [aepsiIntegrandAt_gateaux, cxComb, cxCombGrad, dotProduct] }
 
 /-! ### `HemicontSegmentDataK0.ae_eq` — transport along a.e.-equality
 (K0 sibling)

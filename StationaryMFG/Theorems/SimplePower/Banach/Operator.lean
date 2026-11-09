@@ -82,25 +82,25 @@ Both are pointwise linear in the test triple `(η, ν, Dν)`. -/
 private lemma euclideanDot_add_right
     (v w₁ w₂ : Fin d → ℝ) :
     v ⬝ (w₁ + w₂) = v ⬝ w₁ + v ⬝ w₂ := by
-  unfold euclideanDot
+  unfold dotProduct
   simp [Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 private lemma euclideanDot_smul_right
     (c : ℝ) (v w : Fin d → ℝ) :
     v ⬝ (c • w) = c * (v ⬝ w) := by
-  unfold euclideanDot
+  unfold dotProduct
   simp [Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_left_comm]
 
 private lemma euclideanDot_neg_right
     (v w : Fin d → ℝ) :
     v ⬝ (-w) = -(v ⬝ w) := by
-  unfold euclideanDot
+  unfold dotProduct
   simp [Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]
 
 private lemma euclideanDot_zero_right_fun
     (v : Fin d → ℝ) :
     v ⬝ (fun _ : Fin d => (0 : ℝ)) = 0 := by
-  unfold euclideanDot
+  unfold dotProduct
   simp
 
 /-- Pointwise additivity of the `mfgOperatorPair`-integrand in the test
@@ -624,7 +624,7 @@ private lemma mfgPair_integrand_decomp
       = F_HJB V H Dυ μ υ x * η x
         + ∑ i : Fin d, F_flux DpH Dυ μ i x * Dν i x
         + F_mass μ x * ν x := by
-  unfold F_HJB F_flux F_mass euclideanDot
+  unfold F_HJB F_flux F_mass dotProduct
   simp only [Finset.mul_sum]
   ring_nf
 
@@ -641,7 +641,7 @@ private lemma gateaux_integrand_decomp
         + absPowMinusTwo γBar (υ x) * (υ x * (ν x))
       = (∑ i : Fin d, G_grad γBar Dυ i x * Dν i x)
         + G_val γBar υ x * ν x := by
-  unfold G_grad G_val euclideanDot
+  unfold G_grad G_val dotProduct
   simp only [Finset.mul_sum]
   ring_nf
 

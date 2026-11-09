@@ -119,7 +119,9 @@ fidelity:
     periodic weak tests; the API does not use a quotient torus or quotient
     function spaces. The momentum norm is the finite-dimensional sup norm;
     equivalence with the Euclidean norm changes growth constants, not the
-    growth regime. Positive-mass measurability uses the Borel measurable
+    growth regime. The coordinate pairing uses Mathlib's dotProduct, written
+    with the local notation ⬝; this does not change the chosen norm.
+    Positive-mass measurability uses the Borel measurable
     structure. Weak test densities have an everywhere-positive lower bound
     on a representative, corresponding to positive essential infimum after
     a null-set modification. The compact SolutionRegularity predicate
@@ -151,12 +153,13 @@ review:
     independent Challenge/Solution comparison used Lean v4.30.0-rc2. That
     evidence is historical and is not a verification report for this
     module-system/toolchain port. The new repository has passed its own
-    full build and axiom checks. On 2026-11-07 a fresh lake comparator run
-    accepted all three compact challenge comparisons and Lean's kernel
-    accepted the solution. The compact interface has proved equivalences
+    full build and axiom checks. On 2026-11-09 a fresh lake comparator run
+    accepted all three challenge comparisons after the dotProduct refactor,
+    and Lean's kernel accepted the solution. The compact interface has proved equivalences
     with the original function-space, solution, and regularity conditions.
     This local macOS run used --inadvisably-no-sandbox; the official Linux
-    preflight is a separate check. No Palomar review or registration, and
+    preflight passed on 2026-11-08 for 47150df and is a separate check of
+    that earlier snapshot, not this refactor. No Palomar review or registration, and
     no independent human peer review, is claimed.
 
 alignment:

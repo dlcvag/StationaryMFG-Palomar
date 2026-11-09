@@ -3211,7 +3211,7 @@ theorem congestion_DpH_mdelta_tendsto_L1
         Filter.Tendsto
           (fun n => DpH x (p x) (mPerDelta m (δSeq n) x) ⬝ q x)
           Filter.atTop (nhds (DpH x (p x) (m x) ⬝ q x)) := by
-      unfold StationaryMFG.Hamiltonian.euclideanDot
+      unfold dotProduct
       apply tendsto_finset_sum
       intro i _
       have hi : Filter.Tendsto
@@ -3428,7 +3428,7 @@ theorem congestion_mDpH_mdelta_tendsto_L1
         Filter.Tendsto
           (fun n => DpH x (p x) (mPerDelta m (δSeq n) x) ⬝ q x)
           Filter.atTop (nhds (DpH x (p x) (m x) ⬝ q x)) := by
-      unfold StationaryMFG.Hamiltonian.euclideanDot
+      unfold dotProduct
       apply tendsto_finset_sum
       intro i _
       have hi : Filter.Tendsto
@@ -3570,7 +3570,7 @@ theorem congestion_mDpH_mdelta_tendsto_L1_to_J
       have hpos := mPerDelta_pos (hδ_pos n) m x
       rw [hJ_of_pos x (p x) (mPerDelta m (δSeq n) x) hpos]
       -- `(m_δ • D_pH) ⬝ q = m_δ * (D_pH ⬝ q)`.
-      unfold StationaryMFG.Hamiltonian.euclideanDot
+      unfold dotProduct
       rw [Finset.mul_sum]
       refine Finset.sum_congr rfl (fun i _ => ?_)
       simp [Pi.smul_apply, smul_eq_mul]; ring
@@ -3579,7 +3579,7 @@ theorem congestion_mDpH_mdelta_tendsto_L1_to_J
         Filter.Tendsto
           (fun n => (J x (p x) (mPerDelta m (δSeq n) x)) ⬝ q x)
           Filter.atTop (nhds ((J x (p x) (m x)) ⬝ q x)) := by
-      unfold StationaryMFG.Hamiltonian.euclideanDot
+      unfold dotProduct
       apply tendsto_finset_sum
       intro i _
       have hi : Filter.Tendsto
@@ -5488,7 +5488,7 @@ theorem iota_FB_uniform_dominator
       refine le_trans (Theorems.SimplePower.abs_vecAbsPowMinusTwo_mul_dot_le hγ v w) ?_
       -- base bound `v⬝v ≤ ∑(|Dφ|+|Du|)²` for `|t| ≤ 1`; `∑|wᵢ| = ∑|Dφᵢ|`.
       have hvv : v ⬝ v ≤ ∑ i, (|Dφ i x| + |Du i x|) ^ (2 : ℕ) := by
-        unfold euclideanDot
+        unfold dotProduct
         refine Finset.sum_le_sum (fun i _ => ?_)
         have hvi : |v i| ≤ |Dφ i x| + |Du i x| := by
           have : |v i| ≤ |Du i x| + |t| * |Dφ i x| := by
@@ -5690,7 +5690,7 @@ theorem iota_FA_uniform_dominator
     -- Flux dot bound: `|D_pH ⬝ Dφ| ≤ ‖D_pH‖·(∑|Dφᵢ|)`.
     have hdot_le : |DpH x p (m x) ⬝ (fun i => Dφ i x)|
         ≤ ‖DpH x p (m x)‖ * (∑ i, |Dφ i x|) := by
-      unfold euclideanDot
+      unfold dotProduct
       refine le_trans (Finset.abs_sum_le_sum_abs _ _) ?_
       rw [Finset.mul_sum]
       refine Finset.sum_le_sum (fun i _ => ?_)
@@ -5919,7 +5919,7 @@ theorem iota_FA_uniform_dominator_J
     -- Flux dot bound: `|J ⬝ Dφ| ≤ ‖J‖·(∑|Dφᵢ|)`.
     have hdot_le : |J x p (m x) ⬝ (fun i => Dφ i x)|
         ≤ ‖J x p (m x)‖ * (∑ i, |Dφ i x|) := by
-      unfold euclideanDot
+      unfold dotProduct
       refine le_trans (Finset.abs_sum_le_sum_abs _ _) ?_
       rw [Finset.mul_sum]
       refine Finset.sum_le_sum (fun i _ => ?_)
@@ -6958,7 +6958,7 @@ theorem congestion_VI_Jflux_aemeasurable
       (volume.restrict (UnitCube d)) := by
   have hJvec : AEMeasurable (fun x => J x (p x) (m x))
       (volume.restrict (UnitCube d)) := hJ.aemeasurable_J_comp hp hm
-  -- `euclideanDot a b = ∑ i, a i * b i`; each summand is AEMeasurable.
+  -- `dotProduct a b = ∑ i, a i * b i`; each summand is AEMeasurable.
   set g : Fin d → (Fin d → ℝ) → ℝ :=
     fun i x => (J x (p x) (m x)) i * q i x with hgdef
   have hsum : AEMeasurable (∑ i, g i) (volume.restrict (UnitCube d)) :=
@@ -7139,7 +7139,7 @@ theorem congestion_VI_Jflux_L1_diff_at
         * (DpH x p (mPerDelta m (δSeq n) x) ⬝ (fun i => q i x))
         = J x p (mPerDelta m (δSeq n) x) ⬝ (fun i => q i x) := by
       rw [hcong.mDpHat0.J_of_pos x p (mPerDelta m (δSeq n) x) hmδ_pos]
-      unfold euclideanDot
+      unfold dotProduct
       rw [Finset.mul_sum]
       refine Finset.sum_congr rfl (fun i _ => ?_)
       simp [Pi.smul_apply, smul_eq_mul]; ring
@@ -7147,7 +7147,7 @@ theorem congestion_VI_Jflux_L1_diff_at
     have hdot_le : ∀ M : ℝ, |J x p M ⬝ (fun i => q i x)|
         ≤ ‖J x p M‖ * (∑ i, |q i x|) := by
       intro M
-      unfold euclideanDot
+      unfold dotProduct
       refine le_trans (Finset.abs_sum_le_sum_abs _ _) ?_
       rw [Finset.mul_sum]
       refine Finset.sum_le_sum (fun i _ => ?_)
@@ -7803,7 +7803,7 @@ theorem congestion_VI_hdir_at_witness
                 (Fin d → ℝ) → ℝ) x) = (fun _ => (0 : ℝ)) := by
           funext i; ring
         rw [hz]
-        unfold euclideanDot
+        unfold dotProduct
         simp
       rw [hint, MeasureTheory.integral_zero]
     have h2 : (∫ x in UnitCube d,
@@ -7844,7 +7844,7 @@ theorem congestion_VI_hdir_at_witness
                 (Fin d → ℝ) → ℝ) x) = (fun _ => (0 : ℝ)) := by
           funext i; ring
         rw [hz]
-        unfold euclideanDot
+        unfold dotProduct
         simp
       rw [hint, MeasureTheory.integral_zero]
     rw [h1, h2]; norm_num

@@ -263,7 +263,7 @@ example :
           (fun _ _ => 0) (fun _ => 1) x
         = 0 := by
   intro x
-  unfold coerciveHamIntegrand euclideanDot
+  unfold coerciveHamIntegrand dotProduct
   simp
 
 /-- **Unit test**: at the trivial Hamiltonian `H = 0`, `D_pH = 0`, with
@@ -278,7 +278,7 @@ example
           Du m x
         = 0 := by
   intro x
-  unfold coerciveHamIntegrand euclideanDot
+  unfold coerciveHamIntegrand dotProduct
   simp
 
 /-! ## Pointwise lower bound on the coercivity integrand
@@ -323,7 +323,7 @@ private lemma abs_euclideanDot_le_dim_mul_norm_mul_norm
     (v w : Fin d → ℝ) :
     |v ⬝ w| ≤ d * ‖v‖ * ‖w‖ := by
   -- Unfold the dot product and bound the sum.
-  unfold euclideanDot
+  unfold dotProduct
   -- `|∑ v_i w_i| ≤ ∑ |v_i w_i|`.
   have h1 : |∑ i, v i * w i| ≤ ∑ i : Fin d, |v i * w i| :=
     Finset.abs_sum_le_sum_abs _ _
@@ -2335,7 +2335,7 @@ d → ℝ`, `v ⬝ v = Σ vᵢ² ≤ d · max(vᵢ²) = d · ‖v‖²`, using t
 `‖v‖ = max_i |vᵢ|`. -/
 private lemma euclideanDot_self_le_dim_mul_norm_sq (v : Fin d → ℝ) :
     v ⬝ v ≤ (d : ℝ) * ‖v‖ ^ 2 := by
-  unfold euclideanDot
+  unfold dotProduct
   have h1 : ∀ i : Fin d, v i * v i ≤ ‖v‖ * ‖v‖ := by
     intro i
     have hvi : |v i| ≤ ‖v‖ := by
@@ -2362,7 +2362,7 @@ private lemma euclideanDot_self_le_dim_mul_norm_sq (v : Fin d → ℝ) :
 /-- **Nonnegativity of the Euclidean dot square**. -/
 private lemma euclideanDot_self_nonneg (v : Fin d → ℝ) :
     0 ≤ v ⬝ v := by
-  unfold euclideanDot
+  unfold dotProduct
   refine Finset.sum_nonneg ?_
   intro i _
   exact mul_self_nonneg _
@@ -2395,7 +2395,7 @@ lemma per_coord_pow_le_euclideanDot_pow
   have habs_nn : 0 ≤ |v i| := abs_nonneg _
   -- Step 1: `v_i² ≤ v ⬝ v`.
   have h_sq_le : v i * v i ≤ v ⬝ v := by
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.single_le_sum (f := fun j => v j * v j) ?_ (Finset.mem_univ i)
     intro j _
     exact mul_self_nonneg _
@@ -2807,7 +2807,7 @@ private lemma euclideanDot_rpow_half_le_sum_abs_rpow
   have hp_pos : 0 < p := lt_of_lt_of_le Real.zero_lt_one hp
   -- Step A: `v ⬝ v = ∑ (v i)^2 ≤ (∑ |v i|)^2`.
   have hdot_nn : 0 ≤ v ⬝ v := by
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.sum_nonneg ?_
     intro i _
     have h := sq_nonneg (v i)
@@ -2815,7 +2815,7 @@ private lemma euclideanDot_rpow_half_le_sum_abs_rpow
   have habs_sum_nn : 0 ≤ ∑ i, |v i| :=
     Finset.sum_nonneg (fun i _ => abs_nonneg _)
   have hAA : v ⬝ v ≤ (∑ i, |v i|) ^ 2 := by
-    unfold euclideanDot
+    unfold dotProduct
     -- `(∑ |v i|)^2 = (∑ i, |v i|) * (∑ j, |v j|) = ∑ i, ∑ j, |v i| * |v j|`.
     rw [sq, Finset.sum_mul_sum]
     -- Show `∑ i, v i * v i ≤ ∑ i, ∑ j, |v i| * |v j|`.
@@ -2972,7 +2972,7 @@ theorem integrable_euclideanDot_rpow_half_of_coord_memLp
       AEStronglyMeasurable
         (fun x => (fun i => Du i x) ⬝ (fun i => Du i x))
         (volume.restrict (UnitCube d)) := by
-    -- `euclideanDot v v = ∑ i, v i * v i` — a finset sum of squares of
+    -- `dotProduct v v = ∑ i, v i * v i` — a finset sum of squares of
     -- coordinate projections.
     have : (fun x : (Fin d → ℝ) =>
               (fun i => Du i x) ⬝ (fun i => Du i x))
@@ -2999,7 +2999,7 @@ theorem integrable_euclideanDot_rpow_half_of_coord_memLp
   have hLHS_nn : 0 ≤ ((fun i => Du i x) ⬝ (fun i => Du i x)) ^ (γBarReal / 2) := by
     refine Real.rpow_nonneg ?_ _
     -- `v⬝v = ∑ i, (v i)^2 ≥ 0`.
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.sum_nonneg ?_
     intro i _
     nlinarith [sq_nonneg (Du i x)]

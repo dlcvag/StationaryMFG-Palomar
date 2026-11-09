@@ -456,7 +456,7 @@ theorem K_subdiff_norm_le
   have hvv : v ⬝ v = N ^ 2 := by
     rw [hNdef]
     rw [norm_toEucl_sq]
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.sum_congr rfl ?_
     intro i _
     rw [sq]
@@ -468,7 +468,7 @@ theorem K_subdiff_norm_le
     have hsy := hsub (q₀ + t • v)
     -- `∑ i, v i * ((q₀ + t•v) i - q₀ i) = t * (v ⬝ v)`.
     have hpair : (∑ i, v i * ((q₀ + t • v) i - q₀ i)) = t * (v ⬝ v) := by
-      unfold euclideanDot
+      unfold dotProduct
       rw [Finset.mul_sum]
       refine Finset.sum_congr rfl ?_
       intro i _
@@ -835,7 +835,7 @@ are `d` summands. -/
 private lemma euclideanDot_le_card_mul_norm
     (q v : Fin d → ℝ) :
     q ⬝ v ≤ d * ‖q‖ * ‖v‖ := by
-  unfold euclideanDot
+  unfold dotProduct
   have h_each : ∀ i ∈ (Finset.univ : Finset (Fin d)),
       q i * v i ≤ ‖q‖ * ‖v‖ := by
     intro i _
@@ -967,7 +967,7 @@ private lemma slice_continuous
     Continuous (fun v : Fin d → ℝ => q ⬝ v - K h q) := by
   -- `q ⬝ v` is `∑ i, q i * v i`, continuous in `v`. Subtract a constant.
   have h_dot : Continuous (fun v : Fin d → ℝ => q ⬝ v) := by
-    unfold euclideanDot
+    unfold dotProduct
     refine continuous_finset_sum _ ?_
     intro i _
     exact (continuous_const).mul (continuous_apply i)
@@ -987,7 +987,7 @@ theorem Khat_convex (h : HypothesisWeakGrowth (d := d) H DpH) :
   -- The pairing is bilinear, so q ⬝ (a•v + b•w) = a*(q⬝v) + b*(q⬝w).
   have hpair :
       q ⬝ (a • v + b • w) = a * (q ⬝ v) + b * (q ⬝ w) := by
-    unfold euclideanDot
+    unfold dotProduct
     simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, mul_add,
       Finset.sum_add_distrib, Finset.mul_sum]
     congr 1 <;> · apply Finset.sum_congr rfl; intro i _; ring
@@ -1121,7 +1121,7 @@ private lemma Khat_supremand_continuous
     Continuous (palomar_Kernel_Khat_supremand h v) := by
   unfold palomar_Kernel_Khat_supremand
   have h_dot : Continuous (fun q : Fin d → ℝ => q ⬝ v) := by
-    unfold euclideanDot
+    unfold dotProduct
     refine continuous_finset_sum _ ?_
     intro i _
     exact (continuous_apply i).mul continuous_const
@@ -1161,7 +1161,7 @@ theorem Khat_isMaxOn_exists
     have h_zero_mem : (0 : Fin d → ℝ) ∈ Metric.closedBall (0 : Fin d → ℝ) R :=
       Metric.mem_closedBall_self (le_of_lt hR_pos)
     have h_zero_val : palomar_Kernel_Khat_supremand h v 0 = 0 := by
-      unfold palomar_Kernel_Khat_supremand euclideanDot
+      unfold palomar_Kernel_Khat_supremand dotProduct
       simp [K_zero h]
     have h_q₀_ge_zero : 0 ≤ palomar_Kernel_Khat_supremand h v q₀ := by
       have h_zero_le : palomar_Kernel_Khat_supremand h v 0 ≤ palomar_Kernel_Khat_supremand h v q₀ :=
@@ -1212,7 +1212,7 @@ private lemma negSupremand_strictConvexOn
     -- The function `q ↦ -(q ⬝ v)` is linear, hence we have equality
     -- (not just `≤`). Reduce to a pointwise computation.
     change -((a • x + b • y) ⬝ v) ≤ a • -(x ⬝ v) + b • -(y ⬝ v)
-    unfold euclideanDot
+    unfold dotProduct
     simp only [smul_eq_mul]
     -- Both sides as a sum over `i`.
     have hkey : ∀ i : Fin d,
@@ -1542,7 +1542,7 @@ theorem DKhat_continuous (h : HypothesisWeakGrowth (d := d) H DpH) :
         (fun n => q' ⬝ v_seq (ns (φ n))) Filter.atTop (𝓝 (q' ⬝ v)) := by
       -- `v ↦ q' ⬝ v` is continuous.
       have : Continuous (fun w : Fin d → ℝ => q' ⬝ w) := by
-        unfold euclideanDot
+        unfold dotProduct
         refine continuous_finset_sum _ ?_
         intro i _
         exact continuous_const.mul (continuous_apply i)
@@ -1606,7 +1606,7 @@ lemma abs_euclideanDot_le_card_mul_norm
   have h_neg' : (-q) ⬝ v ≤ d * ‖-q‖ * ‖v‖ :=
     euclideanDot_le_card_mul_norm (d := d) (-q) v
   have h_neg_dot : (-q) ⬝ v = -(q ⬝ v) := by
-    unfold euclideanDot
+    unfold dotProduct
     rw [← Finset.sum_neg_distrib]
     apply Finset.sum_congr rfl
     intro i _
@@ -1634,7 +1634,7 @@ lemma Khat_sub_ge_dot
     Khat_eq_at_DKhat h v
   -- Compute `DKhat h v ⬝ (w - v) = DKhat h v ⬝ w - DKhat h v ⬝ v`.
   have h_lin : DKhat h v ⬝ (w - v) = DKhat h v ⬝ w - DKhat h v ⬝ v := by
-    unfold euclideanDot
+    unfold dotProduct
     rw [← Finset.sum_sub_distrib]
     apply Finset.sum_congr rfl
     intro i _
@@ -1659,7 +1659,7 @@ lemma Khat_sub_le_dot
     unfold Khat
     exact le_ciSup (Khat_bddAbove h v) (DKhat h w)
   have h_lin : DKhat h w ⬝ (w - v) = DKhat h w ⬝ w - DKhat h w ⬝ v := by
-    unfold euclideanDot
+    unfold dotProduct
     rw [← Finset.sum_sub_distrib]
     apply Finset.sum_congr rfl
     intro i _
@@ -1676,7 +1676,7 @@ noncomputable def dotCLM (q : Fin d → ℝ) :
     { toFun := fun w => q ⬝ w
       map_add' := by
         intro x y
-        unfold euclideanDot
+        unfold dotProduct
         rw [← Finset.sum_add_distrib]
         apply Finset.sum_congr rfl
         intro i _
@@ -1684,7 +1684,7 @@ noncomputable def dotCLM (q : Fin d → ℝ) :
         ring
       map_smul' := by
         intro a x
-        unfold euclideanDot
+        unfold dotProduct
         simp only [RingHom.id_apply, smul_eq_mul, Finset.mul_sum]
         apply Finset.sum_congr rfl
         intro i _
@@ -1753,7 +1753,7 @@ theorem Khat_hasFDerivAt
       have h_lin :
           DKhat h w ⬝ (w - v) - DKhat h v ⬝ (w - v) =
             (DKhat h w - DKhat h v) ⬝ (w - v) := by
-        unfold euclideanDot
+        unfold dotProduct
         rw [← Finset.sum_sub_distrib]
         apply Finset.sum_congr rfl
         intro i _

@@ -2189,7 +2189,7 @@ product weak convergence requires component projections through the
 CLM `ContinuousLinearMap.fst`/`.snd` — a routine but bulky transfer
 that we punt to the upstream consumer chain. -/
 
-open Hamiltonian (euclideanDot)
+
 open scoped Hamiltonian
 
 /-- **Per-test input bundle for the limit-passage assembly (F.6).**
@@ -2481,7 +2481,7 @@ private lemma integrable_summand2_step
               * (Dυ i x - T.Du_n k i x)) := by
     funext x
     -- `⬝` unfolds to `∑ i, _`.
-    unfold Hamiltonian.euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -2504,7 +2504,7 @@ private lemma integrable_summand2_lim
             (μ x * DpH x (fun j => Dυ j x) (μ x) i)
               * (Dυ i x - T.Du i x)) := by
     funext x
-    unfold Hamiltonian.euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -2593,7 +2593,7 @@ theorem tendsto_summand2_summed
         = ∑ i : Fin d, (μ x * DpH x (fun j => Dυ j x) (μ x) i)
                            * (Dυ i x - T.Du_n k i x) := by
     intro k x
-    unfold Hamiltonian.euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -2604,7 +2604,7 @@ theorem tendsto_summand2_summed
         = ∑ i : Fin d, (μ x * DpH x (fun j => Dυ j x) (μ x) i)
                            * (Dυ i x - T.Du i x) := by
     intro x
-    unfold Hamiltonian.euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -3095,7 +3095,7 @@ private lemma integrable_summand2_step
             (μ x * DpH x (fun j => Dυ j x) (μ x) i)
               * (Dυ i x - T.Du_n k i x)) := by
     funext x
-    unfold Hamiltonian.euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -3118,7 +3118,7 @@ private lemma integrable_summand2_lim
             (μ x * DpH x (fun j => Dυ j x) (μ x) i)
               * (Dυ i x - T.Du i x)) := by
     funext x
-    unfold Hamiltonian.euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -3236,7 +3236,7 @@ theorem tendsto_summand2_summed
         = ∑ i : Fin d, (μ x * DpH x (fun j => Dυ j x) (μ x) i)
                            * (Dυ i x - T.Du_n k i x) := by
     intro k x
-    unfold Hamiltonian.euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -3247,7 +3247,7 @@ theorem tendsto_summand2_summed
         = ∑ i : Fin d, (μ x * DpH x (fun j => Dυ j x) (μ x) i)
                            * (Dυ i x - T.Du i x) := by
     intro x
-    unfold Hamiltonian.euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _

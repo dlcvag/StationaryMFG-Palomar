@@ -7503,12 +7503,12 @@ theorem iota_FB_integrand_continuous
       set v : Fin d → ℝ := fun i => Du i x + t * Dφ i x with hv
       set w : Fin d → ℝ := fun i => Dφ i x with hw
       show vecAbsPowMinusTwo γBar v * (v ⬝ w) = vecSignedRpow γBar v ⬝ w
-      unfold euclideanDot vecSignedRpow
+      unfold dotProduct vecSignedRpow
       rw [Finset.mul_sum]
       exact Finset.sum_congr rfl (fun i _ => by ring)
     refine continuous_const.mul ?_
     rw [hrw]
-    unfold euclideanDot
+    unfold dotProduct
     refine continuous_finset_sum _ (fun i _ => ?_)
     have hvcont : Continuous (fun t : ℝ => (fun i => Du i x + t * Dφ i x)) := by
       refine continuous_pi (fun j => ?_)
@@ -7618,7 +7618,7 @@ theorem iota_FA_continuous_at_zero_ae
     have hdot : Continuous
         (fun t : ℝ => DpH x (fun i => Du i x + t * Dφ i x) (m x)
             ⬝ (fun i => Dφ i x)) := by
-      unfold euclideanDot
+      unfold dotProduct
       refine continuous_finset_sum _ (fun i _ => ?_)
       exact ((continuous_apply i).comp hDpH_path).mul continuous_const
     have hcont : Continuous
@@ -7820,7 +7820,7 @@ theorem iota_FA_continuous_at_zero_ae_J
   have hdot : Continuous
       (fun t : ℝ => J x (fun i => Du i x + t * Dφ i x) (m x)
           ⬝ (fun i => Dφ i x)) := by
-    unfold euclideanDot
+    unfold dotProduct
     refine continuous_finset_sum _ (fun i _ => ?_)
     exact ((continuous_apply i).comp hJ_path).mul continuous_const
   have hcont : Continuous
@@ -8208,7 +8208,7 @@ theorem iota_transport_smooth_assembled
           (DpH x (fun i => Du i x + t * Dφ i x) (m x) ⬝ (fun i => t * Dφ i x))
             = t * (DpH x (fun i => Du i x + t * Dφ i x) (m x)
                 ⬝ (fun i => Dφ i x)) := by
-        unfold euclideanDot
+        unfold dotProduct
         rw [Finset.mul_sum]
         exact Finset.sum_congr rfl (fun i _ => by ring)
       simp only []
@@ -8228,7 +8228,7 @@ theorem iota_transport_smooth_assembled
       have hdot :
           ((fun i => Du i x + t * Dφ i x) ⬝ (fun i => t * Dφ i x))
             = t * ((fun i => Du i x + t * Dφ i x) ⬝ (fun i => Dφ i x)) := by
-        unfold euclideanDot
+        unfold dotProduct
         rw [Finset.mul_sum]
         exact Finset.sum_congr rfl (fun i _ => by ring)
       simp only []
@@ -8359,7 +8359,7 @@ theorem iota_transport_smooth_assembled_J
           (J x (fun i => Du i x + t * Dφ i x) (m x) ⬝ (fun i => t * Dφ i x))
             = t * (J x (fun i => Du i x + t * Dφ i x) (m x)
                 ⬝ (fun i => Dφ i x)) := by
-        unfold euclideanDot
+        unfold dotProduct
         rw [Finset.mul_sum]
         exact Finset.sum_congr rfl (fun i _ => by ring)
       simp only []
@@ -8377,7 +8377,7 @@ theorem iota_transport_smooth_assembled_J
       have hdot :
           ((fun i => Du i x + t * Dφ i x) ⬝ (fun i => t * Dφ i x))
             = t * ((fun i => Du i x + t * Dφ i x) ⬝ (fun i => Dφ i x)) := by
-        unfold euclideanDot
+        unfold dotProduct
         rw [Finset.mul_sum]
         exact Finset.sum_congr rfl (fun i _ => by ring)
       simp only []

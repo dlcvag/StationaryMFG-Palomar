@@ -4187,7 +4187,7 @@ noncomputable def T3RegularizedStrongFamily.of_paperHypotheses
               * (t - s))
     (hVecMono :
       ∀ v w : Fin d → ℝ,
-        0 ≤ StationaryMFG.Hamiltonian.euclideanDot
+        0 ≤ dotProduct
               (StationaryMFG.Solutions.MFG.vecAbsPowMinusTwo
                 (hweak.α * (hweak.β + 1) / hweak.β) v • v
               - StationaryMFG.Solutions.MFG.vecAbsPowMinusTwo

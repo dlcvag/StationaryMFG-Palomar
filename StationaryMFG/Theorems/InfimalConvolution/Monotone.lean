@@ -74,41 +74,41 @@ variable {DpH : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → (Fin d → ℝ)}
 
 /-! ## Algebraic helpers -/
 
-/-- Scalar multiplication distributes through `euclideanDot` on the
+/-- Scalar multiplication distributes through `dotProduct` on the
 left: `(σ • v) ⬝ w = σ * (v ⬝ w)`. Note that `σ • v` for `v : Fin d → ℝ`
 unfolds pointwise to `fun i => σ * v i`. -/
 private lemma euclideanDot_smul_left (σ : ℝ) (v w : Fin d → ℝ) :
     (σ • v) ⬝ w = σ * (v ⬝ w) := by
-  unfold euclideanDot
+  unfold dotProduct
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl ?_
   intro i _
   simp [Pi.smul_apply, smul_eq_mul, mul_assoc]
 
-/-- Bilinearity of `euclideanDot` in the right slot: `v ⬝ (w₁ + w₂) = v ⬝ w₁ + v ⬝ w₂`. -/
+/-- Bilinearity of `dotProduct` in the right slot: `v ⬝ (w₁ + w₂) = v ⬝ w₁ + v ⬝ w₂`. -/
 private lemma euclideanDot_add_right (v w₁ w₂ : Fin d → ℝ) :
     v ⬝ (w₁ + w₂) = v ⬝ w₁ + v ⬝ w₂ := by
-  unfold euclideanDot
+  unfold dotProduct
   rw [← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl ?_
   intro i _
   simp [Pi.add_apply]; ring
 
-/-- Bilinearity of `euclideanDot` in the right slot under subtraction:
+/-- Bilinearity of `dotProduct` in the right slot under subtraction:
 `v ⬝ (w₁ − w₂) = v ⬝ w₁ − v ⬝ w₂`. -/
 private lemma euclideanDot_sub_right (v w₁ w₂ : Fin d → ℝ) :
     v ⬝ (w₁ - w₂) = v ⬝ w₁ - v ⬝ w₂ := by
-  unfold euclideanDot
+  unfold dotProduct
   rw [← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl ?_
   intro i _
   simp [Pi.sub_apply]; ring
 
-/-- Bilinearity of `euclideanDot` in the left slot under subtraction:
+/-- Bilinearity of `dotProduct` in the left slot under subtraction:
 `(v₁ − v₂) ⬝ w = v₁ ⬝ w − v₂ ⬝ w`. -/
 private lemma euclideanDot_sub_left (v₁ v₂ w : Fin d → ℝ) :
     (v₁ - v₂) ⬝ w = v₁ ⬝ w - v₂ ⬝ w := by
-  unfold euclideanDot
+  unfold dotProduct
   rw [← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl ?_
   intro i _
@@ -200,7 +200,7 @@ lemma Hdelta_monotone_pointwise
   have hflip₁ : G₁ ⬝ (q₁ - q₂) = -s12 := by
     have hq : q₁ - q₂ = -(q₂ - q₁) := by
       ext i; simp only [Pi.sub_apply, Pi.neg_apply]; ring
-    unfold euclideanDot at *
+    unfold dotProduct at *
     -- `∑ i, G₁ i * (q₁ - q₂) i = -∑ i, G₁ i * (q₂ - q₁) i`.
     have : ∀ i, G₁ i * (q₁ - q₂) i = -(G₁ i * (q₂ - q₁) i) := by
       intro i

@@ -437,7 +437,7 @@ theorem young_congestion_case {α β τ : ℝ} (hα : 1 < α) (hβ : 0 < β)
 
 /-! ### Intermediate inequality `(eq:boundsH+1)` from convexity-at-zero -/
 
-/-- **Coordinate Cauchy–Schwarz for `euclideanDot`.** For any
+/-- **Coordinate Cauchy–Schwarz for `dotProduct`.** For any
 `v, w : Fin d → ℝ`, `v ⬝ w ≤ d · ‖v‖ · ‖w‖`. (Local copy of the
 `Coercivity.lean` helper, re-derived here to keep `Congestion.lean`
 self-contained; `Coercivity.lean` is downstream of this module.) -/
@@ -446,7 +446,7 @@ private lemma euclideanDot_le_dim_mul_norm_mul_norm
     v ⬝ w ≤ d * ‖v‖ * ‖w‖ := by
   -- `v ⬝ w ≤ |v ⬝ w| = |∑ v_i w_i| ≤ ∑ |v_i w_i| ≤ d · ‖v‖ · ‖w‖`.
   refine le_trans (le_abs_self _) ?_
-  unfold euclideanDot
+  unfold dotProduct
   have h1 : |∑ i, v i * w i| ≤ ∑ i : Fin d, |v i * w i| :=
     Finset.abs_sum_le_sum_abs _ _
   have h2 : ∀ i : Fin d, |v i * w i| ≤ ‖v‖ * ‖w‖ := by

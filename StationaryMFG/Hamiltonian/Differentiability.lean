@@ -51,7 +51,7 @@ Per `docs/CONVENTIONS.md`:
 * Points `x` live in `Fin d → ℝ`; "for a.e. `x ∈ 𝕋^d`" is the
   measure restriction `volume.restrict (UnitCube d)`.
 * `‖p‖` is the sup-norm on `Fin d → ℝ`. The dot product
-  `D_pH(x, p, m) ⬝ w` is `euclideanDot` from
+  `D_pH(x, p, m) ⬝ w` is `dotProduct` from
   `StationaryMFG/Hamiltonian/Assumptions.lean`.
 * The Fréchet derivative is taken in the sup-norm topology on
   `Fin d → ℝ`. The continuous linear functional `dotCLMHam q` is
@@ -72,7 +72,7 @@ variable {d : ℕ}
 /-! ## Auxiliary: `dotCLMHam`
 
 `dotCLMHam q : (Fin d → ℝ) →L[ℝ] ℝ` is the continuous linear
-functional `w ↦ q ⬝ w` (`euclideanDot`), packaged as a CLM. This
+functional `w ↦ q ⬝ w` (`dotProduct`), packaged as a CLM. This
 mirrors `StationaryMFG.InfimalConvolution.dotCLM`; we duplicate the
 construction here so that the differentiability rider can be stated
 inside the `Hamiltonian` namespace without importing
@@ -83,7 +83,7 @@ inside the `Hamiltonian` namespace without importing
 `‖q‖ * ‖x‖`, and there are `d` summands. -/
 private lemma euclideanDot_le_card_mul_norm
     (q v : Fin d → ℝ) : q ⬝ v ≤ (d : ℝ) * (‖q‖ * ‖v‖) := by
-  unfold euclideanDot
+  unfold dotProduct
   calc ∑ i, q i * v i
       ≤ ∑ _i : Fin d, ‖q‖ * ‖v‖ := by
         refine Finset.sum_le_sum ?_
@@ -106,7 +106,7 @@ private lemma abs_euclideanDot_le_card_mul_norm
   have h1 := euclideanDot_le_card_mul_norm (d := d) q v
   have h2 := euclideanDot_le_card_mul_norm (d := d) (-q) v
   have hneg : (-q) ⬝ v = -(q ⬝ v) := by
-    unfold euclideanDot
+    unfold dotProduct
     simp [Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]
   rw [hneg] at h2
   -- `(-q) ⬝ v = -q ⬝ v ≤ d * ‖-q‖ * ‖v‖ = d * ‖q‖ * ‖v‖`.
@@ -131,7 +131,7 @@ noncomputable def dotCLMHam (q : Fin d → ℝ) :
     { toFun := fun w => q ⬝ w
       map_add' := by
         intro x y
-        unfold euclideanDot
+        unfold dotProduct
         rw [← Finset.sum_add_distrib]
         refine Finset.sum_congr rfl ?_
         intro i _
@@ -139,7 +139,7 @@ noncomputable def dotCLMHam (q : Fin d → ℝ) :
         ring
       map_smul' := by
         intro a x
-        unfold euclideanDot
+        unfold dotProduct
         simp only [RingHom.id_apply, smul_eq_mul, Finset.mul_sum]
         refine Finset.sum_congr rfl ?_
         intro i _
@@ -157,7 +157,7 @@ noncomputable def dotCLMHam (q : Fin d → ℝ) :
 @[simp] lemma dotCLMHam_zero :
     dotCLMHam (0 : Fin d → ℝ) = 0 := by
   ext w
-  simp [dotCLMHam_apply, euclideanDot]
+  simp [dotCLMHam_apply, dotProduct]
 
 /-! ## Paper rider `HypothesisHpDifferentiable`
 

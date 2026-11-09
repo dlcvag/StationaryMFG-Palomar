@@ -341,7 +341,7 @@ lemma aepsiPairingDiff_integrand_eq
   -- Both sides are explicit algebraic expressions; expand `llPointwise`,
   -- `gateauxPointwise`, the dot products and the `Pi.sub_apply`s, then
   -- normalise with `Finset.sum_sub_distrib` and `ring`.
-  unfold llPointwise gateauxPointwise euclideanDot
+  unfold llPointwise gateauxPointwise dotProduct
   simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
   -- Normalize: push the `m_i x` factor inside the LHS dot-product sums.
   have hL_mfg₁ :
@@ -644,7 +644,7 @@ example {γBar ε : ℝ} :
         (fun _ => (1 : ℝ)) (fun _ => (0 : ℝ))
       = 0 := by
   unfold aepsiPairingDiff mfgOperatorEpsPair mfgOperatorPair gateauxWpPair
-    euclideanDot
+    dotProduct
   simp
 
 /-! ## Convexity and (sequential) norm-closedness of `𝓚`
@@ -755,7 +755,7 @@ example :
           (fun _ => 1) (fun _ => 1) x
         = 0 := by
   intro x
-  unfold llPointwise euclideanDot
+  unfold llPointwise dotProduct
   simp
 
 /-- **Unit test**: at `Du₁ = Du₂ = 0`, `u₁ = u₂ = 0`, the Gateaux
@@ -767,7 +767,7 @@ example {γBar : ℝ} :
           (fun _ => 0) (fun _ => 0) x
         = 0 := by
   intro x
-  unfold gateauxPointwise vecAbsPowMinusTwo absPowMinusTwo euclideanDot
+  unfold gateauxPointwise vecAbsPowMinusTwo absPowMinusTwo dotProduct
   simp
 
 /-- **Unit test**: the LL integrand at `Du₁ = Du₂` and `m₁ = m₂` is
@@ -790,7 +790,7 @@ example
     funext i; simp
   have h3 :
       (0 : Fin d → ℝ) ⬝ (fun i => Du i x - Du i x) = 0 := by
-    unfold euclideanDot; simp
+    unfold dotProduct; simp
   rw [h2]
   rw [h3]
   rw [h1]

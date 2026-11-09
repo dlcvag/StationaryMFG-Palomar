@@ -123,7 +123,7 @@ theorem canonicalGradient_eq_of_hasFDerivAt
         (positiveValue H x (p + boundaryMass n • (Pi.single i 1 : Fin d → ℝ)) m -
           positiveValue H x p m) /
           boundaryMass n) atTop (𝓝 (DpH x p m i)) := by
-    simpa [Function.comp_def, positiveValue, hm, euclideanDot, Pi.single_apply,
+    simpa [Function.comp_def, positiveValue, hm, dotProduct, Pi.single_apply,
       smul_eq_mul, div_eq_mul_inv, mul_comm] using ht
   exact hlim.limUnder_eq
 

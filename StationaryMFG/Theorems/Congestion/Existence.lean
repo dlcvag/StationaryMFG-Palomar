@@ -5437,7 +5437,7 @@ lemma mDpHDu_int
   have hDot_aesm : MeasureTheory.AEStronglyMeasurable
       (fun x : Fin d → ℝ =>
         (DpH x (fun i => reps.Du i x) (reps.m x)) ⬝ (fun i => reps.Du i x)) μC := by
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     refine Finset.aestronglyMeasurable_fun_sum (Finset.univ : Finset (Fin d))
       (f := fun i x => (DpH x (fun j => reps.Du j x) (reps.m x)) i * reps.Du i x) ?_
     intro i _
@@ -5549,7 +5549,7 @@ lemma mDpHDu_int
         intro Jv
         have hdot_le : ∀ w : Fin d → ℝ, w ⬝ p ≤ (d : ℝ) * ‖w‖ * ‖p‖ := by
           intro w
-          unfold StationaryMFG.Hamiltonian.euclideanDot
+          unfold dotProduct
           have h_each : ∀ i ∈ (Finset.univ : Finset (Fin d)),
               w i * p i ≤ ‖w‖ * ‖p‖ := by
             intro i _
@@ -5571,7 +5571,7 @@ lemma mDpHDu_int
         have hlower : -(Jv ⬝ p) ≤ (d : ℝ) * ‖Jv‖ * ‖p‖ := by
           have hneg := hdot_le (-Jv)
           have hdot_neg : (-Jv) ⬝ p = -(Jv ⬝ p) := by
-            unfold StationaryMFG.Hamiltonian.euclideanDot
+            unfold dotProduct
             rw [← Finset.sum_neg_distrib]
             exact Finset.sum_congr rfl (fun i _ => by simp [Pi.neg_apply, neg_mul])
           rwa [hdot_neg, norm_neg] at hneg
@@ -5591,7 +5591,7 @@ lemma mDpHDu_int
         -- `J⬝p = (m•q)⬝p = m·(q⬝p)`.
         have hJdot : J x p (reps.m x) ⬝ p = reps.m x * (q ⬝ p) := by
           rw [hJeq]
-          unfold StationaryMFG.Hamiltonian.euclideanDot
+          unfold dotProduct
           rw [Finset.mul_sum]
           exact Finset.sum_congr rfl (fun i _ => by
             simp [Pi.smul_apply, smul_eq_mul]; ring)
@@ -7067,7 +7067,7 @@ lemma mDpHDu_int
   have hDot_aesm : MeasureTheory.AEStronglyMeasurable
       (fun x : Fin d → ℝ =>
         (DpH x (fun i => reps.Du i x) (reps.m x)) ⬝ (fun i => reps.Du i x)) μC := by
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     refine Finset.aestronglyMeasurable_fun_sum (Finset.univ : Finset (Fin d))
       (f := fun i x => (DpH x (fun j => reps.Du j x) (reps.m x)) i * reps.Du i x) ?_
     intro i _
@@ -7179,7 +7179,7 @@ lemma mDpHDu_int
         intro Jv
         have hdot_le : ∀ w : Fin d → ℝ, w ⬝ p ≤ (d : ℝ) * ‖w‖ * ‖p‖ := by
           intro w
-          unfold StationaryMFG.Hamiltonian.euclideanDot
+          unfold dotProduct
           have h_each : ∀ i ∈ (Finset.univ : Finset (Fin d)),
               w i * p i ≤ ‖w‖ * ‖p‖ := by
             intro i _
@@ -7201,7 +7201,7 @@ lemma mDpHDu_int
         have hlower : -(Jv ⬝ p) ≤ (d : ℝ) * ‖Jv‖ * ‖p‖ := by
           have hneg := hdot_le (-Jv)
           have hdot_neg : (-Jv) ⬝ p = -(Jv ⬝ p) := by
-            unfold StationaryMFG.Hamiltonian.euclideanDot
+            unfold dotProduct
             rw [← Finset.sum_neg_distrib]
             exact Finset.sum_congr rfl (fun i _ => by simp [Pi.neg_apply, neg_mul])
           rwa [hdot_neg, norm_neg] at hneg
@@ -7221,7 +7221,7 @@ lemma mDpHDu_int
         -- `J⬝p = (m•q)⬝p = m·(q⬝p)`.
         have hJdot : J x p (reps.m x) ⬝ p = reps.m x * (q ⬝ p) := by
           rw [hJeq]
-          unfold StationaryMFG.Hamiltonian.euclideanDot
+          unfold dotProduct
           rw [Finset.mul_sum]
           exact Finset.sum_congr rfl (fun i _ => by
             simp [Pi.smul_apply, smul_eq_mul]; ring)

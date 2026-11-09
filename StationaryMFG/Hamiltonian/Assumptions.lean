@@ -366,52 +366,46 @@ inequality that drives the entire monotone-operator approach to
 existence and uniqueness in mean-field games.
 -/
 
-/-- The standard Euclidean dot product on `Fin d → ℝ`, written as a
-finite sum of coordinatewise products. We use this instead of
-Mathlib's `inner` to keep statements free of `InnerProductSpace`
-typeclass overhead at the level of the assumption bundle. -/
-def euclideanDot {d : ℕ} (v w : Fin d → ℝ) : ℝ :=
-  ∑ i, v i * w i
-
-@[inherit_doc] scoped infixl:72 " ⬝ " => euclideanDot
+/-- Mathlib coordinate dot product; the coordinate space keeps its supremum norm. -/
+scoped infixl:72 " ⬝ " => dotProduct
 
 /-- The dot product of any vector with the zero vector vanishes. -/
 @[simp] lemma euclideanDot_zero_left {d : ℕ} (w : Fin d → ℝ) :
     (0 : Fin d → ℝ) ⬝ w = 0 := by
-  unfold euclideanDot
+  unfold dotProduct
   simp
 
 /-- The dot product of the zero vector with any vector vanishes. -/
 @[simp] lemma euclideanDot_zero_right {d : ℕ} (v : Fin d → ℝ) :
     v ⬝ (0 : Fin d → ℝ) = 0 := by
-  unfold euclideanDot
+  unfold dotProduct
   simp
 
-/-- Homogeneity of `euclideanDot` in the left slot:
+/-- Homogeneity of `dotProduct` in the left slot:
 `(σ • v) ⬝ w = σ * (v ⬝ w)`. -/
 lemma euclideanDot_smul_left {d : ℕ} (σ : ℝ) (v w : Fin d → ℝ) :
     (σ • v) ⬝ w = σ * (v ⬝ w) := by
-  unfold euclideanDot
+  unfold dotProduct
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl ?_
   intro i _
   simp [Pi.smul_apply, smul_eq_mul, mul_assoc]
 
-/-- Homogeneity of `euclideanDot` in the right slot:
+/-- Homogeneity of `dotProduct` in the right slot:
 `v ⬝ (σ • w) = σ * (v ⬝ w)`. -/
 lemma euclideanDot_smul_right {d : ℕ} (σ : ℝ) (v w : Fin d → ℝ) :
     v ⬝ (σ • w) = σ * (v ⬝ w) := by
-  unfold euclideanDot
+  unfold dotProduct
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl ?_
   intro i _
   simp [Pi.smul_apply, smul_eq_mul]; ring
 
-/-- Bilinearity of `euclideanDot` in the left slot under subtraction:
+/-- Bilinearity of `dotProduct` in the left slot under subtraction:
 `(v₁ − v₂) ⬝ w = v₁ ⬝ w − v₂ ⬝ w`. -/
 lemma euclideanDot_sub_left {d : ℕ} (v₁ v₂ w : Fin d → ℝ) :
     (v₁ - v₂) ⬝ w = v₁ ⬝ w - v₂ ⬝ w := by
-  unfold euclideanDot
+  unfold dotProduct
   rw [← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl ?_
   intro i _
@@ -810,7 +804,7 @@ noncomputable def simpleHypothesisPowerGrowth (d : ℕ) :
     have hmrpow : m ^ (1 : ℝ) = m := Real.rpow_one m
     -- Rewrite the dot product `(2 • p) ⬝ p`.
     have hdot : ((2 : ℝ) • p) ⬝ p = 2 * (p ⬝ p) := by
-      unfold euclideanDot
+      unfold dotProduct
       rw [Finset.mul_sum]
       apply Finset.sum_congr rfl
       intro i _
@@ -818,7 +812,7 @@ noncomputable def simpleHypothesisPowerGrowth (d : ℕ) :
       ring
     -- `p ⬝ p = ∑ p_i^2 ≥ 0`.
     have hpp_nn : (0 : ℝ) ≤ p ⬝ p := by
-      unfold euclideanDot
+      unfold dotProduct
       exact Finset.sum_nonneg (fun i _ => mul_self_nonneg (p i))
     -- `‖p‖^2 ≤ p ⬝ p`: `(max|p_i|)^2 ≤ ∑ p_i^2`.
     have hnorm_le : (‖p‖ : ℝ) ^ (2 : ℝ) ≤ p ⬝ p := by
@@ -834,7 +828,7 @@ noncomputable def simpleHypothesisPowerGrowth (d : ℕ) :
         have hpz : ‖p‖ = 0 := by
           rw [show p = 0 from Subsingleton.elim _ _]; exact norm_zero
         rw [hpz]
-        unfold euclideanDot
+        unfold dotProduct
         simp
       · -- d > 0: pick i₀ such that ‖p i₀‖ = ‖p‖. Then
         -- ‖p‖² = (p i₀)² ≤ ∑ (p i)² = p ⬝ p.
@@ -854,7 +848,7 @@ noncomputable def simpleHypothesisPowerGrowth (d : ℕ) :
         have hp_sq : (‖p‖ : ℝ) ^ (2 : ℕ) = (p i₀) * (p i₀) := by
           rw [hsup_eq, Real.norm_eq_abs, sq, ← abs_mul, abs_mul_self]
         rw [hp_sq]
-        unfold euclideanDot
+        unfold dotProduct
         refine Finset.single_le_sum (f := fun i => p i * p i) ?_
           (Finset.mem_univ i₀)
         intro j _

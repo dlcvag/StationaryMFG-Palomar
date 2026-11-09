@@ -14,13 +14,13 @@ statement specification, not unfinished proofs in Solution.
 **Verification status:** the full build passes on Lean 4.35.0, including
 `Solution` and the integrability audits. All three Solution theorems and the
 audited integrability results use only `propext`, `Classical.choice`, and
-`Quot.sound`. On 2026-11-07, a fresh `lake comparator` accepted all three
-comparisons for the compact challenge and Lean's kernel accepted the solution.
-That local macOS run used
-`--inadvisably-no-sandbox`. The [official Linux preflight](https://github.com/dlcvag/StationaryMFG-Palomar/actions/runs/41992045149)
-also passed for the earlier commit `bae4d08`, including Comparator and the
-NanoDa and con-ron proof checks. That preflight predates the compact challenge;
-each submission must use a snapshot with its own passing preflight.
+`Quot.sound`. On 2026-11-09, a fresh `lake comparator` accepted all three
+comparisons after replacing the custom coordinate pairing with Mathlib's
+`dotProduct`, and Lean's kernel accepted the solution. That local macOS run
+used `--inadvisably-no-sandbox`. The [official Linux preflight](https://github.com/dlcvag/StationaryMFG-Palomar/actions/runs/42484842541)
+passed on 2026-11-08 for commit `47150df`, including Comparator and the challenge
+provenance audit. That preflight predates the `dotProduct` refactor; each
+submission must use a snapshot with its own passing preflight.
 No Palomar editorial review or registration is claimed.
 
 ## Mathematical content
@@ -135,8 +135,11 @@ growth bundles using the shared regularity.
   after a null-set modification. The relevant integrals are unchanged.
 
 The challenge keeps the derivative formulas, growth inequalities, boundary
-extension, and solution conditions explicit. Mathlib supplies the elementary
-continuous linear map for the dot product. Only the three main existence
+extension, and solution conditions explicit. Its `⬝` notation denotes Mathlib's
+`dotProduct`, the sum of coordinatewise products; there is no separate project
+definition of that operation. This leaves the coordinate space's sup norm
+unchanged. Mathlib also supplies the elementary continuous linear map used for
+the momentum derivative. Only the three main existence
 theorems have proof holes; the simplifications introduce no additional
 unproved definitions or assumptions. `Solution.lean` proves equivalence of the
 compact function-space, solution, and regularity conditions with their

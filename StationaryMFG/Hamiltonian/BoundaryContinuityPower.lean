@@ -26,9 +26,9 @@ open scoped ENNReal
 variable {d : ℕ}
 
 private lemma boundary_abs_dot_le (v w : Fin d → ℝ) :
-    |euclideanDot v w| ≤ (d : ℝ) * ‖v‖ * ‖w‖ := by
+    |dotProduct v w| ≤ (d : ℝ) * ‖v‖ * ‖w‖ := by
   calc
-    |euclideanDot v w| ≤ ∑ i, |v i * w i| := Finset.abs_sum_le_sum_abs _ _
+    |dotProduct v w| ≤ ∑ i, |v i * w i| := Finset.abs_sum_le_sum_abs _ _
     _ ≤ ∑ _i : Fin d, ‖v‖ * ‖w‖ := by
       apply Finset.sum_le_sum
       intro i _
@@ -56,7 +56,7 @@ private lemma boundary_scaled_upper
     (hF : ∀ p m, 0 < m → ‖F p m‖ ≤ C * (‖p‖ ^ a + m ^ b + 1))
     (hmon : ∀ p₁ m₁ p₂ m₂, 0 < m₁ → 0 < m₂ →
       0 ≤ (-H p₁ m₁ + H p₂ m₂) * (m₁ - m₂) +
-        euclideanDot (m₁ • F p₁ m₁ - m₂ • F p₂ m₂) (p₁ - p₂))
+        dotProduct (m₁ • F p₁ m₁ - m₂ • F p₂ m₂) (p₁ - p₂))
     {p q : Fin d → ℝ} {m : ℝ}
     (hp : ‖p‖ ≤ R) (hq : ‖q‖ ≤ R) (hm : 0 < m) (hm1 : m ≤ 1) :
     H p m - H q (m / 2) ≤
@@ -74,8 +74,8 @@ private lemma boundary_scaled_upper
   have hmono := hmon p m q (m / 2) hm (half_pos hm)
   rw [euclideanDot_sub_left, euclideanDot_smul_left, euclideanDot_smul_left] at hmono
   have hfactor : 0 ≤ (-H p m + H q (m / 2) +
-      2 * euclideanDot (F p m) (p - q) -
-      euclideanDot (F q (m / 2)) (p - q)) * (m / 2) := by
+      2 * dotProduct (F p m) (p - q) -
+      dotProduct (F q (m / 2)) (p - q)) * (m / 2) := by
     nlinarith only [hmono]
   have hdiff := nonneg_of_mul_nonneg_left hfactor (half_pos hm)
   have hdp' := (abs_le.mp hdp).2
@@ -90,7 +90,7 @@ private lemma boundary_trace_upper
     (hF : ∀ p m, 0 < m → ‖F p m‖ ≤ C * (‖p‖ ^ a + m ^ b + 1))
     (hmon : ∀ p₁ m₁ p₂ m₂, 0 < m₁ → 0 < m₂ →
       0 ≤ (-H p₁ m₁ + H p₂ m₂) * (m₁ - m₂) +
-        euclideanDot (m₁ • F p₁ m₁ - m₂ • F p₂ m₂) (p₁ - p₂))
+        dotProduct (m₁ • F p₁ m₁ - m₂ • F p₂ m₂) (p₁ - p₂))
     (hlim : ∀ p, Tendsto (H p) (𝓝[>] (0 : ℝ)) (𝓝 (H p 0)))
     {p q : Fin d → ℝ} (hp : ‖p‖ ≤ R) (hq : ‖q‖ ≤ R) :
     H p 0 - H q 0 ≤ (3 * (d : ℝ) * (C * (R ^ a + 2))) * ‖p - q‖ := by
@@ -115,7 +115,7 @@ private lemma continuous_boundary_trace_of_power_bound
     (hF : ∀ p m, 0 < m → ‖F p m‖ ≤ C * (‖p‖ ^ a + m ^ b + 1))
     (hmon : ∀ p₁ m₁ p₂ m₂, 0 < m₁ → 0 < m₂ →
       0 ≤ (-H p₁ m₁ + H p₂ m₂) * (m₁ - m₂) +
-        euclideanDot (m₁ • F p₁ m₁ - m₂ • F p₂ m₂) (p₁ - p₂))
+        dotProduct (m₁ • F p₁ m₁ - m₂ • F p₂ m₂) (p₁ - p₂))
     (hlim : ∀ p, Tendsto (H p) (𝓝[>] (0 : ℝ)) (𝓝 (H p 0))) :
     Continuous (fun p => H p 0) := by
   apply continuous_iff_continuousAt.mpr

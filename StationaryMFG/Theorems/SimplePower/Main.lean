@@ -386,7 +386,7 @@ lemma mfgOperatorPair_smul_test
   have hdot :
       (DpH x (fun i => Dυ i x) (μ x)) ⬝ (fun i => t * Dν i x)
         = t * ((DpH x (fun i => Dυ i x) (μ x)) ⬝ (fun i => Dν i x)) := by
-    unfold euclideanDot
+    unfold dotProduct
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl ?_
     intro i _
@@ -692,14 +692,14 @@ example (d : ℕ) :
               = fun _ : (Fin d → ℝ) => (0:ℝ) := by
           funext x
           unfold aepsiIntegrandAt_unreg cxComb cxCombGrad
-          simp [euclideanDot]
+          simp [dotProduct]
         rw [hzero]
         exact aestronglyMeasurable_const
       · intro t _
         refine Filter.Eventually.of_forall ?_
         intro x
         unfold aepsiIntegrandAt_unreg cxComb cxCombGrad
-        simp [euclideanDot]
+        simp [dotProduct]
       · intro t _
         have hzero :
             (fun x : (Fin d → ℝ) =>
@@ -710,14 +710,14 @@ example (d : ℕ) :
               = fun _ : (Fin d → ℝ) => (0:ℝ) := by
           funext x
           unfold aepsiIntegrandAt_gateaux cxComb cxCombGrad
-          simp [euclideanDot]
+          simp [dotProduct]
         rw [hzero]
         exact aestronglyMeasurable_const
       · intro t _
         refine Filter.Eventually.of_forall ?_
         intro x
         unfold aepsiIntegrandAt_gateaux cxComb cxCombGrad
-        simp [euclideanDot]
+        simp [dotProduct]
   · -- The limit triple is the canonical triple.
     rfl
   · -- Weak VI: the integrand is identically zero.
@@ -735,7 +735,7 @@ example (d : ℕ) :
             ((fun _ => (0:ℝ)) - (fun _ => (0:ℝ)))
           = 0 := by
       unfold mfgOperatorPair
-      simp [euclideanDot]
+      simp [dotProduct]
     rw [hzero]
 
 /-! ## Final conclusion: bundle into `IsStrongSolution`
@@ -850,7 +850,7 @@ theorem main_conclude_isStrongSolution
                   ⬝ (fun i =>
                       (SmoothPeriodic.partialDeriv i φ :
                         (Fin d → ℝ) → ℝ) x)) := by
-          unfold euclideanDot
+          unfold dotProduct
           rw [Finset.mul_sum]
           refine Finset.sum_congr rfl ?_
           intro i _
@@ -942,7 +942,7 @@ example :
             (fun x => S.indicator (fun _ => (1 : ℝ)) x)
             (fun _ => (0 : ℝ)) = 0 := by
       unfold mfgOperatorEpsPair mfgOperatorPair gateauxWpPair
-      simp [euclideanDot]
+      simp [dotProduct]
     rw [hzero]
   · -- Strong-VI signed set form.
     intro σ _hσ S _hSmeas _hSfin
@@ -958,7 +958,7 @@ example :
                 * S.indicator (fun _ => (1 : ℝ)) x)
             (fun _ => (0 : ℝ)) = 0 := by
       unfold mfgOperatorEpsPair mfgOperatorPair gateauxWpPair
-      simp [euclideanDot]
+      simp [dotProduct]
     rw [hzero]
   · -- Strong-VI transport form.
     intro σ _hσ φ
@@ -975,7 +975,7 @@ example :
             (fun _ => (0 : ℝ))
             (fun x => σ * (φ : (Fin d → ℝ) → ℝ) x) = 0 := by
       unfold mfgOperatorEpsPair mfgOperatorPair gateauxWpPair
-      simp [euclideanDot]
+      simp [dotProduct]
     rw [hzero]
 
 /-! ## Phase 4 input bundle for Theorem 1 (`thm:main-simple.power.growth`)

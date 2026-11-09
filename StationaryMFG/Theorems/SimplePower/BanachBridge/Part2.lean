@@ -692,7 +692,7 @@ theorem simplePowerThinChain_of_paperHypotheses
       MeasureTheory.integrable_finset_sum (Finset.univ)
         (fun i _ => hcoord_int i)
     -- Step 6: identify `m · (DpH ⬝ Du) = ∑ i, (mDpH …)_i · Du_i`
-    -- pointwise via `mDpH = m • DpH`, `Pi.smul_apply`, `euclideanDot`,
+    -- pointwise via `mDpH = m • DpH`, `Pi.smul_apply`, `dotProduct`,
     -- and `Finset.mul_sum`.
     refine hsum_int.congr ?_
     refine Filter.Eventually.of_forall (fun x => ?_)
@@ -710,7 +710,7 @@ theorem simplePowerThinChain_of_paperHypotheses
           ((DpH x (fun i => (residues.sol k).Du i x)
               ((residues.sol k).m x)) ⬝
             (fun i => (residues.sol k).Du i x))
-    unfold StationaryMFG.Hamiltonian.mDpH StationaryMFG.Hamiltonian.euclideanDot
+    unfold StationaryMFG.Hamiltonian.mDpH dotProduct
     simp only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
     refine Finset.sum_congr rfl (fun i _ => ?_)
     ring
@@ -1862,7 +1862,7 @@ def trivialThinInputs (d : ℕ) :
             (fun i x => Dυ i x - (fun _ _ => (0 : ℝ)) i x)
             (μ - fun _ => (1 : ℝ)) (υ - fun _ => (0 : ℝ)) = 0 := by
       unfold mfgOperatorPair
-      simp [StationaryMFG.Hamiltonian.euclideanDot]
+      simp [dotProduct]
     rw [hzero]
 
 /-- The thin-input bundle is non-vacuous on the trivial data: there

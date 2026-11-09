@@ -2685,7 +2685,7 @@ lemma palomar_RegularizedSequence_euclideanDot_sub_rpow_le_two_rpow_mul
     ((fun i => a i - b i) ⬝ (fun i => a i - b i)) ^ (γBarReal / 2)
       ≤ (2 : ℝ) ^ γBarReal *
           ((a ⬝ a) ^ (γBarReal / 2) + (b ⬝ b) ^ (γBarReal / 2)) := by
-  -- Use `Real.sqrt(a·a) = ‖a‖` (via euclideanDot ≥ 0) and triangle.
+  -- Use `Real.sqrt(a·a) = ‖a‖` (via dotProduct ≥ 0) and triangle.
   have haa_nn : 0 ≤ a ⬝ a := euclideanDot_self_nonneg a
   have hbb_nn : 0 ≤ b ⬝ b := euclideanDot_self_nonneg b
   have hsubsub_nn : 0 ≤ (fun i => a i - b i) ⬝ (fun i => a i - b i) :=
@@ -2700,7 +2700,7 @@ lemma palomar_RegularizedSequence_euclideanDot_sub_rpow_le_two_rpow_mul
   -- Expand:
   have hexpand : (fun i => a i - b i) ⬝ (fun i => a i - b i)
       = a ⬝ a - 2 * (a ⬝ b) + b ⬝ b := by
-    simp only [euclideanDot]
+    simp only [dotProduct]
     have hpoint : ∀ i, (a i - b i) * (a i - b i)
         = a i * a i - 2 * (a i * b i) + b i * b i := by
       intro i; ring
@@ -2794,7 +2794,7 @@ lemma euclideanDot_self_rpow_le_sum_rpow
     have hsq : (∑ i, |a i|) ^ 2
         = (∑ i, |a i|) * (∑ i, |a i|) := sq _
     have hself : a ⬝ a = ∑ i, |a i| ^ 2 := by
-      simp only [euclideanDot, sq_abs]
+      simp only [dotProduct, sq_abs]
       apply Finset.sum_congr rfl
       intro i _
       ring
@@ -3111,7 +3111,7 @@ noncomputable def gateauxAux_of_paperHypotheses
               ((fun i => (seq.sol k).Du i x)
                 ⬝ (fun i => (seq.sol k).Du i x)))
             (volume.restrict (UnitCube d)) := by
-          unfold euclideanDot
+          unfold dotProduct
           refine Finset.aestronglyMeasurable_fun_sum _ ?_
           intro i _
           exact ((seq.sol k).hDuLp i).aestronglyMeasurable.mul
@@ -3352,7 +3352,7 @@ noncomputable def gateauxAux_of_paperHypotheses_regBundle
         (fun x : Fin d → ℝ =>
           ((fun i => g i x) ⬝ (fun i => g i x)))
         (volume.restrict (UnitCube d)) := by
-      unfold euclideanDot
+      unfold dotProduct
       refine Finset.aestronglyMeasurable_fun_sum _ ?_
       intro i _
       exact (hg i).aestronglyMeasurable.mul (hg i).aestronglyMeasurable
@@ -3706,7 +3706,7 @@ noncomputable def gateauxAux_of_paperHypotheses_familyRestrict
         (fun x : Fin d → ℝ =>
           ((fun i => g i x) ⬝ (fun i => g i x)))
         (volume.restrict (UnitCube d)) := by
-      unfold euclideanDot
+      unfold dotProduct
       refine Finset.aestronglyMeasurable_fun_sum _ ?_
       intro i _
       exact (hg i).aestronglyMeasurable.mul (hg i).aestronglyMeasurable
@@ -3960,7 +3960,7 @@ noncomputable def gateauxAux_of_paperHypotheses_familyRestrict
               ((fun i => (seq.sol k).Du i x)
                 ⬝ (fun i => (seq.sol k).Du i x)))
             (volume.restrict (UnitCube d)) := by
-          unfold euclideanDot
+          unfold dotProduct
           refine Finset.aestronglyMeasurable_fun_sum _ ?_
           intro i _
           exact ((seq.sol k).hDuLp i).aestronglyMeasurable.mul
@@ -5788,7 +5788,7 @@ private lemma mfgOperatorPair_test_pointwise_eq
   intro x _
   have hdot : (DpH x (fun i => Dυ i x) (μ x)) ⬝ (fun i => Dν₁ i x) =
               (DpH x (fun i => Dυ i x) (μ x)) ⬝ (fun i => Dν₂ i x) := by
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     refine Finset.sum_congr rfl ?_
     intro i _
     change DpH x (fun j => Dυ j x) (μ x) i * Dν₁ i x

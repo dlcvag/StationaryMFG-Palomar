@@ -1938,7 +1938,7 @@ private lemma abs_G_grad_pointwise_le
     have hVV_zero' : v ⬝ v = 0 := hVV_zero.symm
     have hVi_zero : v i = 0 := by
       have hsum_eq_zero : (∑ j : Fin d, v j * v j) = 0 := by
-        unfold euclideanDot at hVV_zero'
+        unfold dotProduct at hVV_zero'
         exact hVV_zero'
       have h_each_zero : ∀ j ∈ (Finset.univ : Finset (Fin d)), v j * v j = 0 :=
         (Finset.sum_eq_zero_iff_of_nonneg
@@ -1958,7 +1958,7 @@ private lemma abs_G_grad_pointwise_le
       have hvi_sq_le : (v i)^2 ≤ v ⬝ v := by
         have hsum_split :
             v ⬝ v = (v i)^2 + ∑ j ∈ Finset.univ.erase i, (v j)^2 := by
-          unfold euclideanDot
+          unfold dotProduct
           rw [← Finset.sum_erase_add _ _ (Finset.mem_univ i)]
           simp [sq, add_comm]
         have hrest_nn : 0 ≤ ∑ j ∈ Finset.univ.erase i, (v j)^2 :=
@@ -1990,7 +1990,7 @@ private lemma abs_G_grad_pointwise_le
         rw [sq, Finset.sum_mul_sum]
       rw [hsum_sq]
       have hVV_eq : v ⬝ v = ∑ j : Fin d, |v j| * |v j| := by
-        unfold euclideanDot
+        unfold dotProduct
         refine Finset.sum_congr rfl ?_
         intro j _
         rw [← abs_mul, abs_mul_self]
@@ -2603,7 +2603,7 @@ theorem aepsi_mono_integrability_KAepsi
               + (∑ i : Fin d, F_flux DpH Du₁ m₁ i x * (Du₁ i x - Du₂ i x))
               + F_mass m₁ x * (u₁ - u₂) x) := by
       funext x
-      unfold F_HJB F_flux F_mass euclideanDot
+      unfold F_HJB F_flux F_mass dotProduct
       simp only [Finset.mul_sum]
       ring_nf
     rw [hpt]
@@ -2644,7 +2644,7 @@ theorem aepsi_mono_integrability_KAepsi
               + (∑ i : Fin d, F_flux DpH Du₂ m₂ i x * (Du₁ i x - Du₂ i x))
               + F_mass m₂ x * (u₁ - u₂) x) := by
       funext x
-      unfold F_HJB F_flux F_mass euclideanDot
+      unfold F_HJB F_flux F_mass dotProduct
       simp only [Finset.mul_sum]
       ring_nf
     rw [hpt]
@@ -2679,7 +2679,7 @@ theorem aepsi_mono_integrability_KAepsi
         = (fun x => (∑ i : Fin d, G_grad γBarReal Du₁ i x * (Du₁ i x - Du₂ i x))
               + G_val γBarReal u₁ x * (u₁ - u₂) x) := by
       funext x
-      unfold G_grad G_val euclideanDot
+      unfold G_grad G_val dotProduct
       simp only [Finset.mul_sum]
       ring_nf
     rw [hpt]
@@ -2714,7 +2714,7 @@ theorem aepsi_mono_integrability_KAepsi
         = (fun x => (∑ i : Fin d, G_grad γBarReal Du₂ i x * (Du₁ i x - Du₂ i x))
               + G_val γBarReal u₂ x * (u₁ - u₂) x) := by
       funext x
-      unfold G_grad G_val euclideanDot
+      unfold G_grad G_val dotProduct
       simp only [Finset.mul_sum]
       ring_nf
     rw [hpt]
@@ -8019,7 +8019,7 @@ private lemma private_aestronglyMeasurable_aepsiIntegrandAt_unreg
         DpH x (fun i : Fin d => cxCombGrad Dυ Dῡ t i x) (cxComb μ mBar t x)
           ⬝ (fun i : Fin d => Dν i x))
       (MeasureTheory.volume.restrict (UnitCube d)) := by
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     refine Finset.aemeasurable_fun_sum (s := Finset.univ) (fun i _ => ?_)
     exact (hDpH.eval i).mul (hDν i).aemeasurable
   have hpart1 : AEMeasurable
@@ -8081,14 +8081,14 @@ private lemma private_aestronglyMeasurable_aepsiIntegrandAt_gateaux
         (fun i : Fin d => cxCombGrad Dυ Dῡ t i x)
           ⬝ (fun i : Fin d => cxCombGrad Dυ Dῡ t i x))
       (MeasureTheory.volume.restrict (UnitCube d)) := by
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     refine Finset.aemeasurable_fun_sum (s := Finset.univ) (fun i _ => ?_)
     exact (hpt.eval i).mul (hpt.eval i)
   have hpt_dot_pt_nn : ∀ x,
       0 ≤ (fun i : Fin d => cxCombGrad Dυ Dῡ t i x)
               ⬝ (fun i : Fin d => cxCombGrad Dυ Dῡ t i x) := by
     intro x
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     exact Finset.sum_nonneg (fun i _ => mul_self_nonneg _)
   have hvec : AEMeasurable
       (fun x : (Fin d → ℝ) =>
@@ -8124,7 +8124,7 @@ private lemma private_aestronglyMeasurable_aepsiIntegrandAt_gateaux
         (fun i : Fin d => cxCombGrad Dυ Dῡ t i x)
           ⬝ (fun i : Fin d => Dν i x))
       (MeasureTheory.volume.restrict (UnitCube d)) := by
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     refine Finset.aemeasurable_fun_sum (s := Finset.univ) (fun i _ => ?_)
     exact (hpt.eval i).mul (hDν i).aemeasurable
   have habsυt_nn : ∀ x, (0 : ℝ) ≤ |cxComb υ ῡ t x| := fun x => abs_nonneg _

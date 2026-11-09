@@ -508,7 +508,7 @@ lemma mfgOperatorPair_test_pointwise_eq
   -- Rewrite the dot product to substitute `Dν₁ i x` with `Dν₂ i x`.
   have hdot : (DpH x (fun i => Dυ i x) (μ x)) ⬝ (fun i => Dν₁ i x) =
               (DpH x (fun i => Dυ i x) (μ x)) ⬝ (fun i => Dν₂ i x) := by
-    unfold StationaryMFG.Hamiltonian.euclideanDot
+    unfold dotProduct
     refine Finset.sum_congr rfl ?_
     intro i _
     change DpH x (fun j => Dυ j x) (μ x) i * Dν₁ i x
@@ -682,7 +682,7 @@ are pointwise compositions of the bare functions
 `(m, mBar, υ, ῡ, Dυ, Dῡ, η, ν, Dν, V)`, the joint-measurable
 Hamiltonian functions `H, DpH` (from `RegularityH`), and continuous
 scalar/vector operations (`cxComb`, `cxCombGrad`, `vecAbsPowMinusTwo`,
-`absPowMinusTwo`, `euclideanDot`). The helpers below take
+`absPowMinusTwo`, `dotProduct`). The helpers below take
 AEMeasurable witnesses for each bare ingredient and discharge
 the composition pointwise.
 -/
@@ -800,7 +800,7 @@ lemma aestronglyMeasurable_aepsiIntegrandAt_unreg_of_aeMeasH
         DpH x (fun i : Fin d => cxCombGrad Dυ Dῡ t i x) (cxComb μ mBar t x)
           ⬝ (fun i : Fin d => Dν i x))
       (MeasureTheory.volume.restrict (UnitCube d)) := by
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.aemeasurable_fun_sum (s := Finset.univ) (fun i _ => ?_)
     exact (hDpH.eval i).mul (hDν i).aemeasurable
   -- First summand `(-υt - H x p_t μt + V x) * η x`.
@@ -935,7 +935,7 @@ lemma aestronglyMeasurable_aepsiIntegrandAt_gateaux
         (fun i : Fin d => cxCombGrad Dυ Dῡ t i x)
           ⬝ (fun i : Fin d => cxCombGrad Dυ Dῡ t i x))
       (MeasureTheory.volume.restrict (UnitCube d)) := by
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.aemeasurable_fun_sum (s := Finset.univ) (fun i _ => ?_)
     exact (hpt.eval i).mul (hpt.eval i)
   -- ENNReal-rpow tunnel for nonneg base.
@@ -943,7 +943,7 @@ lemma aestronglyMeasurable_aepsiIntegrandAt_gateaux
       0 ≤ (fun i : Fin d => cxCombGrad Dυ Dῡ t i x)
               ⬝ (fun i : Fin d => cxCombGrad Dυ Dῡ t i x) := by
     intro x
-    unfold euclideanDot
+    unfold dotProduct
     exact Finset.sum_nonneg (fun i _ => mul_self_nonneg _)
   have hvec : AEMeasurable
       (fun x : (Fin d → ℝ) =>
@@ -981,7 +981,7 @@ lemma aestronglyMeasurable_aepsiIntegrandAt_gateaux
         (fun i : Fin d => cxCombGrad Dυ Dῡ t i x)
           ⬝ (fun i : Fin d => Dν i x))
       (MeasureTheory.volume.restrict (UnitCube d)) := by
-    unfold euclideanDot
+    unfold dotProduct
     refine Finset.aemeasurable_fun_sum (s := Finset.univ) (fun i _ => ?_)
     exact (hpt.eval i).mul (hDν i).aemeasurable
   -- `absPowMinusTwo γBar (υ_t x) = |υ_t x| ^ (γBar - 2)`.
