@@ -655,7 +655,7 @@ theorem mfgOperator_pairing_eq
 A pair `(m, u)` with explicit gradient family `Du` is a weak solution
 in the sense of `Solutions.Weak.IsWeakSolution` iff for every
 admissible test pair `(μ, υ)` (with explicit gradient family `Dυ`), the
-MFG operator pairing
+scalar variational integrand is integrable and the MFG operator pairing
 ```
 ⟨ A(μ, υ) , (μ, υ) - (m, u) ⟩
 ```
@@ -664,20 +664,25 @@ is non-negative. This is exactly the reformulation of
 
 The proof is `Iff.rfl`-adjacent: rewriting the pairing on the
 right-hand side via `mfgOperator_pairing_eq` recovers the
-`IsWeakSolution` integrand verbatim. -/
+`IsWeakSolution` integrand verbatim, with its integrability clause retained. -/
 theorem isWeakSolution_iff_operator_ineq
     (Du : Fin d → (Fin d → ℝ) → ℝ) (m u : (Fin d → ℝ) → ℝ) :
     Solutions.Weak.IsWeakSolution V H DpH Du m u ↔
       ∀ (Dυ : Fin d → (Fin d → ℝ) → ℝ) (μ υ : (Fin d → ℝ) → ℝ),
         InMFGOperatorDomain Dυ μ υ →
+        Integrable (Solutions.Weak.weakSolutionIntegrand V H DpH Du m u Dυ μ υ)
+          (volume.restrict (UnitCube d)) ∧
         0 ≤ mfgOperatorPair (V := V) (H := H) (DpH := DpH) Dυ μ υ
               (fun i x => Dυ i x - Du i x) (μ - m) (υ - u) := by
   unfold Solutions.Weak.IsWeakSolution InMFGOperatorDomain
   refine ⟨fun h Dυ μ υ hadm => ?_, fun h Dυ μ υ hadm => ?_⟩
-  · rw [mfgOperator_pairing_eq]
-    exact h Dυ μ υ hadm
-  · rw [← mfgOperator_pairing_eq]
-    exact h Dυ μ υ hadm
+  · refine ⟨(h Dυ μ υ hadm).1, ?_⟩
+    rw [mfgOperator_pairing_eq]
+    exact (h Dυ μ υ hadm).2
+  · refine ⟨(h Dυ μ υ hadm).1, ?_⟩
+    dsimp only [Solutions.Weak.weakSolutionIntegrand]
+    rw [← mfgOperator_pairing_eq]
+    exact (h Dυ μ υ hadm).2
 
 /-! ## Pairing congruence + algebraic-split lemmas
 

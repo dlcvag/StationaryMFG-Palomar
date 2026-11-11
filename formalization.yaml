@@ -131,10 +131,15 @@ fidelity:
     regularity appears once, in the monotonicity bundle. Solution proves
     equivalence with the original expanded regularity conditions and
     invertible conversions of the growth bundles in the proof development.
-    Integral identities must be read together with the theorem regularity:
-    integrability follows from those hypotheses and conclusions, not from
-    the totalized Bochner integral equality alone. All three Challenge
-    statements require a periodic representative V; the congestion proof
+    The weak-solution predicate explicitly requires integrability of every
+    admissible variational integrand, alongside its nonnegative integral.
+    Existing estimates derive this clause from the unchanged theorem
+    assumptions and witness regularity; a checked equivalence lemma shows
+    agreement with the former inequality-only condition in that context.
+    For transport and weak-derivative
+    identities, integrability follows from the surrounding regularity and
+    bounded tests, not from the totalized Bochner integral equality alone.
+    All three Challenge statements require a periodic representative V; the congestion proof
     uses this condition explicitly. Total real-valued H and
     DpH inputs are constrained at positive mass; the strong-solution
     Hamiltonian at vacuum is its extended-real right limit, and the supplied
@@ -153,14 +158,17 @@ review:
     independent Challenge/Solution comparison used Lean v4.30.0-rc2. That
     evidence is historical and is not a verification report for this
     module-system/toolchain port. The new repository has passed its own
-    full build and axiom checks. On 2026-11-09 a fresh lake comparator run
-    accepted all three challenge comparisons after the dotProduct refactor,
-    and Lean's kernel accepted the solution. The compact interface has proved equivalences
-    with the original function-space, solution, and regularity conditions.
+    full build and axiom checks. On 2026-11-11 a fresh lake comparator run
+    accepted all three challenge comparisons with explicit weak-integrand
+    integrability, and Lean's kernel accepted the solution. A local manifest
+    records 156 unchanged proof/build input hashes across that run. The
+    compact interface has proved equivalences with the library conditions;
+    a further checked lemma establishes equivalence with the former bare
+    variational inequalities under the unchanged hypotheses and regularity.
     This local macOS run used --inadvisably-no-sandbox; the official Linux
     preflight passed on 2026-11-08 for 47150df and is a separate check of
-    that earlier snapshot, not this refactor. No Palomar review or registration, and
-    no independent human peer review, is claimed.
+    that earlier snapshot, not this refactor. No Palomar review or registration
+    of this revised snapshot, and no independent human peer review, is claimed.
 
 alignment:
   statements:

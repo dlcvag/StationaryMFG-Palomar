@@ -259,5 +259,31 @@ lemma paper_integrable
   have hpos : 0 < mu x := hc.trans_le (hmu x)
   rw [StationaryMFG.Hamiltonian.Paper.finiteExtension_of_pos H x _ hpos, hx _ _ hpos]
 
+/-- Under the original theorem hypotheses and witness regularity, requiring
+integrability explicitly does not change the variational solution condition. -/
+lemma paper_iff_variational_inequality
+    {V : (Fin d → ℝ) → ℝ}
+    {H : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → ℝ}
+    {DpH : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → (Fin d → ℝ)}
+    {Du : Fin d → (Fin d → ℝ) → ℝ}
+    {m u : (Fin d → ℝ) → ℝ}
+    (hmon : StationaryMFG.Hamiltonian.Paper.HypothesisMonotone H DpH)
+    (hweak : StationaryMFG.Hamiltonian.Paper.HypothesisWeakGrowth H DpH)
+    (hV : MemLpPer (ENNReal.ofReal ((hweak.β + 1) / hweak.β)) V)
+    (hm : MemLpPer (ENNReal.ofReal (hweak.β + 1)) m)
+    (hu : MemSobolevPer (ENNReal.ofReal (hweak.α * (hweak.β + 1) / hweak.β)) u)
+    (hDu : ∀ i, MemLpPer (ENNReal.ofReal (hweak.α * (hweak.β + 1) / hweak.β)) (Du i)) :
+    IsWeakSolution V H DpH Du m u ↔
+      ∀ (Dυ : Fin d → (Fin d → ℝ) → ℝ) (μ υ : (Fin d → ℝ) → ℝ),
+        IsWeakSolutionTestPair Dυ μ υ →
+        0 ≤ ∫ x in UnitCube d, weakSolutionIntegrand V H DpH Du m u Dυ μ υ x := by
+  constructor
+  · intro h Dυ μ υ ht
+    exact (h Dυ μ υ ht).2
+  · intro h Dυ μ υ ht
+    exact ⟨paper_integrable hmon hweak hV hm hu hDu ht, h Dυ μ υ ht⟩
+
+#print axioms paper_iff_variational_inequality
+
 #print axioms paper_integrable
 end WeakIntegrabilityAudit

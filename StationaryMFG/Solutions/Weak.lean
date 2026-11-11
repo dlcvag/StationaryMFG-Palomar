@@ -56,8 +56,8 @@ measure-theoretic essential-supremum machinery.
 Unlike `IsStrongSolution` (which leaves `m ∈ L¹` to the consumer), the
 `L^∞`/`W^{1,∞}` boundedness of the *test* pair `(μ, υ, Dυ)` is part of
 `IsWeakSolutionTestPair`, exactly matching paper line 303. The
-predicate `IsWeakSolution` then records only the variational inequality,
-quantified over these admissible pairs.
+predicate `IsWeakSolution` records integrability of the variational integrand
+and its nonnegative integral for every admissible pair.
 
 ## Relation to `IsStrongSolution`
 
@@ -123,11 +123,24 @@ structure IsWeakSolutionTestPair
   /-- `Dυ i` is the `i`-th periodic weak partial derivative of `υ`. -/
   Dυ_weak : ∀ i, StationaryMFG.Periodic.HasWeakDerivPer i υ (Dυ i)
 
+/-- The scalar integrand in the weak variational inequality. -/
+def weakSolutionIntegrand
+    (V : (Fin d → ℝ) → ℝ)
+    (H : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → ℝ)
+    (DpH : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → (Fin d → ℝ))
+    (Du : Fin d → (Fin d → ℝ) → ℝ)
+    (m u : (Fin d → ℝ) → ℝ)
+    (Dυ : Fin d → (Fin d → ℝ) → ℝ)
+    (μ υ : (Fin d → ℝ) → ℝ) : (Fin d → ℝ) → ℝ :=
+  fun x => (-(υ x) - H x (fun i => Dυ i x) (μ x) + V x) * (μ x - m x)
+    + μ x * (DpH x (fun i => Dυ i x) (μ x) ⬝ (fun i => Dυ i x - Du i x))
+    + (μ x - 1) * (υ x - u x)
+
 /--
 **Weak solution of the stationary MFG system** (paper line 286,
 Definition `def:weak`).
 
-`IsWeakSolution V H DpH Du m u` asserts the integrated variational
+`IsWeakSolution V H DpH Du m u` requires an integrable integrand and asserts the integrated variational
 inequality of Definition `def:weak-solution-concept`: for every
 admissible test pair `(μ, υ)` with associated test gradient `Dυ` (i.e.
 `IsWeakSolutionTestPair Dυ μ υ` holds),
@@ -164,12 +177,22 @@ def IsWeakSolution
     (m u : (Fin d → ℝ) → ℝ) : Prop :=
   ∀ (Dυ : Fin d → (Fin d → ℝ) → ℝ) (μ υ : (Fin d → ℝ) → ℝ),
     IsWeakSolutionTestPair Dυ μ υ →
-    0 ≤ ∫ x in UnitCube d,
-          (-(υ x) - H x (fun i => Dυ i x) (μ x) + V x) * (μ x - m x)
-            + μ x * (DpH x (fun i => Dυ i x) (μ x)
-                      ⬝ (fun i => Dυ i x - Du i x))
-            + (μ x - 1) * (υ x - u x)
-        ∂(volume : Measure (Fin d → ℝ))
+    Integrable (weakSolutionIntegrand V H DpH Du m u Dυ μ υ)
+      (volume.restrict (UnitCube d)) ∧
+    0 ≤ ∫ x in UnitCube d, weakSolutionIntegrand V H DpH Du m u Dυ μ υ x
+
+/-- Integrability is part of the weak-solution predicate itself. -/
+lemma IsWeakSolution.integrable
+    {V : (Fin d → ℝ) → ℝ}
+    {H : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → ℝ}
+    {DpH : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → (Fin d → ℝ)}
+    {Du Dυ : Fin d → (Fin d → ℝ) → ℝ}
+    {m u μ υ : (Fin d → ℝ) → ℝ}
+    (h : IsWeakSolution V H DpH Du m u)
+    (hadm : IsWeakSolutionTestPair Dυ μ υ) :
+    Integrable (weakSolutionIntegrand V H DpH Du m u Dυ μ υ)
+      (volume.restrict (UnitCube d)) :=
+  (h Dυ μ υ hadm).1
 
 /-- Unfolding lemma: `IsWeakSolution` applied to a specific admissible
 test pair yields the variational inequality for that pair. -/
@@ -189,7 +212,7 @@ lemma IsWeakSolution.inequality
                       ⬝ (fun i => Dυ i x - Du i x))
             + (μ x - 1) * (υ x - u x)
         ∂(volume : Measure (Fin d → ℝ)) :=
-  h Dυ μ υ hadm
+  (h Dυ μ υ hadm).2
 
 /-- Trivial coherence check: with `V = 0`, `H = 0`, `D_pH ≡ 0`,
 `m = 1`, `u = 0`, and gradient family `Du = 0`, the variational
@@ -233,12 +256,9 @@ example (d : ℕ)
     IsWeakSolution V H DpH Du m u ↔
       ∀ (Dυ : Fin d → (Fin d → ℝ) → ℝ) (μ υ : (Fin d → ℝ) → ℝ),
         IsWeakSolutionTestPair Dυ μ υ →
-        0 ≤ ∫ x in UnitCube d,
-              (-(υ x) - H x (fun i => Dυ i x) (μ x) + V x) * (μ x - m x)
-                + μ x * (DpH x (fun i => Dυ i x) (μ x)
-                          ⬝ (fun i => Dυ i x - Du i x))
-                + (μ x - 1) * (υ x - u x)
-            ∂(volume : Measure (Fin d → ℝ)) :=
+        Integrable (weakSolutionIntegrand V H DpH Du m u Dυ μ υ)
+          (volume.restrict (UnitCube d)) ∧
+        0 ≤ ∫ x in UnitCube d, weakSolutionIntegrand V H DpH Du m u Dυ μ υ x :=
   Iff.rfl
 
 /-- Concrete coherence check: a weak solution exists in the trivial

@@ -14,14 +14,17 @@ statement specification, not unfinished proofs in Solution.
 **Verification status:** the full build passes on Lean 4.35.0, including
 `Solution` and the integrability audits. All three Solution theorems and the
 audited integrability results use only `propext`, `Classical.choice`, and
-`Quot.sound`. On 2026-11-09, a fresh `lake comparator` accepted all three
-comparisons after replacing the custom coordinate pairing with Mathlib's
-`dotProduct`, and Lean's kernel accepted the solution. That local macOS run
-used `--inadvisably-no-sandbox`. The [official Linux preflight](https://github.com/dlcvag/StationaryMFG-Palomar/actions/runs/42484842541)
+`Quot.sound`. On 2026-11-11, a fresh `lake comparator` accepted all three
+comparisons after making integrability explicit in the weak-solution
+predicate, and Lean's kernel accepted the solution. The contextual
+equivalence with the former inequality-only condition also compiles using
+only the standard axioms. That local macOS run used
+`--inadvisably-no-sandbox`; a local manifest records 156 unchanged proof/build
+input hashes before and after comparison. The [official Linux preflight](https://github.com/dlcvag/StationaryMFG-Palomar/actions/runs/42484842541)
 passed on 2026-11-08 for commit `47150df`, including Comparator and the challenge
-provenance audit. That preflight predates the `dotProduct` refactor; each
+provenance audit. That preflight predates the later source refactors; each
 submission must use a snapshot with its own passing preflight.
-No Palomar editorial review or registration is claimed.
+No Palomar editorial review or registration of this revised snapshot is claimed.
 
 ## Mathematical content
 
@@ -59,10 +62,10 @@ periodic test function. Its flux is integrable. In the congestion theorem,
 the Hamiltonian's boundary value can be infinite, and the continuous limiting
 flux at zero mass need not be zero.
 
-A weak solution satisfies the paper's variational inequality for bounded test
-densities bounded away from zero and test potentials with bounded weak
-derivatives. The weak-growth theorem assumes no boundary condition on the
-original Hamiltonian. Internal regularization and boundary-continuity results
+A weak solution requires an integrable variational integrand with nonnegative
+integral for every bounded test density bounded away from zero and every test
+potential with bounded weak derivatives. The weak-growth theorem assumes no
+boundary condition on the original Hamiltonian. Internal regularization and boundary-continuity results
 are proved in the development, not additional inputs to the three claims.
 
 These are the paper's strong and monotone-operator weak solution concepts;
@@ -146,15 +149,20 @@ compact function-space, solution, and regularity conditions with their
 counterparts in the included proof development.
 
 Mathlib's Bochner integral is totalized: a nonintegrable integrand evaluates
-to zero. Consequently, an isolated integral equality is not a sufficient
-solution definition. Here the complete theorem hypotheses and conclusions
-supply the missing integrability. For the transport identity, `m` and `J`
-are integrable, and the smooth periodic test and its gradient are bounded
-on the cube. For the weak variational inequality, the growth and regularity
-hypotheses and the returned function-space bounds supply Hölder estimates
-for every admissible test pair. Read the solution predicates together with
-these ambient conditions, not as claims about arbitrary bare functions.
-The supporting derivations are retained in [Integrability.lean](Integrability.lean).
+to zero. `IsWeakSolution` therefore explicitly requires `Integrable` for
+every admissible test, as well as the variational inequality. The existing
+growth and regularity assumptions and witness bounds prove integrability
+of each summand using Hölder estimates; no hypothesis is added to the main
+theorem. The challenge names the integrand with a local `let`, so the formula
+appears only once. For the transport identity, density regularity and the
+explicit flux-integrability clause make both terms integrable, since smooth
+periodic tests and their gradients are bounded on the cube. The same bounded
+multiplier argument makes both sides of the weak-derivative identities
+integrable at the stated Sobolev exponents. The supporting independent
+derivations and `WeakIntegrabilityAudit.paper_iff_variational_inequality` are
+retained in [Integrability.lean](Integrability.lean). The latter proves
+equivalence with the former inequality-only condition under the unchanged
+theorem assumptions and witness regularity.
 
 The public reference is the versioned
 [arXiv v3 paper](https://arxiv.org/abs/2506.21212v3), whose

@@ -250,13 +250,15 @@ structure IsWeakSolutionTestPair (Dυ : Gradient d) (μ υ : Field d) : Prop whe
   density_memLp : MemLpPer ⊤ μ
   sobolev_gradient : HasSobolevGradient ⊤ υ Dυ
 
+/-- Every admissible test has an integrable variational integrand and nonnegative integral. -/
 def IsWeakSolution (V : Field d) (H : Point d → Point d → ℝ → ℝ)
     (DpH : Point d → Point d → ℝ → Point d) (Du : Gradient d) (m u : Field d) : Prop :=
   ∀ (Dυ : Gradient d) (μ υ : Field d), IsWeakSolutionTestPair Dυ μ υ →
-    0 ≤ ∫ x,
+    let integrand : Field d := fun x =>
       (-υ x - H x (Dυ x) (μ x) + V x) * (μ x - m x)
         + μ x * (DpH x (Dυ x) (μ x) ⬝ (Dυ x - Du x))
-        + (μ x - 1) * (υ x - u x) ∂cubeMeasure d
+        + (μ x - 1) * (υ x - u x)
+    Integrable integrand (cubeMeasure d) ∧ 0 ≤ ∫ x, integrand x ∂cubeMeasure d
 
 end Solutions.Weak
 open Solutions.Strong Solutions.Weak

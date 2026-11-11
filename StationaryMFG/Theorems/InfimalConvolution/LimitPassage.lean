@@ -43,9 +43,9 @@ Letting `k → ∞`, the first two integrals converge by weak convergence
 
 ## This file (arrow A5d — assembly keystone)
 
-The target predicate `IsWeakSolution` is a *single* universally
-quantified integral inequality over admissible test pairs (unlike
-Theorem 2's multi-clause solution pack). This file lands the
+The target predicate `IsWeakSolution` requires an integrable variational
+integrand and its nonnegative integral for every admissible test pair.
+This file lands the
 **assembly keystone** of the limit passage:
 
 `limit_passage_to_weak_VI_of_seq` takes, for each admissible test
@@ -57,7 +57,8 @@ pair, a real sequence `S` (the full per-`ε_k` right-hand side of
 * converges to the limit weak integrand `W` (the analytic
   weak-convergence closures — arrows A5a/A5b/A5c),
 
-and concludes `0 ≤ W`, i.e. the weak VI at the limit pair.
+Together with integrability of the limiting integrand, it concludes
+`0 ≤ W`, i.e. the weak VI at the limit pair.
 
 The two convergence hypotheses are precisely the deliverables of the
 remaining analytic closures (split into follow-up children A5a–A5c, and
@@ -643,6 +644,42 @@ theorem limit_passage_existweaksol_htend
   have hsum := (hterm1.add hterm23).add hrem
   simpa using hsum
 
+/-- Hölder estimates make each of the three variational summands integrable. -/
+lemma weak_integrand_integrable_of_factors
+    {b bp g gp : ℝ} (hb : b.HolderConjugate bp) (hg : g.HolderConjugate gp)
+    {V : (Fin d → ℝ) → ℝ}
+    {H : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → ℝ}
+    {DpH : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → (Fin d → ℝ)}
+    {Du Dv : Fin d → (Fin d → ℝ) → ℝ}
+    {m u mu v : (Fin d → ℝ) → ℝ}
+    (h1 : MemLpPer (ENNReal.ofReal bp) (fun x => -v x - H x (fun i => Dv i x) (mu x) + V x))
+    (hmu : MemLpPer (ENNReal.ofReal b) mu)
+    (hgrad : ∀ i, MemLpPer (ENNReal.ofReal gp) (fun x => mu x * DpH x (fun j => Dv j x) (mu x) i))
+    (hDv : ∀ i, MemLpPer (ENNReal.ofReal g) (Dv i))
+    (hval : MemLpPer (ENNReal.ofReal gp) (fun x => mu x - 1))
+    (hv : MemLpPer (ENNReal.ofReal g) v)
+    (hm : MemLpPer (ENNReal.ofReal b) m)
+    (hu : MemLpPer (ENNReal.ofReal g) u)
+    (hDu : ∀ i, MemLpPer (ENNReal.ofReal g) (Du i)) :
+    IntegrableOn (fun x =>
+        (-v x - H x (fun i => Dv i x) (mu x) + V x) * (mu x - m x)
+          + mu x * (DpH x (fun i => Dv i x) (mu x) ⬝ (fun i => Dv i x - Du i x))
+          + (mu x - 1) * (v x - u x)) (UnitCube d) := by
+  have hA := MemLpPer.integrable_mul hb.symm h1 (MemLp.toMemLpPer (hmu.toMemLp.sub hm.toMemLp))
+  have hC := MemLpPer.integrable_mul hg.symm hval (MemLp.toMemLpPer (hv.toMemLp.sub hu.toMemLp))
+  have hBi : ∀ i, IntegrableOn
+      (fun x => (mu x * DpH x (fun j => Dv j x) (mu x) i) * (Dv i x - Du i x))
+      (UnitCube d) := fun i =>
+    MemLpPer.integrable_mul hg.symm (hgrad i) (MemLp.toMemLpPer ((hDv i).toMemLp.sub (hDu i).toMemLp))
+  have hB := integrable_finset_sum Finset.univ (fun i _ => hBi i)
+  have hsum := (hA.add hB).add hC
+  refine hsum.congr ?_
+  filter_upwards with x
+  simp only [Pi.add_apply, Pi.sub_apply, dotProduct, Finset.mul_sum]
+  congr 2
+  exact Finset.sum_congr rfl (fun i _ => by ring)
+
+
 /-- **Assembly keystone for the weak VI at the limit pair** (paper
 `eq:existweaksol.delta`, arrow A5d).
 
@@ -660,10 +697,10 @@ Given the limit data `(m, u, Du)` and, *for every admissible test pair*
 where `W` is the `def:weak` integrand at the limit pair `(m, u, Du)`,
 the pair `(m, u)` is a weak solution `IsWeakSolution V H DpH Du m u`.
 
-This isolates the order-topological core of the `k → ∞` passage; the
-two per-test-pair hypotheses are precisely the deliverables of the
-remaining analytic-closure children (A5a–A5c) and of the per-`ε_k`
-family / stabilisation (A1 + A4). -/
+This isolates the order-topological core of the `k → ∞` passage.
+Integrability of the limiting integrand is carried explicitly; the
+nonnegativity and convergence hypotheses come from the analytic
+closure (A5a–A5c) and the per-`ε_k` family / stabilisation (A1 + A4). -/
 theorem limit_passage_to_weak_VI_of_seq
     {V : (Fin d → ℝ) → ℝ}
     {H : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → ℝ}
@@ -683,9 +720,14 @@ theorem limit_passage_to_weak_VI_of_seq
                   + μ x * (DpH x (fun i => Dυ i x) (μ x)
                             ⬝ (fun i => Dυ i x - Du i x))
                   + (μ x - 1) * (υ x - u x)
-              ∂(volume : Measure (Fin d → ℝ))))) :
+              ∂(volume : Measure (Fin d → ℝ)))))
+    (hintegrable : ∀ (Dυ : Fin d → (Fin d → ℝ) → ℝ) (μ υ : (Fin d → ℝ) → ℝ),
+      IsWeakSolutionTestPair Dυ μ υ →
+        Integrable (weakSolutionIntegrand V H DpH Du m u Dυ μ υ)
+          (volume.restrict (UnitCube d))) :
     IsWeakSolution V H DpH Du m u := by
   intro Dυ μ υ hadm
+  refine ⟨hintegrable Dυ μ υ hadm, ?_⟩
   exact nonneg_of_tendsto_of_eventually_nonneg
     (htend Dυ μ υ hadm) (hnn Dυ μ υ hadm)
 
@@ -1114,7 +1156,7 @@ theorem limit_passage_to_weak_VI_of_paperHypotheses
         ∂(volume : Measure (Fin d → ℝ)))
       + ε k * gateauxWpPair γBar Dυ υ
           (fun i x => Dυ i x - Du_n k i x) (υ - u_n k))
-    ?_ ?_
+    ?_ ?_ ?_
   · -- `hnn`: the A1 + A4 eventual nonnegativity, verbatim.
     intro Dυ μ υ hadm
     exact hnn Dυ μ υ hadm
@@ -1127,6 +1169,11 @@ theorem limit_passage_to_weak_VI_of_paperHypotheses
       (h_weak_Du Dυ μ υ hadm)
       (hgVal Dυ μ υ hadm) (hυ Dυ μ υ hadm) hu_n hu (h_weak_u Dυ μ υ hadm)
       hε_to0 (hbdd Dυ μ υ hadm)
+  · -- Integrability is established independently of the limiting inequality.
+    intro Dυ μ υ hadm
+    exact weak_integrand_integrable_of_factors hpqβ hpqγ
+      (hg1 Dυ μ υ hadm) (hμβ Dυ μ υ hadm) (hgGrad Dυ μ υ hadm)
+      (hDυ Dυ μ υ hadm) (hgVal Dυ μ υ hadm) (hυ Dυ μ υ hadm) hm hu hDu
 
 /-! ## B2a — closed producers for the keystone's regularity-derived
     Hölder factors

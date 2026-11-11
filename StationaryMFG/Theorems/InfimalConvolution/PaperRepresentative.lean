@@ -59,20 +59,13 @@ theorem weakSolution_of_canonical
   obtain ⟨c, hc, hμ⟩ := hadm.lower
   have hpos : ∀ x, 0 < μ x := fun x => hc.trans_le (hμ x)
   have he :
-      (∫ x in UnitCube d,
-        (-(υ x) - finiteExtension H x (fun i => Dυ i x) (μ x) + V x) * (μ x - m x)
-          + μ x * (canonicalGradient H x (fun i => Dυ i x) (μ x)
-            ⬝ (fun i => Dυ i x - Du i x))
-          + (μ x - 1) * (υ x - u x)) =
-      ∫ x in UnitCube d,
-        (-(υ x) - H x (fun i => Dυ i x) (μ x) + V x) * (μ x - m x)
-          + μ x * (DpH x (fun i => Dυ i x) (μ x)
-            ⬝ (fun i => Dυ i x - Du i x))
-          + (μ x - 1) * (υ x - u x) := by
-    apply integral_congr_ae
+      Solutions.Weak.weakSolutionIntegrand V (finiteExtension H) (canonicalGradient H)
+          Du m u Dυ μ υ =ᵐ[volume.restrict (UnitCube d)]
+        Solutions.Weak.weakSolutionIntegrand V H DpH Du m u Dυ μ υ := by
     filter_upwards [hreg.canonicalGradient_eq] with x hx
-    rw [finiteExtension_of_pos H x _ (hpos x), hx _ _ (hpos x)]
-  rw [← he]
-  exact h Dυ μ υ hadm
+    simp only [Solutions.Weak.weakSolutionIntegrand,
+      finiteExtension_of_pos H x _ (hpos x), hx _ _ (hpos x)]
+  exact ⟨(h Dυ μ υ hadm).1.congr he,
+    (integral_congr_ae he) ▸ (h Dυ μ υ hadm).2⟩
 
 end StationaryMFG.Hamiltonian.Paper
