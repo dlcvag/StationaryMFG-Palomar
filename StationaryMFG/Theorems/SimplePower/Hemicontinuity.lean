@@ -22,19 +22,21 @@ This module formalizes the **first half** of the sentence at line 1038 of
 > integrable function. Hence, Lebesgue's dominated convergence theorem
 > yields that `t ↦ ⟨A_ε[μ_t,υ_t],(η,ν)⟩` is continuous on `[0,1]`."
 
-The dominated-convergence wrap-up is a follow-up task; here we only
-prove that for almost every `x`, the integrand of
-`⟨A_ε[μ_t, υ_t], (η, ν)⟩` at `x` is continuous as a function of
-`t ∈ [0,1]` whenever `μ_t(x)` is positive on `[0,1]`.
+The pointwise continuity results below hold for `1 < γBar`; the later
+dominated-convergence lemmas establish continuity of the integral pairing.
+The positive-density versions assume `μ_t(x) > 0` on `[0,1]`; separate
+closed-cone variants handle nonnegative density.
 
 ## Key inputs
 
 * `RegularityH.continuous_H_pm` — for a.e. `x`, `(p, m) ↦ H(x, p, m)`
   is continuous on `{m > 0}`.
 * `RegularityH.continuous_DpH_pm` — same for `D_pH`.
-* `Real.continuous_rpow_const` — `s ↦ s ^ q` is continuous on `ℝ` when
-  `0 ≤ q`. We use this for the Gateaux weight `|·|^{γ̄ - 2}` under the
-  paper's standing hypothesis `γ̄ ≥ 2`.
+* `continuous_signedRpow` and `continuous_vecSignedRpow` — the full
+  Gateaux products `|s|^{γ̄ - 2} s` and `|v|^{γ̄ - 2} v` are continuous
+  for `γ̄ > 1`, as supplied by the paper's `α > 1` and `β > 0`.
+  Some older bounds on the bare weights below require `γ̄ ≥ 2`;
+  the product-form estimates used in the final proofs require only `γ̄ > 1`.
 * Linearity of the convex combination `t ↦ (1-t)·ā + t·a`.
 
 ## Pointwise integrand
@@ -223,7 +225,7 @@ lemma continuous_absPowMinusTwo_mul_cxComb
 
 For a.e. `x ∈ 𝕋^d`, given:
 * `RegularityH H DpH` (paper `(a:regularityH)`),
-* `2 ≤ γBar` (paper power-growth standing hypothesis),
+* `1 < γBar` (derived from the paper's `α > 1` and `β > 0`),
 * pointwise positivity `0 < cxComb μ mBar t x` for every `t ∈ [0,1]`
   (paper admissibility on `𝓚`: both `mBar, μ ≥ 0`, and the segment
   pointwise stays in the admissible set),
@@ -329,15 +331,14 @@ theorem aepsiIntegrandAt_continuousOn
 /-- **`aepsi_integrand_continuous_in_t`** (paper line 1038, first half,
 packaged a.e.).
 
-Given `RegularityH H DpH`, `2 ≤ γBar`, and pointwise positivity
+Given `RegularityH H DpH`, `1 < γBar`, and pointwise positivity
 of the convex combination `μ_t(x)` on `[0,1]` (a hypothesis carried
 by the consumer once both endpoints are admissible), for **almost
 every** `x ∈ 𝕋^d` the map
 `t ↦ ⟨A_ε[μ_t, υ_t], (η, ν)⟩_x = aepsiIntegrandAt … x t`
 is continuous on `[0,1]`.
 
-The integration over `x` (paper's dominated-convergence step) is a
-follow-up task. -/
+The later dominated-convergence lemmas integrate this continuity over `x`. -/
 theorem aepsi_integrand_continuous_in_t
     (V : (Fin d → ℝ) → ℝ)
     (H : (Fin d → ℝ) → (Fin d → ℝ) → ℝ → ℝ)
@@ -1263,14 +1264,15 @@ integrable dominator (packaged via `hemicont_*_holder_memLp`) through
 
 Concretely we prove:
 
-* `mfgOperatorEpsPair_segment_eq_integral` — the pairing along the
-  segment `(μ_t, υ_t) := (1-t)(μ̄, ῡ) + t(μ, υ)` is the unit-cube
-  integral of `aepsiIntegrandAt`.
-* `aepsiIntegrand_pairing_continuousOn` — under the hypotheses listed in
-  the task (regularity of `H`, `2 ≤ γ̄`, segment-positivity, and an
-  integrable dominator), the map
-  `t ↦ ∫ x in UnitCube d, aepsiIntegrandAt … x t ∂volume` is continuous
-  on `[0, 1]`.
+* `mfgOperatorPair_segment_eq_integral` and
+  `gateauxWpPair_segment_eq_integral` — express the unregularized and
+  Gateaux pairings along the segment as integrals of their respective
+  pointwise integrands.
+* `aepsiIntegrand_unreg_continuousOn` and
+  `aepsiIntegrand_gateaux_continuousOn` — continuity of the two integral
+  terms under their measurability and integrable-dominator hypotheses.
+  The unregularized term uses regularity of `H` and segment positivity;
+  the Gateaux term requires only `1 < γ̄`.
 * `Aepsi_hemicontinuous_segment` (alias `isHemicontinuous_Aepsi_segment`) —
   the same continuity stated directly for
   `t ↦ mfgOperatorEpsPair … (Dυ_t) (μ_t) (υ_t) Dν η ν`. This is the form
@@ -1912,11 +1914,8 @@ theorem aepsiIntegrand_unreg_continuousOn
         ∫ x in UnitCube d,
           aepsiIntegrandAt_unreg V H DpH Dυ Dῡ μ mBar υ ῡ Dν η ν x t
         ∂(volume : Measure (Fin d → ℝ))) (Set.Icc 0 1) := by
-  -- Pointwise (a.e. in `x`) continuity on `[0,1]` of the integrand at `2 ≤ γBar`
-  -- is given by `aepsi_integrand_continuous_in_t`, but for the unregularized
-  -- piece we only need continuity of the *first* part of the integrand;
-  -- this is `aepsiIntegrandAt_continuousOn` specialized to that piece.
-  -- Build the AE-pointwise continuity directly from the regularity bundle.
+  -- Build AE-pointwise continuity directly from the regularity bundle.
+  -- The unregularized integrand has no Gateaux weight or restriction on γBar.
   -- Per expert v3: `hPos` is now an a.e.-uniform-in-`t` statement; we extract
   -- the per-`x` pointwise positivity `hxPos` inside the `filter_upwards`.
   have h_cont :
@@ -2037,7 +2036,7 @@ theorem aepsiIntegrand_gateaux_continuousOn
 
 /-- **Hemicontinuity of `A_ε` on the segment** (paper line 1043, end of
 `lem:hemicont` proof). Under the standing hypotheses (regularity of
-`H`, `2 ≤ γ̄`, segment-positivity, and integrable dominators for both
+`H`, `1 < γ̄`, segment-positivity, and integrable dominators for both
 the unregularized and Gateaux integrands), the map
 `t ↦ ⟨A_ε[(1-t)(μ̄,ῡ)+t(μ,υ)], (η,ν)⟩` is continuous on `[0,1]`.
 
@@ -2653,7 +2652,7 @@ example
 
 /-- **Lemma `lem:hemicont` (paper line 990) — aggregator form.**
 
-Under `RegularityH H DpH`, `2 ≤ γBar`, and a per-segment dominator
+Under `RegularityH H DpH`, `1 < γBar`, and a per-segment dominator
 bundle `HemicontSegmentData` that captures the conclusions of
 `infra:P4-hemi-dominator-holder`, the regularised MFG operator
 `A_ε = mfgOperatorEpsPair` is hemicontinuous on `D ⊂ MFGTriple d` in
@@ -2823,7 +2822,7 @@ The unregularized MFG operator pairing `mfgOperatorPair` is
 hemicontinuous on any `D ⊂ MFGTriple d` for which the per-segment
 dominator bundle of `lem_hemicont` is available at `ε = 0`. The bundle
 is parameterized by `γBar` only because of the (unused at `ε = 0`)
-Gateaux dominator field; any `γBar ≥ 2` works.
+Gateaux dominator field; this specialization accepts any `1 < γBar`.
 
 Proof: invoke `lem_hemicont` with `ε = 0`, then rewrite the resulting
 `mfgOperatorEpsPair γBar 0`-pairing into `mfgOperatorPair` via
